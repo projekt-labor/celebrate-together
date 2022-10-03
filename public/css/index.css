@@ -1,11 +1,59 @@
 
-html, body {
-    margin: 0;
-    height: 100%;
+:root {
+    --dark-color: #252627;
+    --light-color: #FFF9FB;
+    --link-color: rgb(109, 109, 199);
 }
 
+html,
 body {
-    color: #101010;
-    font-family: "Roboto", sans-serif !important;
-    background-color: #FEFEFE;
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden;
+
+    font-family: 'Roboto', Arial, Helvetica, sans-serif;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    
+    background-color: var(--light-color);
+}
+
+a, input, button, .btn-link, .btn, textarea {
+    border-radius: 1px !important;
+    transition: all 0.3s ease-out;
+}
+
+a {
+    color: rgb(93, 139, 177);
+}
+
+a,
+.btn-link,
+.text-link {
+    outline: none !important;
+}
+
+a:hover,
+a:active,
+a:after,
+.btn-link:hover,
+.btn-link:active,
+.btn-link:after {
+    color: var(--link-color);
+    outline: none !important;
+    transition: all 0.3s ease;
+}
+
+@media screen and (max-width: 1300px) {
+ 
+    /* Mobilon az adott elem nem fog látszódni */
+    .non-mobile {
+        display: none !important;
+        visibility: none !important;
+    }
+
 }

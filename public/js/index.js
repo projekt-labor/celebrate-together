@@ -1,5 +1,7 @@
 (function () {
+    console.log("Loading index.js...");
 
-    console.log("Hello World!");
+    
 
+    console.log("index.js loaded");
 })();

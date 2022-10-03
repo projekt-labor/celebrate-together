@@ -1,5 +1,14 @@
+//
+//
+//
+//
+// CSAK LAYOUT, NEM TÖLTHETŐ BE DIREKT
+//
+//
+//
+//
 doctype html
-html(lang='en')
+html(lang='hu')
     head
         meta(http-equiv='X-UA-Compatible', content='IE=edge')
         meta(http-equiv='content-type', content='text/html; charset=utf-8')
@@ -17,18 +26,17 @@ html(lang='en')
         title= title
         link(rel='icon', href='/images/icon.png')
         link(href='https://fonts.googleapis.com/css?family=Roboto', rel='stylesheet')
-        link(href='https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css', rel='stylesheet', type='text/css')
-        link(href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css', rel='stylesheet', type='text/css')
+        link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css', rel='stylesheet', type='text/css')
+        link(href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css', rel='stylesheet', type='text/css')
         link(href='/css/index.css', rel='stylesheet', type='text/css')
-        link(rel="stylesheet", href="css/index.css")
         block styles
     body
         block content
         
         script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')
-        script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js')
-        script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js')
+        script(src='https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js')
+        script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js')
         script(defer='', src='https://use.fontawesome.com/releases/v5.0.8/js/all.js')
         script#cookieinfo(type='text/javascript', src='//cookieinfoscript.com/js/cookieinfo.min.js')
-        script(src="js/index.js")
+        script(src="js/index.js", type="text/javascript")
         block scripts
