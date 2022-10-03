@@ -10,6 +10,7 @@ let counter = 0;
 
 // Settings
 APP.set("view engine", "pug");
+APP.use(express.static('public'));
 
 
 // Paths
