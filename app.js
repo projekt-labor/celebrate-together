@@ -13,18 +13,27 @@ APP.set("view engine", "pug");
 
 
 // Paths
+APP.get("/", (req, res) => {
+
+    res.render("root", {
+        title: BASE_TITLE + " - Alap",
+        message: "Válassz valamit:"
+    });
+
+});
+
 APP.get("/minus", (req, res) => {
 
-    res.render('index', {
+    res.render("index", {
         title: BASE_TITLE + " - Minus",
         message: --counter
     });
 
 });
 
-APP.get('/plus', (req, res) => {
+APP.get("/plus", (req, res) => {
 
-    res.render('index', {
+    res.render("index", {
         title: BASE_TITLE + " - Plus",
         message: ++counter
     });
