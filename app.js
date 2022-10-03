@@ -16,7 +16,7 @@ APP.use(express.static('public'));
 // Paths
 APP.get("/", (req, res) => {
 
-    res.render("root", {
+    res.render("choose", {
         title: BASE_TITLE + " - Alap",
         message: "Válassz valamit:"
     });
