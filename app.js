@@ -5,7 +5,6 @@ const express = require('express');
 const APP = express();
 const PORT = 8080;
 const BASE_TITLE = "Celebrate Together";
-let counter = 0;
 
 
 // Settings
@@ -16,29 +15,9 @@ APP.use(express.static('public'));
 // Paths
 APP.get("/", (req, res) => {
 
-    res.render("choose", {
-        title: BASE_TITLE + " - Alap",
-        message: "Válassz valamit:"
-    });
-
-});
-
-APP.get("/minus", (req, res) => {
-
     res.render("index", {
-        title: BASE_TITLE + " - Minus",
-        message: --counter
+        title: BASE_TITLE
     });
-
-});
-
-APP.get("/plus", (req, res) => {
-
-    res.render("index", {
-        title: BASE_TITLE + " - Plus",
-        message: ++counter
-    });
-
 });
 
 

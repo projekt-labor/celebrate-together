@@ -1,5 +1,11 @@
 
+html, body {
+    margin: 0;
+    height: 100%;
+}
+
 body {
-    background-color: blue;
-    margin: 20px;
+    color: #101010;
+    font-family: "Roboto", sans-serif !important;
+    background-color: #FEFEFE;
 }
