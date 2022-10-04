@@ -11,7 +11,7 @@ const ERROR_MSG = "Probléma lépett fel a kérés teljesítése során";
 
 
 INDEX_ROUTE.get("/", async (req, res) => {
-    res.render("index", {
+    return res.render("index", {
         title: BASE_TITLE,
         messages: await req.consumeFlash('info'),
         user: req.session.user
@@ -19,7 +19,13 @@ INDEX_ROUTE.get("/", async (req, res) => {
 });
 
 INDEX_ROUTE.get("/register", async (req, res) => {
-    res.render("register", {
+    
+    // Átiránítás ha be van jelentkezve
+    if (req.session.user) {
+        return res.redirect("/");
+    }
+
+    return res.render("register", {
         title: BASE_TITLE,
         messages: await req.consumeFlash('info'),
         user: req.session.user
@@ -27,16 +33,29 @@ INDEX_ROUTE.get("/register", async (req, res) => {
 });
 
 INDEX_ROUTE.get("/logout", async (req, res) => {
+    // Átiránítás ha nincs bejelentkezve
+    if (!req.session.user) {
+        return res.redirect("/");
+    }
+
     req.session.user = null;
-    res.redirect("/");
+    return res.redirect("/");
 });
 
 INDEX_ROUTE.post("/logout", async (req, res) => {
+    if (!req.session.user) {
+        return res.redirect("/");
+    }
+
     req.session.user = null;
-    res.redirect("/");
+    return res.redirect("/");
 });
 
 INDEX_ROUTE.post("/register", async (req, res) => {
+    if (req.session.user) {
+        return res.redirect("/");
+    }
+
     req.checkBody("email", "The email field cannot be empty.")
         .isEmail()
         .isLength({ min: 1 });
@@ -100,6 +119,10 @@ INDEX_ROUTE.post("/register", async (req, res) => {
 });
 
 INDEX_ROUTE.get("/login", async (req, res) => {
+    if (req.session.user) {
+        return res.redirect("/");
+    }
+
     res.render("login", {
         title: BASE_TITLE,
         messages: await req.consumeFlash('info'),
@@ -108,6 +131,10 @@ INDEX_ROUTE.get("/login", async (req, res) => {
 });
 
 INDEX_ROUTE.post("/login", (req, res) => {
+    if (req.session.user) {
+        return res.redirect("/");
+    }
+
     req.checkBody("email", "The email field cannot be empty.")
         .isEmail()
         .isLength({ min: 1 });

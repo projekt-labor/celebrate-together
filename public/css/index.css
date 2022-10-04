@@ -19,7 +19,8 @@ body {
     background-size: cover;
     background-position: center;
     
-    background-color: var(--light-color);
+    color: var(--light-color);
+    background-color: var(--dark-color);
 }
 
 a, input, button, .btn-link, .btn, textarea {

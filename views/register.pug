@@ -1,18 +1,11 @@
-//
-//
-//
-// Regisztrációs oldal
-//
-//
-//
 extend layout
 
 block content
     h1 Register oldal
 
     form(action="/register", method="POST")
-        input(type="email", name="email", placeholder="Email", required="ture") 
-        input(type="password", name="password", placeholder="Jelszó", required="ture")
-        input(type="password", name="password_again", placeholder="Jelszó ismét", required="ture")
-        input(type="date", name="birthday", placeholder="Születésnap", required="ture")
-        input(type="submit", name="submit")
+        input(type="email", name="email", placeholder="Email", required="ture").form-control
+        input(type="password", name="password", placeholder="Jelszó", required="ture").form-control
+        input(type="password", name="password_again", placeholder="Jelszó ismét", required="ture").form-control
+        input(type="date", name="birthday", placeholder="Születésnap", required="ture").form-control
+        input(type="submit", name="submit").btn.btn-primary
