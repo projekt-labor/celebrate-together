@@ -26,6 +26,12 @@ APP.use(express.json());
 APP.use(express.urlencoded({ extended: true }));
 APP.use(flash({ sessionKeyName: 'flashMessage' }));
 APP.use(expressValidator());
+APP.use((req, res, next) => {
+    if (!req.session.user) {
+        req.session.user = null;
+    }
+    next();
+});
 
 // Routes
 APP.use("/", require("./routes/index"));

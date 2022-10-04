@@ -1,6 +1,27 @@
+//
+//
+//
+// Főoldal (posztok)
+//
+//
+//
 extend layout
 
 block content
-    a(href="/login").mt-5.ml-5 Login
-    br
-    a(href="/register").mt-5.ml-5 Register
+    main.ps-5.pe-5.pt-2
+        if user
+            h2 Üdvözöllek 
+                span= user.email
+                span !
+            br
+
+        hr
+        h2 Jelenlegi oldalak:
+        br
+        a(href="/login").mt-5.ml-5 Bejelentkezés
+        br
+        a(href="/register").mt-5.ml-5 Regisztráció
+        
+        if user
+            br
+            a(href="/logout").mt-5.ml-5 Kijelentkezés

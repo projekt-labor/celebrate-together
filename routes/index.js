@@ -1,7 +1,8 @@
 const bcrypt = require('bcrypt');
 const express = require('express');
 const INDEX_ROUTE = express.Router();
-const DB = require("../src/database");  
+const DB = require("../src/database");
+const User = require("../models/user");
 
 const BASE_TITLE = "Celebrate Together";
 const REGISTER_NOK = "Nem megfelelő regisztrációs adatok";
@@ -12,15 +13,27 @@ const ERROR_MSG = "Probléma lépett fel a kérés teljesítése során";
 INDEX_ROUTE.get("/", async (req, res) => {
     res.render("index", {
         title: BASE_TITLE,
-        messages: await req.consumeFlash('info')
+        messages: await req.consumeFlash('info'),
+        user: req.session.user
     });
 });
 
 INDEX_ROUTE.get("/register", async (req, res) => {
     res.render("register", {
         title: BASE_TITLE,
-        messages: await req.consumeFlash('info')
+        messages: await req.consumeFlash('info'),
+        user: req.session.user
     });
+});
+
+INDEX_ROUTE.get("/logout", async (req, res) => {
+    req.session.user = null;
+    res.redirect("/");
+});
+
+INDEX_ROUTE.post("/logout", async (req, res) => {
+    req.session.user = null;
+    res.redirect("/");
 });
 
 INDEX_ROUTE.post("/register", async (req, res) => {
@@ -76,6 +89,9 @@ INDEX_ROUTE.post("/register", async (req, res) => {
                 req.flash('info', ERROR_MSG);
                 return res.redirect("/");
             }
+
+            // SIKERES REGISZTRÁCIÓ
+            req.session.user = new User(email, password);
             return res.redirect("/");
         });
     };
@@ -86,7 +102,8 @@ INDEX_ROUTE.post("/register", async (req, res) => {
 INDEX_ROUTE.get("/login", async (req, res) => {
     res.render("login", {
         title: BASE_TITLE,
-        messages: await req.consumeFlash('info')
+        messages: await req.consumeFlash('info'),
+        user: req.session.user
     });
 });
 
@@ -106,12 +123,14 @@ INDEX_ROUTE.post("/login", (req, res) => {
         return res.redirect("/login");
     }
 
+    // 1. Adatok lekérése az adatbázisból
     const databaseResCallback = (error, databaseResults) => {
             if (error || !databaseResults || databaseResults.length == 0) {
                 req.flash('info', LOGIN_NOK);
                 return res.redirect("/login");
             }
 
+            // 2. Jelszó ellenőrzése
             return bcrypt.compare(password, databaseResults[0].password, (error, isMatch) => {
                 if (error) {
                     console.error(error);
@@ -122,6 +141,10 @@ INDEX_ROUTE.post("/login", (req, res) => {
                     req.flash('info', LOGIN_NOK);
                     return res.redirect("/login");
                 }
+
+                // SIKERES BEJELENTKEZÉS
+                let dbu = databaseResults[0];
+                req.session.user = new User(dbu.email, dbu.password);
                 return res.redirect("/");
             });
             
