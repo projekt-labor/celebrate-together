@@ -1,9 +1,10 @@
-/login
-/user/id.lmfao
-/szettingz
-/kontakt ász
-/buliesemeny
-/aszf.fogadd_el
-/message_legyszi_irj_nekem
-/bar_atok
-/kereses
+pug fájl neve | útvonal
+login           /login
+user            /user/id.lmfao
+settings        /szettingz
+contact         /kontakt ász
+event           /buliesemeny
+terms           /aszf.fogadd_el
+chat            /message_legyszi_irj_nekem
+friends         /bar_atok
+search          /kereses
