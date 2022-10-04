@@ -1,0 +1,16 @@
+
+Máté:
+    - Oldal dizájnok
+    - Lehetőleg .pug fájlok az oldalakhoz
+    - Logó, ikon, ilyesmi
+  
+Norbi:
+    - Adatbázis tervezése továbbfejlesztése
+    - Adatbázis triggerek, egyebek
+    - Adatbázis exportálása 
+    - Adatbázis példa adatokkal való megtöltése
+
+Martin:
+    - A fentieket összerakom a back-end-el
+    - Működőképpessé teszem a projektet
+    - Lehetőleg figyelek a biztonsági tényezőkre
