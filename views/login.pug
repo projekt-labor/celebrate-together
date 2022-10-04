@@ -1,0 +1,9 @@
+extend layout
+
+block content
+    h1 Login oldal
+
+    form(action="/login", method="POST")
+        input(type="email", name="email", placeholder="Email", required="ture") 
+        input(type="password", name="password", placeholder="Jelszó", required="ture") 
+        input(type="submit", name="submit")

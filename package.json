@@ -11,14 +11,20 @@
     "type": "git",
     "url": "git+https://github.com/projekt-labor/celebrate-together.git"
   },
-  "author": "",
+  "author": "Göllény Máté Endre, Bonczók Norbert, Martin Kondor",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/projekt-labor/celebrate-together/issues"
   },
   "homepage": "https://github.com/projekt-labor/celebrate-together#readme",
   "dependencies": {
+    "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
     "express": "^4.18.1",
+    "express-flash-message": "^2.1.0",
+    "express-session": "^1.17.3",
+    "morgan": "^1.10.0",
+    "mysql": "^2.18.1",
     "nodemon": "^2.0.20",
     "pug": "^3.0.2"
   }

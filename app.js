@@ -1,4 +1,9 @@
 const express = require('express');
+const session = require('express-session');
+const morgan = require('morgan');
+const cors = require('cors');
+const { flash } = require('express-flash-message');
+const bcrypt = require('bcrypt');
 
 // Global variables
 const APP = express();
@@ -7,9 +12,23 @@ const PORT = 8080;
 // Middleware
 APP.set("view engine", "pug");
 APP.use(express.static('public'));
+APP.use(morgan('tiny'));
+APP.use(cors());
+APP.use(session({
+	secret: 'secret',
+	resave: true,
+	saveUninitialized: true
+}));
+APP.use(express.json());
+APP.use(express.urlencoded({ extended: true }));
+APP.use(flash({ sessionKeyName: 'flashMessage' }));
 
 // Routes
 APP.use("/", require("./routes/index"));
+
+morgan.token('host', function(req, res) {
+    return req.hostname;
+});
 
 // Starting up
 APP.listen(PORT, () => {
