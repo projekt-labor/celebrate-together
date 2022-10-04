@@ -33,32 +33,42 @@ INDEX_ROUTE.get("/login", async (req, res) => {
 });
 
 INDEX_ROUTE.post("/login", (req, res) => {
+    req.checkBody("email", "The email field cannot be empty.")
+        .isEmail()
+        .isLength({ min: 1 });
+    req.checkBody("password", "The password field cannot be empty.")
+        .isLength({ min: 1 });
+
+    const errors = req.validationErrors();
     const email = req.body.email;
     const password = req.body.password;
-
-    if (!email || !password) {
+        
+    if (!email || !password || errors) {
         req.flash('info', "Nem megfelelő bejelentkezési adatok!");
         return res.redirect("/login");
     }
 
-    DB.query('SELECT * FROM users WHERE email=?', [email], (error, databaseData, fields) => {
-            if (error || !databaseData) {
+    const databaseResCallback = (error, databaseResults) => {
+            if (error || !databaseResults || !databaseResults[0]) {
                 req.flash('info', "Nem megfelelő bejelentkezési adatok!");
                 return res.redirect("/login");
             }
-            
-            return bcrypt.compare(password, databaseData.password, (err, result) => {
-                /*
-                if (!result) {
+
+            return bcrypt.compare(password, databaseResults[0].password, (error, isMatch) => {
+                if (error) {
+                    console.error(error);
+                    req.flash('info', "Hiba a szerverrel!");
+                    return res.redirect("/login");
+                }
+                if (!isMatch) {
                     req.flash('info', "Nem megfelelő bejelentkezési adatok!");
                     return res.redirect("/login");
                 }
                 return res.redirect("/");
-                */
             });
-    });
-
-    return res.redirect("/");
+            
+    };
+    return DB.query('SELECT u.email, u.password FROM users u WHERE u.email=?', [email], databaseResCallback);
 });
 
 module.exports = INDEX_ROUTE;

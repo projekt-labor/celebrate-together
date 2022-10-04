@@ -2,8 +2,10 @@ const express = require('express');
 const session = require('express-session');
 const morgan = require('morgan');
 const cors = require('cors');
+const helmet = require("helmet");
 const { flash } = require('express-flash-message');
 const bcrypt = require('bcrypt');
+const expressValidator = require("express-validator");
 
 // Global variables
 const APP = express();
@@ -14,6 +16,7 @@ APP.set("view engine", "pug");
 APP.use(express.static('public'));
 APP.use(morgan('tiny'));
 APP.use(cors());
+//APP.use(helmet());
 APP.use(session({
 	secret: 'secret',
 	resave: true,
@@ -22,6 +25,7 @@ APP.use(session({
 APP.use(express.json());
 APP.use(express.urlencoded({ extended: true }));
 APP.use(flash({ sessionKeyName: 'flashMessage' }));
+APP.use(expressValidator());
 
 // Routes
 APP.use("/", require("./routes/index"));
