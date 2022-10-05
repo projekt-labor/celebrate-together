@@ -10,11 +10,17 @@ block content
 
         hr
         h2 Jelenlegi oldalak:
-        br
-        a(href="/login").mt-5.ml-5 Bejelentkezés
-        br
-        a(href="/register").mt-5.ml-5 Regisztráció
+        
+        if !user
+            br
+            a(href="/login").mt-5.ml-5 Bejelentkezés
+            br
+            a(href="/register").mt-5.ml-5 Regisztráció
         
         if user
             br
+            a(href="/user/settings").mt-5.ml-5 Fehlasználó beállítások
+            br
             a(href="/logout").mt-5.ml-5 Kijelentkezés
+            br
+            a(href="/search").mt-5.ml-5 Keresés

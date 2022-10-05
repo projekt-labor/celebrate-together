@@ -1,10 +1,10 @@
 pug fájl neve | útvonal
 login           /login
-user            /user/id.lmfao
-settings        /user/szettingz
-contact         /kontakt ász
-event           /buliesemeny
-terms           /aszf.fogadd_el
-chat            /message_legyszi_irj_nekem
-friends         /bar_atok
-search          /kereses
+user            /user/:id.lmfao - /user/:id
+settings        /user/szettingz - /user/settings
+contact         /kontakt ász - /contact
+event           /buliesemeny - /event
+terms           /aszf.fogadd_el - /terms
+chat            /message_legyszi_irj_nekem - /chat
+friends         /bar_atok - /friends
+search          /kereses - /search

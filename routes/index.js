@@ -105,7 +105,7 @@ INDEX_ROUTE.post("/register", async (req, res) => {
             req.flash('info', CONFIG.REGISTER_NOK);
             return res.redirect("/register");
         }
-        return createAndSaveUser((error, result) => {
+        return createAndSaveUser((error, databaseResults2) => {
             if (error) {
                 console.log(error);
                 req.flash('info', CONFIG.ERROR_MSG);
@@ -113,7 +113,7 @@ INDEX_ROUTE.post("/register", async (req, res) => {
             }
 
             // SIKERES REGISZTRÁCIÓ
-            req.session.user = new User(name, email, password, birthday);
+            req.session.user = new User().fromDB(databaseResults2[0]);
             return res.redirect("/");
         });
     };

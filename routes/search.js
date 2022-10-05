@@ -1,34 +1,41 @@
 const bcrypt = require('bcrypt');
 const express = require('express');
-const USER_ROUTE = express.Router();
+const SEARCH_ROUTE = express.Router();
 const DB = require("../src/database");
 const User = require("../models/user");
 const CONFIG = require("../config");
 
 
-USER_ROUTE.get("/settings", (req, res) => {
+SEARCH_ROUTE.get("/search", (req, res) => {
     if (!req.session.user) {
         return res.redirect("/");
     }
     
-    return res.render("settings", {
-        title: CONFIG.BASE_TITLE + " - Beállítások",
+    return res.render("search", {
+        title: CONFIG.BASE_TITLE + " - Keresés",
         messages: req.consumeFlash('info'),
         user: req.session.user
     });
 });
 
-USER_ROUTE.get("/:id", (req, res) => {
+SEARCH_ROUTE.post("/search", (req, res) => {
     if (!req.session.user) {
         return res.redirect("/");
     }
     
-    return res.render("user", {
-        title: CONFIG.BASE_TITLE + " - Felhasználó",
+    result_columns = [
+        "id", "email", "nev", "jelszo", "szul_datum", "szul_hely"
+    ]
+
+    // ...
+
+    return res.render("search", {
+        title: CONFIG.BASE_TITLE + " - Keresés",
         messages: req.consumeFlash('info'),
         user: req.session.user,
-        viewed_user: req.session.user
+        result_columns: result_columns,
+        result: results
     });
 });
 
-module.exports = USER_ROUTE;
+module.exports = SEARCH_ROUTE;

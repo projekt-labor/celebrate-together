@@ -2,3 +2,8 @@ extends layout
 
 block content 
     h1 Search
+
+    form(action="/search", method="POST")
+        input(type="text", name="q_user", placeholder="Keresés emberekre").form-control
+        input(type="text", name="q_event", placeholder="Keresés esemenyekre").form-control
+        input(type="submit", name="submit").btn.btn-primary

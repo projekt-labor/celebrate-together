@@ -1,9 +1,9 @@
 
 class User {
 
-    constructor(nev="", email="", jelszo="", szul_datum="",
-            telefon="", profilkep="", szul_hely="", lakhely="")
+    constructor(nev="", email="", jelszo="", szul_datum="", telefon="", profilkep="", szul_hely="", lakhely="", id=0)
     {
+        this.id = id;
         this.nev = nev;
         this.email = email;
         this.jelszo = jelszo;
@@ -15,6 +15,7 @@ class User {
     }
 
     fromDB(dbo) {
+        this.id = dbo.id;
         this.nev = dbo.nev;
         this.email =dbo.email;
         this.jelszo = dbo.jelszo;
