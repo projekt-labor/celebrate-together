@@ -6,7 +6,7 @@ const User = require("../models/user");
 const CONFIG = require("../config");
 
 
-USER_ROUTE.get("/user/<id>", async (req, res) => {
+USER_ROUTE.get("/user/:id", async (req, res) => {
     if (false && !req.session.user) {
         return res.redirect("/");
     }

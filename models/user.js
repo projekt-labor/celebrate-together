@@ -1,17 +1,29 @@
 
 class User {
-    
-    constructor(email, password) {
+
+    constructor(nev="", email="", jelszo="", szul_datum="",
+            telefon="", profilkep="", szul_hely="", lakhely="")
+    {
+        this.nev = nev;
         this.email = email;
-        this.password = password;
+        this.jelszo = jelszo;
+        this.telefon = telefon;
+        this.profilkep = profilkep;
+        this.szul_datum = szul_datum;
+        this.szul_hely = szul_hely;
+        this.lakhely = lakhely;
     }
 
-    future(id, email, password, birthday, country) {
-        this.id = id;
-        this.email = email;
-        this.password = password;
-        this.birthday = birthday;
-        this.country = country;
+    fromDB(dbo) {
+        this.nev = dbo.nev;
+        this.email =dbo.email;
+        this.jelszo = dbo.jelszo;
+        this.telefon = dbo.telefon;
+        this.profilkep = dbo.profilkep;
+        this.szul_datum = dbo.szul_datum;
+        this.szul_hely = dbo.szul_hely;
+        this.lakhely = dbo.lakhely;
+        return this;
     }
 
 }

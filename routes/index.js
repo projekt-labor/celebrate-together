@@ -51,18 +51,21 @@ INDEX_ROUTE.post("/register", async (req, res) => {
     if (req.session.user) {
         return res.redirect("/");
     }
-
-    req.checkBody("email", "The email field cannot be empty.")
+    
+    req.checkBody("name", "")
+        .isLength({ min: 1 });
+    req.checkBody("email", "")
         .isEmail()
         .isLength({ min: 1 });
-    req.checkBody("password", "The password field cannot be empty.")
+    req.checkBody("password", "")
         .isLength({ min: 1 });
-    req.checkBody("password_again", "The password again field cannot be empty.")
+    req.checkBody("password_again", "")
         .isLength({ min: 1 });
-    req.checkBody("birthday", "The birthday field cannot be empty.")
+    req.checkBody("birthday", "")
         .isLength({ min: 4 });
 
     const errors = req.validationErrors();
+    const name = req.body.name;
     const email = req.body.email;
     const password = req.body.password;
     const passwordAgain = req.body.password_again;
@@ -70,6 +73,7 @@ INDEX_ROUTE.post("/register", async (req, res) => {
 
     if (errors) {
         console.log("\nHiba a bemenetekkel!\n");
+        console.log(errors);
         req.flash('info', CONFIG.REGISTER_NOK);
         return res.redirect("/");
     }
@@ -83,7 +87,8 @@ INDEX_ROUTE.post("/register", async (req, res) => {
     const createAndSaveUser = (callback) => {
         return bcrypt.genSalt(10, (err, salt) => {
             return bcrypt.hash(password, salt, function(err, hash) {
-                return DB.query("INSERT INTO users (email, password) VALUES (?, ?)", [email, hash], callback);
+                const q = `INSERT INTO ${CONFIG.USERS_TABLE_NAME} (nev, email, jelszo, szul_datum) VALUES (?, ?, ?, ?)`;
+                return DB.query(q, [name, email, hash, birthday], callback);
             });
         });
     }
@@ -91,6 +96,7 @@ INDEX_ROUTE.post("/register", async (req, res) => {
     // 1. Keressük hogy az email foglalt-e?
     const isTheEmailReserved = (error, databaseResults) => {
         if (error) {
+            console.log(error);
             req.flash('info', CONFIG.ERROR_MSG);
             return res.redirect("/");
         }
@@ -101,17 +107,18 @@ INDEX_ROUTE.post("/register", async (req, res) => {
         }
         return createAndSaveUser((error, result) => {
             if (error) {
+                console.log(error);
                 req.flash('info', CONFIG.ERROR_MSG);
                 return res.redirect("/");
             }
 
             // SIKERES REGISZTRÁCIÓ
-            req.session.user = new User(email, password);
+            req.session.user = new User(name, email, password, birthday);
             return res.redirect("/");
         });
     };
 
-    return DB.query('SELECT u.email FROM users u WHERE u.email=?', [email], isTheEmailReserved);
+    return DB.query(`SELECT u.email FROM ${CONFIG.USERS_TABLE_NAME} u WHERE u.email=?`, [email], isTheEmailReserved);
 });
 
 INDEX_ROUTE.get("/login", async (req, res) => {
@@ -131,10 +138,10 @@ INDEX_ROUTE.post("/login", (req, res) => {
         return res.redirect("/");
     }
 
-    req.checkBody("email", "The email field cannot be empty.")
+    req.checkBody("email", "")
         .isEmail()
         .isLength({ min: 1 });
-    req.checkBody("password", "The password field cannot be empty.")
+    req.checkBody("password", "")
         .isLength({ min: 1 });
 
     const errors = req.validationErrors();
@@ -154,7 +161,7 @@ INDEX_ROUTE.post("/login", (req, res) => {
             }
 
             // 2. Jelszó ellenőrzése
-            return bcrypt.compare(password, databaseResults[0].password, (error, isMatch) => {
+            return bcrypt.compare(password, databaseResults[0].jelszo, (error, isMatch) => {
                 if (error) {
                     console.error(error);
                     req.flash('info', CONFIG.ERROR_MSG);
@@ -167,12 +174,14 @@ INDEX_ROUTE.post("/login", (req, res) => {
 
                 // SIKERES BEJELENTKEZÉS
                 let dbu = databaseResults[0];
-                req.session.user = new User(dbu.email, dbu.password);
+                req.session.user = new User().fromDB(dbu);
+                console.log("Login:");
+                console.log(req.session.user);
                 return res.redirect("/");
             });
             
     };
-    return DB.query('SELECT u.email, u.password FROM users u WHERE u.email=?', [email], databaseResCallback);
+    return DB.query(`SELECT u.email, u.jelszo FROM ${CONFIG.USERS_TABLE_NAME} u WHERE u.email=?`, [email], databaseResCallback);
 });
 
 module.exports = INDEX_ROUTE;

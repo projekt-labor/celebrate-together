@@ -4,6 +4,7 @@ block content
     h1 Register oldal
 
     form(action="/register", method="POST")
+        input(type="text", name="name", placeholder="Teljes név", required="ture").form-control
         input(type="email", name="email", placeholder="Email", required="ture").form-control
         input(type="password", name="password", placeholder="Jelszó", required="ture").form-control
         input(type="password", name="password_again", placeholder="Jelszó ismét", required="ture").form-control

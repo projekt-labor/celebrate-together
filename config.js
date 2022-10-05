@@ -4,4 +4,5 @@ module.exports = {
     REGISTER_NOK: "Nem megfelelő regisztrációs adatok",
     LOGIN_NOK: "Nem megfelelő bejelentkezési adatok",
     ERROR_MSG: "Probléma lépett fel a kérés teljesítése során",
+    USERS_TABLE_NAME: "felhasznalok",
 }
