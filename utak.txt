@@ -1,7 +1,7 @@
 pug fájl neve | útvonal
 login           /login
 user            /user/id.lmfao
-settings        /szettingz
+settings        /user/szettingz
 contact         /kontakt ász
 event           /buliesemeny
 terms           /aszf.fogadd_el

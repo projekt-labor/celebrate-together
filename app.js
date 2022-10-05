@@ -35,6 +35,7 @@ APP.use((req, res, next) => {
 
 // Routes
 APP.use("/", require("./routes/index"));
+APP.use("/user", require("./routes/user"));
 
 morgan.token('host', function(req, res) {
     return req.hostname;

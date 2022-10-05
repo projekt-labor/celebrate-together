@@ -3,16 +3,12 @@ const express = require('express');
 const INDEX_ROUTE = express.Router();
 const DB = require("../src/database");
 const User = require("../models/user");
-
-const BASE_TITLE = "Celebrate Together";
-const REGISTER_NOK = "Nem megfelelő regisztrációs adatok";
-const LOGIN_NOK = "Nem megfelelő bejelentkezési adatok";
-const ERROR_MSG = "Probléma lépett fel a kérés teljesítése során";
+const CONFIG = require("../config");
 
 
 INDEX_ROUTE.get("/", async (req, res) => {
     return res.render("index", {
-        title: BASE_TITLE,
+        title: CONFIG.BASE_TITLE,
         messages: await req.consumeFlash('info'),
         user: req.session.user
     });
@@ -26,7 +22,7 @@ INDEX_ROUTE.get("/register", async (req, res) => {
     }
 
     return res.render("register", {
-        title: BASE_TITLE,
+        title: CONFIG.BASE_TITLE,
         messages: await req.consumeFlash('info'),
         user: req.session.user
     });
@@ -74,7 +70,7 @@ INDEX_ROUTE.post("/register", async (req, res) => {
 
     if (errors) {
         console.log("\nHiba a bemenetekkel!\n");
-        req.flash('info', REGISTER_NOK);
+        req.flash('info', CONFIG.REGISTER_NOK);
         return res.redirect("/");
     }
 
@@ -95,17 +91,17 @@ INDEX_ROUTE.post("/register", async (req, res) => {
     // 1. Keressük hogy az email foglalt-e?
     const isTheEmailReserved = (error, databaseResults) => {
         if (error) {
-            req.flash('info', ERROR_MSG);
+            req.flash('info', CONFIG.ERROR_MSG);
             return res.redirect("/");
         }
         if (databaseResults.length != 0) {
             console.log("\nVan már ilyen email-el felhasználó!\n");
-            req.flash('info', REGISTER_NOK);
+            req.flash('info', CONFIG.REGISTER_NOK);
             return res.redirect("/register");
         }
         return createAndSaveUser((error, result) => {
             if (error) {
-                req.flash('info', ERROR_MSG);
+                req.flash('info', CONFIG.ERROR_MSG);
                 return res.redirect("/");
             }
 
@@ -124,7 +120,7 @@ INDEX_ROUTE.get("/login", async (req, res) => {
     }
 
     res.render("login", {
-        title: BASE_TITLE,
+        title: CONFIG.BASE_TITLE,
         messages: await req.consumeFlash('info'),
         user: req.session.user
     });
@@ -146,14 +142,14 @@ INDEX_ROUTE.post("/login", (req, res) => {
     const password = req.body.password;
         
     if (errors) {
-        req.flash('info', LOGIN_NOK);
+        req.flash('info', CONFIG.LOGIN_NOK);
         return res.redirect("/login");
     }
 
     // 1. Adatok lekérése az adatbázisból
     const databaseResCallback = (error, databaseResults) => {
             if (error || !databaseResults || databaseResults.length == 0) {
-                req.flash('info', LOGIN_NOK);
+                req.flash('info', CONFIG.LOGIN_NOK);
                 return res.redirect("/login");
             }
 
@@ -161,11 +157,11 @@ INDEX_ROUTE.post("/login", (req, res) => {
             return bcrypt.compare(password, databaseResults[0].password, (error, isMatch) => {
                 if (error) {
                     console.error(error);
-                    req.flash('info', ERROR_MSG);
+                    req.flash('info', CONFIG.ERROR_MSG);
                     return res.redirect("/login");
                 }
                 if (!isMatch) {
-                    req.flash('info', LOGIN_NOK);
+                    req.flash('info', CONFIG.LOGIN_NOK);
                     return res.redirect("/login");
                 }
 
