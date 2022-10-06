@@ -17,11 +17,20 @@ block content
     br
     br
 
-    if results
+    if results && result_type=="event"
         h2 Eredmények:
         br
 
         for res in results
-            p
-               span= res.id
+            a(href=makeEventUrl(res))
+               span.mr-5= res.id
+               span= res.name
+
+    if results && result_type=="user"
+        h2 Eredmények:
+        br
+
+        for res in results
+            a(href=makeUserUrl(res))
+               span.mr-5= res.id
                span= res.name

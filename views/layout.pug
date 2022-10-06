@@ -33,9 +33,15 @@ html(lang='hu')
     body
         
         - var makeUserUrl = function(user) {
-        -   var name = user.name.replace(" ", "-");
-        -   name = name.toLowerCase();    
-        -   return `/user/${user.id}/${name}`;
+        -   //var name = user.name.replaceAll(/[^0-9a-zA-ZöüóőúáűéíÖÜÓŐÚŰÁÉÍ]*/gmi, " ");
+        -   //name = name.toLowerCase();    
+        -   return `/user/${user.id}/t`;
+        - }
+
+        - var makeEventUrl = function(event) {
+        -   //var name = event.name.replaceAll(/[^0-9a-zA-ZöüóőúáűéíÖÜÓŐÚŰÁÉÍ]*/gmi, " ");
+        -   //name = name.toLowerCase();    
+        -   return `/event/${event.id}/t`;
         - }
 
         if messages
