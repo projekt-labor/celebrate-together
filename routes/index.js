@@ -70,7 +70,7 @@ INDEX_ROUTE.post("/register", onlyNotLogined, async (req, res) => {
     const createAndSaveUser = (callback) => {
         return bcrypt.genSalt(10, (err, salt) => {
             return bcrypt.hash(password, salt, function(err, hash) {
-                const q = `INSERT INTO ${CONFIG.USER_TABLE_NAME} (nev, email, jelszo, szul_datum) VALUES (?, ?, ?, ?)`;
+                const q = `INSERT INTO ${CONFIG.USER_TABLE_NAME} (name, email, password, birth_day) VALUES (?, ?, ?, ?)`;
                 return DB.query(q, [name, email, hash, birthday], callback);
             });
         });

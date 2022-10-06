@@ -33,7 +33,7 @@ html(lang='hu')
     body
         
         - var makeUserUrl = function(user) {
-        -   var name = user.nev.replace(" ", "-");
+        -   var name = user.name.replace(" ", "-");
         -   name = name.toLowerCase();    
         -   return `/user/${user.id}/${name}`;
         - }

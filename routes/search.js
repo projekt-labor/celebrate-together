@@ -46,7 +46,7 @@ SEARCH_ROUTE.post("/search/event", onlyLogined, (req, res) => {
         });
     }
 
-    return DB.query("SELECT * FROM " + CONFIG.EVENT_TABLE_NAME + " WHERE e_nev LIKE ?", ["%"+q_event+"%"], callback);
+    return DB.query("SELECT * FROM " + CONFIG.EVENT_TABLE_NAME + " WHERE name LIKE ?", ["%"+q_event+"%"], callback);
 });
 
 SEARCH_ROUTE.post("/search/user", onlyLogined, (req, res) => {
@@ -78,7 +78,7 @@ SEARCH_ROUTE.post("/search/user", onlyLogined, (req, res) => {
         });
     }
 
-    return DB.query("SELECT * FROM " + CONFIG.USER_TABLE_NAME + " WHERE nev LIKE ?", ["%"+q_user+"%"], callback);
+    return DB.query("SELECT * FROM " + CONFIG.USER_TABLE_NAME + " WHERE name LIKE ?", ["%"+q_user+"%"], callback);
 });
 
 module.exports = SEARCH_ROUTE;

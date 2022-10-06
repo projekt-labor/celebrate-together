@@ -1,29 +1,29 @@
 
 class User {
 
-    constructor(nev="", email="", jelszo="", szul_datum="", telefon="", profilkep="", szul_hely="", lakhely="", id=0)
+    constructor(name="", email="", password="", birth_day="", phone="", profile="", birth_place="", residence="", id=0)
     {
         this.id = id;
-        this.nev = nev;
-        this.email = email;
-        this.jelszo = jelszo;
-        this.telefon = telefon;
-        this.profilkep = profilkep;
-        this.szul_datum = szul_datum;
-        this.szul_hely = szul_hely;
-        this.lakhely = lakhely;
+        this.name = name;
+        this.email =email;
+        this.password = password;
+        this.phone = phone;
+        this.profile = profile;
+        this.birth_day = birth_day;
+        this.birth_place = birth_place;
+        this.residence = residence;
     }
 
     fromDB(dbo) {
         this.id = dbo.id;
-        this.nev = dbo.nev;
+        this.name = dbo.name;
         this.email =dbo.email;
-        this.jelszo = dbo.jelszo;
-        this.telefon = dbo.telefon;
-        this.profilkep = dbo.profilkep;
-        this.szul_datum = dbo.szul_datum;
-        this.szul_hely = dbo.szul_hely;
-        this.lakhely = dbo.lakhely;
+        this.password = dbo.password;
+        this.phone = dbo.phone;
+        this.profile = dbo.profile;
+        this.birth_day = dbo.birth_day;
+        this.birth_place = dbo.birth_place;
+        this.residence = dbo.residence;
         return this;
     }
 
