@@ -1,17 +1,20 @@
+"use strict";
 const express = require('express');
 const session = require('express-session');
 const logger = require('morgan');
 const cors = require('cors');
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
-const { flash } = require('express-flash-message');
 const bcrypt = require('bcrypt');
 const expressValidator = require("express-validator");
+const cookieParser = require("cookie-parser");
+const { flash } = require('express-flash-message');
 
 // Global variables
 const APP = express();
 const PORT = process.env.PORT || 8080;
 const NODE_ENV = process.env.NODE_ENV || "development";
+let redirect_to = "";
 
 // HTTP or HTTPS?
 if (NODE_ENV === "development") {
@@ -33,6 +36,7 @@ if (NODE_ENV === "development") {
 // Middleware
 APP.set("view engine", "pug");
 APP.use(express.static('public'));
+APP.use(cookieParser());
 APP.use(cors());
 /*
 APP.use(session({
@@ -63,10 +67,25 @@ APP.use((req, res, next) => {
     next();
 });
 
+// Redirect from url
+// example: http://127.0.0.1:8080/?redirect_to=/settings
+// will redirect to /settings
+APP.use((req, res, next) => {
+    if (req.query.redirect_to) {
+        redirect_to = req.query.redirect_to;
+    }
+    next();
+});
+
 // Routes
 APP.use("/", require("./routes/index"));
 APP.use("/", require("./routes/search"));
 APP.use("/user", require("./routes/user"));
+
+APP.use((req, res, next) => {
+    redirect_to = null;
+    next();
+});
 
 logger.token('host', (req, res) => {
     return req.hostname;

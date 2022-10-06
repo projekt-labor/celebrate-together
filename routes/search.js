@@ -1,16 +1,14 @@
+"use strict";
 const bcrypt = require('bcrypt');
 const express = require('express');
 const SEARCH_ROUTE = express.Router();
 const DB = require("../src/database");
 const User = require("../models/user");
 const CONFIG = require("../config");
+const { onlyLogined, onlyNotLogined } = require("../src/utils");
 
 
-SEARCH_ROUTE.get("/search", (req, res) => {
-    if (!req.session.user) {
-        return res.redirect("/");
-    }
-    
+SEARCH_ROUTE.get("/search", onlyLogined, (req, res) => {    
     return res.render("search", {
         title: CONFIG.BASE_TITLE + " - Keresés",
         messages: req.consumeFlash('info'),
@@ -18,7 +16,7 @@ SEARCH_ROUTE.get("/search", (req, res) => {
     });
 });
 
-SEARCH_ROUTE.post("/search", (req, res) => {
+SEARCH_ROUTE.post("/search", onlyLogined, (req, res) => {
     if (!req.session.user) {
         return res.redirect("/");
     }

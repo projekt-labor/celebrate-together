@@ -1,9 +1,11 @@
+"use strict";
 const bcrypt = require('bcrypt');
 const express = require('express');
 const INDEX_ROUTE = express.Router();
 const DB = require("../src/database");
 const User = require("../models/user");
 const CONFIG = require("../config");
+const { onlyLogined, onlyNotLogined } = require("../src/utils");
 
 
 INDEX_ROUTE.get("/", async (req, res) => {
@@ -14,13 +16,7 @@ INDEX_ROUTE.get("/", async (req, res) => {
     });
 });
 
-INDEX_ROUTE.get("/register", async (req, res) => {
-    
-    // Átiránítás ha be van jelentkezve
-    if (req.session.user) {
-        return res.redirect("/");
-    }
-
+INDEX_ROUTE.get("/register", onlyNotLogined, async (req, res) => {
     return res.render("register", {
         title: CONFIG.BASE_TITLE,
         messages: await req.consumeFlash('info'),
@@ -28,30 +24,17 @@ INDEX_ROUTE.get("/register", async (req, res) => {
     });
 });
 
-INDEX_ROUTE.get("/logout", async (req, res) => {
-    // Átiránítás ha nincs bejelentkezve
-    if (!req.session.user) {
-        return res.redirect("/");
-    }
-
+INDEX_ROUTE.get("/logout", onlyLogined, async (req, res) => {
     req.session.user = null;
     return res.redirect("/");
 });
 
-INDEX_ROUTE.post("/logout", async (req, res) => {
-    if (!req.session.user) {
-        return res.redirect("/");
-    }
-
+INDEX_ROUTE.post("/logout", onlyLogined, async (req, res) => {
     req.session.user = null;
     return res.redirect("/");
 });
 
-INDEX_ROUTE.post("/register", async (req, res) => {
-    if (req.session.user) {
-        return res.redirect("/");
-    }
-    
+INDEX_ROUTE.post("/register", onlyNotLogined, async (req, res) => {    
     req.checkBody("name", "")
         .isLength({ min: 1 });
     req.checkBody("email", "")
@@ -121,11 +104,7 @@ INDEX_ROUTE.post("/register", async (req, res) => {
     return DB.query(`SELECT u.email FROM ${CONFIG.USERS_TABLE_NAME} u WHERE u.email=?`, [email], isTheEmailReserved);
 });
 
-INDEX_ROUTE.get("/login", async (req, res) => {
-    if (req.session.user) {
-        return res.redirect("/");
-    }
-
+INDEX_ROUTE.get("/login", onlyNotLogined, async (req, res) => {
     res.render("login", {
         title: CONFIG.BASE_TITLE,
         messages: await req.consumeFlash('info'),
@@ -133,11 +112,7 @@ INDEX_ROUTE.get("/login", async (req, res) => {
     });
 });
 
-INDEX_ROUTE.post("/login", (req, res) => {
-    if (req.session.user) {
-        return res.redirect("/");
-    }
-
+INDEX_ROUTE.post("/login", onlyNotLogined, (req, res) => {
     req.checkBody("email", "")
         .isEmail()
         .isLength({ min: 1 });

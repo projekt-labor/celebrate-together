@@ -19,6 +19,7 @@
   "homepage": "https://github.com/projekt-labor/celebrate-together#readme",
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "express": "^4.18.1",
     "express-flash-message": "^2.1.0",
