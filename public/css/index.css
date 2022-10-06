@@ -81,6 +81,10 @@ img {
     width: 10%;
 }
 
+.kecske{
+    background: linear-gradient(to right, red, orange, yellow, green, blue, purple);
+}
+
 @media screen and (max-width: 1300px) {
  
     /* Mobilon az adott elem nem fog látszódni */
