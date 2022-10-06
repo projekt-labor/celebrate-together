@@ -61,7 +61,7 @@ footer {
     bottom: 0;
     clear: both;
     margin-top: 42px;
-    position: fixed;
+    position: relative;
     width: 100%;
     text-align: center;
 }
@@ -79,6 +79,10 @@ footer {
 
 img {
     width: 10%;
+}
+
+.kecske{
+    background: linear-gradient(to right, red, orange, yellow, green, blue, purple);
 }
 
 @media screen and (max-width: 1300px) {
