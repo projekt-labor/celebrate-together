@@ -17,11 +17,25 @@ USER_ROUTE.get("/settings", onlyLogined, (req, res) => {
 });
 
 USER_ROUTE.get("/:id/:name", onlyLogined, (req, res) => {
-    return res.render("user", {
-        title: CONFIG.BASE_TITLE + " - Felhasználó",
-        messages: req.consumeFlash('info'),
-        user: req.session.user,
-        viewed_user: req.session.user
+    return DB.query(`SELECT * FROM ${CONFIG.USER_TABLE_NAME} u WHERE u.id=?`, [req.params.id], (errors, results) => {
+        if (errors) {
+            console.log(errors);
+            req.flash('info', CONFIG.ERROR_MSG);
+            return res.redirect("/");
+        }
+
+        if (results.length == 0) {
+            req.flash('info', CONFIG.USER_NOT_FOUND);
+            return res.redirect("/");
+        }
+
+        let user = new User().fromDB(results[0]);
+        return res.render("user", {
+            title: CONFIG.BASE_TITLE + " - " + user.name,
+            messages: req.consumeFlash('info'),
+            user: req.session.user,
+            view_user: user
+        });
     });
 });
 

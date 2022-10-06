@@ -42,7 +42,8 @@ SEARCH_ROUTE.post("/search/event", onlyLogined, (req, res) => {
             title: CONFIG.BASE_TITLE + " - Keresés",
             messages: req.consumeFlash('info'),
             user: req.session.user,
-            results: databaseResults
+            results: databaseResults,
+            result_type: "event"
         });
     }
 
@@ -74,7 +75,8 @@ SEARCH_ROUTE.post("/search/user", onlyLogined, (req, res) => {
             title: CONFIG.BASE_TITLE + " - Keresés",
             messages: req.consumeFlash('info'),
             user: req.session.user,
-            results: databaseResults
+            results: databaseResults,
+            result_type: "user"
         });
     }
 
