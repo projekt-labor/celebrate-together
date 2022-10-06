@@ -58,13 +58,26 @@ INDEX_ROUTE.post("/register", onlyNotLogined, async (req, res) => {
         console.log("\nHiba a bemenetekkel!\n");
         console.log(errors);
         req.flash('info', CONFIG.REGISTER_NOK);
-        return res.redirect("/");
+        return res.redirect("/register");
     }
 
     if (password != passwordAgain) {
         req.flash('info', "A megadott jelszavak nem egyeznek!");
         return res.redirect("/register");
     }
+
+    // 3. Felhasználó beléptetése
+    const getAndLogInUser = (error, result) => {
+        if (error) {
+            console.log(error);
+            req.flash('info', CONFIG.ERROR_MSG);
+            return res.redirect("/register");
+        }
+
+        // SIKERES REGISZTRÁCIÓ
+        req.session.user = new User().fromDB(result[0]);
+        return res.redirect("/");
+    };
 
     // 2. Felhasználó létrehozása
     const createAndSaveUser = (callback) => {
@@ -74,14 +87,14 @@ INDEX_ROUTE.post("/register", onlyNotLogined, async (req, res) => {
                 return DB.query(q, [name, email, hash, birthday], callback);
             });
         });
-    }
+    };
 
     // 1. Keressük hogy az email foglalt-e?
     const isTheEmailReserved = (error, databaseResults) => {
         if (error) {
             console.log(error);
             req.flash('info', CONFIG.ERROR_MSG);
-            return res.redirect("/");
+            return res.redirect("/register");
         }
         if (databaseResults.length != 0) {
             console.log("\nVan már ilyen email-el felhasználó!\n");
@@ -92,12 +105,9 @@ INDEX_ROUTE.post("/register", onlyNotLogined, async (req, res) => {
             if (error) {
                 console.log(error);
                 req.flash('info', CONFIG.ERROR_MSG);
-                return res.redirect("/");
+                return res.redirect("/register");
             }
-
-            // SIKERES REGISZTRÁCIÓ
-            req.session.user = new User().fromDB(databaseResults2[0]);
-            return res.redirect("/");
+            return DB.query(`SELECT * FROM ${CONFIG.USER_TABLE_NAME} u WHERE u.email=?`, [email], getAndLogInUser)
         });
     };
 
@@ -130,13 +140,15 @@ INDEX_ROUTE.post("/login", onlyNotLogined, (req, res) => {
 
     // 1. Adatok lekérése az adatbázisból
     const databaseResCallback = (error, databaseResults) => {
+            console.log(error, databaseResults);
+
             if (error || !databaseResults || databaseResults.length == 0) {
                 req.flash('info', CONFIG.LOGIN_NOK);
                 return res.redirect("/login");
             }
 
             // 2. Jelszó ellenőrzése
-            return bcrypt.compare(password, databaseResults[0].jelszo, (error, isMatch) => {
+            return bcrypt.compare(password, databaseResults[0].password, (error, isMatch) => {
                 if (error) {
                     console.error(error);
                     req.flash('info', CONFIG.ERROR_MSG);
