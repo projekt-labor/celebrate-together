@@ -61,7 +61,7 @@ footer {
     bottom: 0;
     clear: both;
     margin-top: 42px;
-    position: relative;
+    position: fixed;
     width: 100%;
     text-align: center;
 }
