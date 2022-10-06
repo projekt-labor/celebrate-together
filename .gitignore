@@ -1,5 +1,7 @@
 .DS_Store
 .vscode
+*.code-workspace
+celebrate-together.code-workspace
 
 # Logs
 logs
