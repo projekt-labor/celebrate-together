@@ -1,27 +1,57 @@
 const express = require('express');
 const session = require('express-session');
-const morgan = require('morgan');
+const logger = require('morgan');
 const cors = require('cors');
 const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
 const { flash } = require('express-flash-message');
 const bcrypt = require('bcrypt');
 const expressValidator = require("express-validator");
 
 // Global variables
 const APP = express();
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
+const NODE_ENV = process.env.NODE_ENV || "development";
+
+// HTTP or HTTPS?
+if (NODE_ENV === "development") {
+    APP.use(logger("dev"));
+} else {
+    APP.use(helmet());
+    APP.use(logger('tiny'));
+    APP.enable("trust proxy");  // Only if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
+    
+    // Against DDOS attacks
+    APP.use(
+        rateLimit({
+            windowMs: 1 * 60 * 1000,  // 1 minutes
+            max: 250  // limit each IP to 250 requests per windowMs
+        }
+    ));
+}
 
 // Middleware
 APP.set("view engine", "pug");
 APP.use(express.static('public'));
-APP.use(morgan('tiny'));
 APP.use(cors());
-//APP.use(helmet());
+/*
 APP.use(session({
 	secret: 'secret',
 	resave: true,
 	saveUninitialized: true
 }));
+*/
+APP.use(
+    session({
+      secret: "QPprI0iM0IORfg8E",
+      cookie: {
+        HttpOnly: true,
+        maxAge: 365 * 24 * 60 * 60 * 1000  // 365 days
+      },
+      saveUninitialized: false,
+      resave: false
+    })
+);
 APP.use(express.json());
 APP.use(express.urlencoded({ extended: true }));
 APP.use(flash({ sessionKeyName: 'flashMessage' }));
@@ -38,7 +68,7 @@ APP.use("/", require("./routes/index"));
 APP.use("/", require("./routes/search"));
 APP.use("/user", require("./routes/user"));
 
-morgan.token('host', function(req, res) {
+logger.token('host', (req, res) => {
     return req.hostname;
 });
 

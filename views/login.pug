@@ -1,5 +1,8 @@
 extend layout
 
+block styles
+    link(href='/css/form.css?v=1', rel='stylesheet', type='text/css')
+
 block content
 
     h1 Bejelentkezés
@@ -14,6 +17,3 @@ block content
             input(type="password", name="password", placeholder="Jelszó", required="ture", value="asdasd").form-control
             br
             input(type="submit", name="submit").btn.btn-primary
-
-        div(class ="lablec") 
-            a(href="/contact") névjegy

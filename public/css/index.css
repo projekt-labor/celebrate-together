@@ -12,7 +12,6 @@ body {
     height: 100%;
     width: 100%;
     overflow-x: hidden;
-    background-image: url('/images/martin.jpg');
 
     font-family: 'Roboto', Arial, Helvetica, sans-serif;
     background-repeat: no-repeat;
@@ -30,7 +29,7 @@ a, input, button, .btn-link, .btn, textarea {
 }
 
 a {
-    color: rgb(93, 139, 177);
+    color: rgb(82, 143, 193);
 }
 
 a,
@@ -50,6 +49,19 @@ a:after,
     transition: all 0.3s ease;
 }
 
+.lablec {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    color: white;
+    text-align: center;
+}
+
+img {
+    width: 10%;
+}
+
 @media screen and (max-width: 1300px) {
  
     /* Mobilon az adott elem nem fog látszódni */
@@ -59,14 +71,3 @@ a:after,
     }
 
 }
-.lablec{
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    color: white;
-    text-align: center;
-}
-img {
-    width: 10%;
-  }

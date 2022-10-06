@@ -1,0 +1,14 @@
+
+html,
+body {
+    margin: 20px;
+}
+
+@media screen and (max-width: 1300px) {
+ 
+    html,
+    body {
+        margin: 5px !important;
+    }
+
+}
