@@ -39,4 +39,27 @@ USER_ROUTE.get("/:id/:name", onlyLogined, (req, res) => {
     });
 });
 
+USER_ROUTE.get("/friends", onlyLogined, (req, res) => {
+    let dbQuery = `SELECT * FROM ${CONFIG.FRIEND_TABLE_NAME} WHERE (src_user_id=? OR dest_user_id=?) AND is_approved=1`;
+    return DB.query(dbQuery, [req.session.user.id, req.session.user.id], (errors, friends) => {
+        if (errors) {
+            console.log(errors);
+            req.flash('info', CONFIG.ERROR_MSG);
+            return res.redirect("/");
+        }
+
+        if (friends.length == 0) {
+            friends = false;
+        }
+
+        return res.render("friends", {
+            title: CONFIG.BASE_TITLE + " - " + "Barátok",
+            messages: req.consumeFlash('info'),
+            user: req.session.user,
+            friends: friends
+        });
+    });
+    
+});
+
 module.exports = USER_ROUTE;

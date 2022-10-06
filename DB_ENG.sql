@@ -7,6 +7,7 @@ CREATE TABLE `friend` (
   `id` int(11) NOT NULL,
   `src_user_id` int(11) NOT NULL,
   `dest_user_id` int(11) NOT NULL,
+  `is_approved` tinyint(1) NOT NULL,
   `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
