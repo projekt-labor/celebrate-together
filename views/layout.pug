@@ -32,16 +32,31 @@ html(lang='hu')
         block styles
     body
         
+        - var makeUserUrl = function(user) {
+        -   var name = user.nev.replace(" ", "-");
+        -   name = name.toLowerCase();    
+        -   return `/user/${user.id}/${name}`;
+        - }
+
         if messages
             for message in messages
                 .alert.alert-warning= message
 
         block content
         
-        footer 
-            div(class ="lablec")
-                a(href="/contact") Névjegy
-                p.text-muted Copyright &copy; 2022 Celebrate Together
+        footer
+            ul.footer-list
+                li
+                    a(href="/") Kezdőlap
+                li 
+                    p  - 
+                li
+                    a(href="/terms") Felhasználói szerződés
+                li 
+                    p  - 
+                li
+                    a(href="/contact") Névjegy
+            p.text-muted Copyright &copy; 2022 Celebrate Together
 
         script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')
         script(src='https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js')

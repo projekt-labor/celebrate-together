@@ -3,7 +3,29 @@ extends layout
 block content 
     h1 Search
 
-    form(action="/search", method="POST")
-        input(type="text", name="q_user", placeholder="Keresés emberekre").form-control
+    form(action="/search/event", method="POST")
         input(type="text", name="q_event", placeholder="Keresés esemenyekre").form-control
         input(type="submit", name="submit").btn.btn-primary
+
+    br
+    br
+
+    form(action="/search/user", method="POST")
+        input(type="text", name="q_user", placeholder="Keresés emberekre").form-control
+        input(type="submit", name="submit").btn.btn-primary
+
+    br
+    br
+
+    if results
+        h2 Eredmények:
+        br
+
+        for res in results
+            p
+               span= res.id
+               span= res.e_nev
+               span= res.nev
+               span= res.email
+               span= res.szoveg 
+               span= res.hely

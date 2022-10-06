@@ -38,6 +38,13 @@ a,
     outline: none !important;
 }
 
+a,
+.btn-link {
+    text-decoration: none !important;
+    outline: none !important;
+    transition: color 0.3s ease-out;
+}
+
 a:hover,
 a:active,
 a:after,
@@ -49,13 +56,25 @@ a:after,
     transition: all 0.3s ease;
 }
 
-.lablec {
-    position: fixed;
+footer {
     left: 0;
     bottom: 0;
+    clear: both;
+    margin-top: 42px;
+    position: relative;
     width: 100%;
-    color: white;
     text-align: center;
+}
+
+.footer-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.footer-list > li {
+    margin-left: 5px;
+    display: inline-block;
 }
 
 img {

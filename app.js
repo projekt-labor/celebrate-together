@@ -71,9 +71,11 @@ APP.use((req, res, next) => {
 // example: http://127.0.0.1:8080/?redirect_to=/settings
 // will redirect to /settings
 APP.use((req, res, next) => {
+    /*
     if (req.query.redirect_to) {
         redirect_to = req.query.redirect_to;
     }
+    */
     next();
 });
 

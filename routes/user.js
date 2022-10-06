@@ -9,10 +9,6 @@ const { onlyLogined, onlyNotLogined } = require("../src/utils");
 
 
 USER_ROUTE.get("/settings", onlyLogined, (req, res) => {
-    if (!req.session.user) {
-        return res.redirect("/");
-    }
-    
     return res.render("settings", {
         title: CONFIG.BASE_TITLE + " - Beállítások",
         messages: req.consumeFlash('info'),
@@ -20,11 +16,7 @@ USER_ROUTE.get("/settings", onlyLogined, (req, res) => {
     });
 });
 
-USER_ROUTE.get("/:id", onlyLogined, (req, res) => {
-    if (!req.session.user) {
-        return res.redirect("/");
-    }
-    
+USER_ROUTE.get("/:id/:name", onlyLogined, (req, res) => {
     return res.render("user", {
         title: CONFIG.BASE_TITLE + " - Felhasználó",
         messages: req.consumeFlash('info'),

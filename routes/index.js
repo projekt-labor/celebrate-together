@@ -70,7 +70,7 @@ INDEX_ROUTE.post("/register", onlyNotLogined, async (req, res) => {
     const createAndSaveUser = (callback) => {
         return bcrypt.genSalt(10, (err, salt) => {
             return bcrypt.hash(password, salt, function(err, hash) {
-                const q = `INSERT INTO ${CONFIG.USERS_TABLE_NAME} (nev, email, jelszo, szul_datum) VALUES (?, ?, ?, ?)`;
+                const q = `INSERT INTO ${CONFIG.USER_TABLE_NAME} (nev, email, jelszo, szul_datum) VALUES (?, ?, ?, ?)`;
                 return DB.query(q, [name, email, hash, birthday], callback);
             });
         });
@@ -101,7 +101,7 @@ INDEX_ROUTE.post("/register", onlyNotLogined, async (req, res) => {
         });
     };
 
-    return DB.query(`SELECT u.email FROM ${CONFIG.USERS_TABLE_NAME} u WHERE u.email=?`, [email], isTheEmailReserved);
+    return DB.query(`SELECT * FROM ${CONFIG.USER_TABLE_NAME} u WHERE u.email=?`, [email], isTheEmailReserved);
 });
 
 INDEX_ROUTE.get("/login", onlyNotLogined, async (req, res) => {
@@ -152,11 +152,28 @@ INDEX_ROUTE.post("/login", onlyNotLogined, (req, res) => {
                 req.session.user = new User().fromDB(dbu);
                 console.log("Login:");
                 console.log(req.session.user);
+                console.log(dbu);
                 return res.redirect("/");
             });
             
     };
-    return DB.query(`SELECT u.email, u.jelszo FROM ${CONFIG.USERS_TABLE_NAME} u WHERE u.email=?`, [email], databaseResCallback);
+    return DB.query(`SELECT * FROM ${CONFIG.USER_TABLE_NAME} u WHERE u.email=?`, [email], databaseResCallback);
+});
+
+INDEX_ROUTE.get("/terms", async (req, res) => {
+    return res.render("terms", {
+        title: CONFIG.BASE_TITLE,
+        messages: await req.consumeFlash('info'),
+        user: req.session.user
+    });
+});
+
+INDEX_ROUTE.get("/contact", async (req, res) => {
+    return res.render("contact", {
+        title: CONFIG.BASE_TITLE,
+        messages: await req.consumeFlash('info'),
+        user: req.session.user
+    });
 });
 
 module.exports = INDEX_ROUTE;

@@ -10,7 +10,7 @@ block content
 
         hr
         h2 Jelenlegi oldalak:
-        
+
         if !user
             br
             a(href="/login").mt-5.ml-5 Bejelentkezés
@@ -18,6 +18,8 @@ block content
             a(href="/register").mt-5.ml-5 Regisztráció
         
         if user
+            br
+            a(href=makeUserUrl(user)).mt-5.ml-5 Saját profilom
             br
             a(href="/user/settings").mt-5.ml-5 Fehlasználó beállítások
             br
