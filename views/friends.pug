@@ -1,4 +1,10 @@
 extends layout 
 
 block content 
-    h1 Friends
+    h1 Barátok
+
+    if friends 
+        for friend in friends 
+            a(href=makeUserUrl(friend))= friend.name
+    else 
+        p(style="font-style: italic;").text-muted Még nincs barátod!
