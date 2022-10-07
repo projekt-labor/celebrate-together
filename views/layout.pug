@@ -103,8 +103,8 @@ html(lang='hu')
 
                 if user
                     form.d-flex(role='search', method="POST", action="/search/user").me-4
-                        input.form-control.me-2(type='search' name="q_user" placeholder='Keresés' aria-label='Search')
-                        button.btn.btn-outline-success(type='submit')
+                        input(type='text' name="q_user" placeholder='Keresés' aria-label='Search').form-control.me-2
+                        button.btn.btn-outline-primary(type="submit", name="submit")
                             i.fas.fa-search
 
         if messages
