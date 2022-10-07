@@ -5,7 +5,7 @@ const USER_ROUTE = express.Router();
 const DB = require("../src/database");
 const User = require("../models/user");
 const CONFIG = require("../config");
-const { onlyLogined, onlyNotLogined } = require("../src/utils");
+const { onlyLogined, onlyNotLogined, isFriend } = require("../src/utils");
 
 
 USER_ROUTE.get("/settings", onlyLogined, (req, res) => {
@@ -17,7 +17,7 @@ USER_ROUTE.get("/settings", onlyLogined, (req, res) => {
 });
 
 USER_ROUTE.get("/:id/:name", onlyLogined, (req, res) => {
-    return DB.query(`SELECT * FROM ${CONFIG.USER_TABLE_NAME} u WHERE u.id=?`, [req.params.id], (errors, results) => {
+    return DB.query(`SELECT * FROM ${CONFIG.USER_TABLE_NAME} u WHERE u.id=?`, [req.params.id], async (errors, results) => {
         if (errors) {
             console.log(errors);
             req.flash('info', CONFIG.ERROR_MSG);
@@ -34,7 +34,23 @@ USER_ROUTE.get("/:id/:name", onlyLogined, (req, res) => {
             title: CONFIG.BASE_TITLE + " - " + user.name,
             messages: req.consumeFlash('info'),
             user: req.session.user,
-            view_user: user
+            view_user: user,
+            // ????
+            // ????
+            // ????
+            is_friend: DB.query("SELECT * FROM friend WHERE (src_user_id=? OR dest_user_id=?) OR (src_user_id=? OR dest_user_id=?)",
+                [req.session.user.id, user.id, user.id, req.session.user.id],
+                (error, result) => {
+                    if (error) return 'na';
+                    if (!result) return 'nr';
+                    try {
+                        return result[0].is_approved == 0 ? 'na' : 'a';
+                    }
+                    catch (e) {
+                        return 'na';
+                    }
+                }
+            )
         });
     });
 });

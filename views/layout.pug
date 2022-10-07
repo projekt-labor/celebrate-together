@@ -48,20 +48,62 @@ html(lang='hu')
             for message in messages
                 .alert.alert-warning= message
 
+        nav.navbar.navbar-expand-lg.bg-dark
+            .container-fluid
+                a.ms-4.navbar-brand(href='/', title='Celebrate Together', alt='Celebrate Together')
+                    img(title='Celebrate Together', alt='Celebrate Together', src='/images/logo.png')
+                    span.logo-text.ms-2 Celebrate Together
+
+                //button.navbar-toggler(type='button' data-bs-toggle='collapse' data-bs-target='#navbarSupportedContent' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation')
+                    span.navbar-toggler-icon
+                    
+            #navbarSupportedContent.collapse.navbar-collapse
+                ul.navbar-nav.me-auto.mb-2.mb-lg-0
+
+                    if user
+                        li.nav-item
+                            a.nav-link(href='/user/friends') Barátok
+
+                        li.nav-item.dropdown.me-2
+                            a.nav-link.dropdown-toggle(href='#' role='button' data-bs-toggle='dropdown' aria-expanded='false')
+                                | Menü
+
+                            ul.dropdown-menu
+                                li
+                                    a.dropdown-item(href='/user/' + user.id + "/u") Profil
+                                li
+                                    a.dropdown-item(href='/user/settings') Beállítások
+                                li
+                                    hr.dropdown-divider
+                                li
+                                    a.dropdown-item(href='/logout') Kijelentkezés
+                    else
+                        li.nav-item
+                            a.nav-link(href='/login') Bejelentkezés
+                        li.nav-item
+                            a.nav-link(href='/register') Regisztráció
+
+                if user
+                    form.d-flex(role='search', method="POST", action="/search/user").me-4
+                        input.form-control.me-2(type='search' name="q_user" placeholder='Keresés' aria-label='Search')
+                        button.btn.btn-outline-success(type='submit')
+                            i.fas.fa-search
+
+
         block content
         
-        footer
+        footer.bg-dark.ps-2.pe-2.pt-5.pb-2.text-white
             ul.footer-list
                 li
-                    a(href="/") Kezdőlap
+                    a(href="/").nav-link Kezdőlap
                 li 
                     p  - 
                 li
-                    a(href="/terms") Felhasználói szerződés
+                    a(href="/terms").nav-link Felhasználói szerződés
                 li 
                     p  - 
                 li
-                    a(href="/contact") Névjegy
+                    a(href="/contact").nav-link Névjegy
             p.text-muted Copyright &copy; 2022 Celebrate Together
 
         script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')

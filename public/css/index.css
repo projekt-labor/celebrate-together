@@ -3,6 +3,7 @@
 :root {
     --dark-color: #252627;
     --light-color: #FFF9FB;
+    --active-color: #ffc5d9;
     --link-color: rgb(109, 109, 199);
 }
 
@@ -20,8 +21,8 @@ body {
     background-size: cover;
     background-position: center;
     
-    color: var(--light-color);
-    background-color: var(--dark-color);
+    color: var(--dark-color);
+    background-color: var(--light-color);
 }
 
 a, input, button, .btn-link, .btn, textarea {
@@ -57,6 +58,23 @@ a:after,
     transition: all 0.3s ease;
 }
 
+a.nav-link {
+    color: var(--light-color) !important;
+}
+
+a.nav-link::before,
+a.nav-link::after,
+a.nav-link:active,
+a.nav-link:hover {
+    color: var(--active-color) !important;
+}
+
+.logo-text {
+    font-size: 25px;
+    font-weight: bold;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
 footer {
     left: 0;
     bottom: 0;
@@ -80,11 +98,6 @@ footer {
 
 img {
     width: 10%;
-}
-
-.kecske{
-    background: linear-gradient(to right, red, orange, yellow, green, blue, purple);
-    color: black;
 }
 
 @media screen and (max-width: 1300px) {

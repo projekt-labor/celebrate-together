@@ -6,5 +6,7 @@ contact         /kontakt ász - /contact
 event           /buliesemeny - /event
 terms           /aszf.fogadd_el - /terms
 chat            /message_legyszi_irj_nekem - /chat
-friends         /bar_atok - /friends
+friends         /bar_atok - /user/friends
 search          /kereses - /search
+search          /kereses - /search/event
+search          /kereses - /search/user

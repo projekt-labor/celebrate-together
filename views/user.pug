@@ -2,6 +2,19 @@ extends layout
 
 block content 
     h1 User
+    
+    if is_friend === 'nr'
+        br
+        a(href="/user/"+view_user.id+"/friend").btn.btn-success + Barátnak jelölés
+    if is_friend === 'na'
+        br
+        a(href="/user/"+view_user.id+"/unfriend").btn.btn-danger - Barátnak jelölés törlése
+    if is_friend === 'a'
+        br
+        a(href="/user/"+view_user.id+"/unfriend").btn.btn-outline-danger - Barát törlése
+    
+    p= is_friend
+
     br
     p= view_user.id
     br
