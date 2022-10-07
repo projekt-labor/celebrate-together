@@ -31,4 +31,8 @@ EVENT_ROUTE.get("/:id/:name", onlyLogined, (req, res) => {
     });
 });
 
+EVENT_ROUTE.get("/:id", onlyLogined, (req, res) => {    
+    return res.redirect("/event/" + req.params.id + "/s")
+});
+
 module.exports = EVENT_ROUTE;

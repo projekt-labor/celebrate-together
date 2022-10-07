@@ -8,6 +8,85 @@ const CONFIG = require("../config");
 const { onlyLogined, onlyNotLogined, isFriend } = require("../src/utils");
 
 
+USER_ROUTE.get("/:id/unfriend", onlyLogined, (req, res) => {
+    return DB.query("SELECT * FROM user WHERE id=?", [req.params.id], (error, result) => {
+        if (error || !result || result.length == 0) {
+            req.flash('info', CONFIG.ERROR_MSG);
+            return res.redirect("/user/" + req.params.id);
+        }
+
+        const aid = req.session.user.id;
+        const bid = result[0].id;
+
+        return DB.query("DELETE FROM friend WHERE (src_user_id=? OR dest_user_id=?) OR (src_user_id=? OR dest_user_id=?)",
+            [aid, bid, bid, aid], (error, _result) => {
+                if (error) {
+                    req.flash('info', CONFIG.ERROR_MSG);
+                    return res.redirect("/user/" + req.params.id);
+                }
+
+                return res.render("user", {
+                    title: CONFIG.BASE_TITLE,
+                    messages: req.consumeFlash('info'),
+                    user: req.session.user,
+                    view_user: result[0]
+                });
+            }
+        );
+    });
+});
+
+USER_ROUTE.get("/:id/friend", onlyLogined, (req, res) => {
+    return DB.query("SELECT * FROM user WHERE id=?", [req.params.id], (error, result) => {
+        if (error || !result || result.length == 0) {
+            console.log(error)
+            req.flash('info', CONFIG.ERROR_MSG);
+            return res.redirect("/user/" + req.params.id);
+        }
+
+        const aid = req.session.user.id;
+        const bid = result[0].id;
+        const user = result[0];
+
+        return DB.query("SELECT * FROM friend WHERE (src_user_id=? AND dest_user_id=?) OR (src_user_id=? AND dest_user_id=?)",
+                [req.session.user.id, user.id, user.id, req.session.user.id],
+                async (error, fr) => {
+                    if (error) {
+                        console.log(error)
+                        req.flash('info', CONFIG.ERROR_MSG);
+                        return res.redirect("/user/" + req.params.id);
+                    }
+                    console.log(fr);
+                    if (fr && fr.length != 0) {
+                        req.flash('info', "Már küldött barát felkérést!");
+                        return res.render("user", {
+                            title: CONFIG.BASE_TITLE,
+                            messages: await req.consumeFlash('info'),
+                            user: req.session.user,
+                            view_user: result[0]
+                        });
+                    }
+                    return await DB.query("INSERT INTO friend (src_user_id, dest_user_id, date, is_approved) VALUES (?, ?, ?, ?)",
+                        [aid, bid, new Date(), 0], async (error, _result) => {
+                            if (error) {
+                                console.log(error)
+                                req.flash('info', CONFIG.ERROR_MSG);
+                                return res.redirect("/user/" + req.params.id);
+                            }
+
+                            return await res.render("user", {
+                                title: CONFIG.BASE_TITLE,
+                                messages: req.consumeFlash('info'),
+                                user: req.session.user,
+                                view_user: result[0]
+                            });
+                        }
+                    );
+                }
+            )
+    });
+});
+
 USER_ROUTE.get("/settings", onlyLogined, (req, res) => {
     return res.render("settings", {
         title: CONFIG.BASE_TITLE + " - Beállítások",
@@ -87,8 +166,12 @@ USER_ROUTE.post("/settings", onlyLogined, (req, res) => {
     return DB.query(`SELECT * FROM ${CONFIG.USER_TABLE_NAME} u WHERE u.email=?`, [req.session.user.email], databaseResCallback);
 });
 
+USER_ROUTE.get("/:id", onlyLogined, (req, res) => {    
+    return res.redirect("/user/" + req.params.id + "/s")
+});
+
 USER_ROUTE.get("/:id/:name", onlyLogined, async (req, res) => {
-    return DB.query(`SELECT * FROM ${CONFIG.USER_TABLE_NAME} u WHERE u.id=?`, [req.params.id], async (errors, results) => {
+    return await DB.query(`SELECT * FROM ${CONFIG.USER_TABLE_NAME} u WHERE u.id=?`, [req.params.id], async (errors, results) => {
         if (errors) {
             console.log(errors);
             req.flash('info', CONFIG.ERROR_MSG);
@@ -103,23 +186,14 @@ USER_ROUTE.get("/:id/:name", onlyLogined, async (req, res) => {
         let user = new User().fromDB(results[0]);
         return res.render("user", {
             title: CONFIG.BASE_TITLE + " - " + user.name,
-            messages: await req.consumeFlash('info'),
+            messages: req.consumeFlash('info'),
             user: req.session.user,
             view_user: user,
-            // ????
-            // ????
-            // ????
-            is_friend: DB.query("SELECT * FROM friend WHERE (src_user_id=? OR dest_user_id=?) OR (src_user_id=? OR dest_user_id=?)",
+            is_friend: await DB.query("SELECT * FROM friend WHERE (src_user_id=? AND dest_user_id=?) OR (src_user_id=? AND dest_user_id=?)",
                 [req.session.user.id, user.id, user.id, req.session.user.id],
-                (error, result) => {
-                    if (error) return 'na';
-                    if (!result) return 'nr';
-                    try {
-                        return result[0].is_approved == 0 ? 'na' : 'a';
-                    }
-                    catch (e) {
-                        return 'na';
-                    }
+                async (error, fr) => {
+                    console.log(fr)
+                    return await (() => fr[0])();
                 }
             )
         });
