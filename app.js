@@ -8,6 +8,7 @@ const rateLimit = require("express-rate-limit");
 const bcrypt = require('bcrypt');
 const expressValidator = require("express-validator");
 const cookieParser = require("cookie-parser");
+const DB = require("./src/database");
 const { flash } = require('express-flash-message');
 
 // Global variables
@@ -19,6 +20,18 @@ let redirect_to = "";
 // HTTP or HTTPS?
 if (NODE_ENV === "development") {
     APP.use(logger("dev"));
+
+    // Autómaikus bejelentkezés Kecske Kecske2-vel
+    /*
+    APP.use(async (req, res, next) => {
+        await DB.query("SELECT * FROM user WHERE id=?", [7], (e, r) => {
+            if (e) return null;
+            req.session.user = r[0];
+        });
+        next();
+    });
+    */
+
 } else {
     APP.use(helmet());
     APP.use(logger('tiny'));

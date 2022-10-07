@@ -24,6 +24,10 @@ INDEX_ROUTE.get("/register", onlyNotLogined, async (req, res) => {
     });
 });
 
+INDEX_ROUTE.post("/settings", onlyLogined, (req, res) => {
+    return res.redirect("/user/settings");
+});
+
 INDEX_ROUTE.get("/logout", onlyLogined, async (req, res) => {
     req.session.user = null;
     return res.redirect("/");

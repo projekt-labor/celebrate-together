@@ -45,9 +45,14 @@ html(lang='hu')
         -   return `/event/${event.id}/t`;
         - }
 
-        if messages
-            for message in messages
-                .alert.alert-warning= message
+        - var getBirthDay = function(user) {
+        -   var date = new Date(user.birth_day);
+        -   var m = new String(date.getMonth() + 1);
+        -   var d = new String(date.getDate());
+        -   if (m.length == 1) m = "0"+m;
+        -   if (d.length == 1) d = "0"+d;
+        -   return new String(date.getFullYear()) + "-" + m + "-" + d;
+        - }
 
         nav.navbar.navbar-expand-lg.bg-dark
             .container-fluid
@@ -102,6 +107,9 @@ html(lang='hu')
                         button.btn.btn-outline-success(type='submit')
                             i.fas.fa-search
 
+        if messages
+            for message in messages
+                .alert.alert-warning= message
 
         block content
         

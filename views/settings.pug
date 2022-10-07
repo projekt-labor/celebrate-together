@@ -1,6 +1,28 @@
 extends layout 
 
 block content 
-    h1 Settings
+    h1.ms-3.mt-3.fw-bold Beállítások
 
-    p= user
+    div(class="container-fluid")
+        .row
+            form(action="/user/settings", method="POST", class="col-4")
+                label(for="name") Név:
+                input(type="text", name="name", placeholder="Név", required="ture", value=user.name).form-control
+                //label(for="email").mt-3 Email cím:
+                //input(type="email", name="email", placeholder="Email", required="ture", value=user.email).form-control
+                label(for="birth_day").mt-3 Születésnap 
+                input(type="date", name="birth_day", placeholder="Születésnap", required="ture", value=getBirthDay(user)).form-control
+                label(for="phone").mt-3 Telefonszám
+                input(type="phone", name="phone", placeholder="Telefonszám mint 06 00 000 0000", value=user.phone).form-control
+                label(for="birth_place").mt-3 Születési hely
+                input(type="text", name="birth_place", placeholder="Születési hely", value=user.birth_place).form-control
+                label(for="residence").mt-3 Lakhely
+                input(type="text", name="residence", placeholder="Lakhely", value=user.residence).form-control
+
+                hr
+                label(for="password") Jelszó a mentéshez:
+                input(type="password", name="password", placeholder="Az Ön jelszava", required="ture", value="").form-control
+                br
+                input(type="submit", name="submit" value="Módosítások mentése").btn.btn-success
+    
+    div(style="margin-bottom:500px;")
