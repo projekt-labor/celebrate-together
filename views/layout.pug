@@ -25,6 +25,7 @@ html(lang='hu')
         meta(property='og:description', content='Celebrate Together: Ünnepeljétek együtt a szülinapjaitokat! Határok nélküli ünneplés!')
         title= title
         link(rel='icon', href='/images/icon.ico?v=1')
+        link(rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous")
         link(href='https://fonts.googleapis.com/css?family=Roboto', rel='stylesheet')
         link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css', rel='stylesheet', type='text/css')
         link(href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css', rel='stylesheet', type='text/css')
@@ -50,7 +51,7 @@ html(lang='hu')
 
         nav.navbar.navbar-expand-lg.bg-dark
             .container-fluid
-                a.ms-4.navbar-brand(href='/', title='Celebrate Together', alt='Celebrate Together')
+                a.ms-4.navbar-brand.nav-link(href='/', title='Celebrate Together', alt='Celebrate Together')
                     img(title='Celebrate Together', alt='Celebrate Together', src='/images/logo.png')
                     span.logo-text.ms-2 Celebrate Together
 
@@ -62,26 +63,38 @@ html(lang='hu')
 
                     if user
                         li.nav-item
-                            a.nav-link(href='/user/friends') Barátok
+                            a.nav-link(href='/user/friends')
+                                | Barátok
 
                         li.nav-item.dropdown.me-2
                             a.nav-link.dropdown-toggle(href='#' role='button' data-bs-toggle='dropdown' aria-expanded='false')
+                                i.far.fa-compass.me-1
                                 | Menü
 
                             ul.dropdown-menu
                                 li
-                                    a.dropdown-item(href='/user/' + user.id + "/u") Profil
+                                    a.dropdown-item(href='/user/' + user.id + "/u")
+                                        i.fas.fa-user-circle.me-1
+                                        | Profil
                                 li
-                                    a.dropdown-item(href='/user/settings') Beállítások
+                                    a.dropdown-item(href='/user/settings')
+                                        i.fas.fa-cogs.me-1
+                                        | Beállítások
                                 li
                                     hr.dropdown-divider
                                 li
-                                    a.dropdown-item(href='/logout') Kijelentkezés
+                                    a.dropdown-item(href='/logout')
+                                        i.fas.fa-sign-out-alt.me-1
+                                        | Kijelentkezés
                     else
                         li.nav-item
-                            a.nav-link(href='/login') Bejelentkezés
-                        li.nav-item
-                            a.nav-link(href='/register') Regisztráció
+                            
+                            a.nav-link(href='/login')
+                                | Bejelentkezés
+                                
+                        li.nav-item.me-4
+                            a.nav-link(href='/register')
+                                | Regisztráció
 
                 if user
                     form.d-flex(role='search', method="POST", action="/search/user").me-4

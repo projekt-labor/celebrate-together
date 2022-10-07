@@ -4,17 +4,17 @@ block styles
     link(href='/css/form.css?v=1', rel='stylesheet', type='text/css')
 
 block content
+    h1.fw-bold.ms-3.mt-3 Bejelentkezés
 
-    h1 Bejelentkezés
-    div(class="container")
-
+    div(class="container-fluid")
         img(src="/images/logo.png" class="rounded" alt="lógó")
     
-        form(action="/login", method="POST", class="col-4")
-            label(for="email") Email cím:
-            input(type="email", name="email", placeholder="Email", required="ture", value="kecske2@gmail.com").form-control
-            label(for="password") Jelszó:
-            input(type="password", name="password", placeholder="Jelszó", required="ture", value="asdasd").form-control
-            br
-            input(type="submit", name="submit" value="bejelentkezés").text-uppercase.btn.btn-primary.btn-lg
+        .row
+            form(action="/login", method="POST", class="col-4")
+                label(for="email") Email cím:
+                input(type="email", name="email", placeholder="Email", required="ture", value="kecske2@gmail.com").form-control
+                label(for="password") Jelszó:
+                input(type="password", name="password", placeholder="Jelszó", required="ture", value="asdasd").form-control
+                br
+                input(type="submit", name="submit" value="Bejelentkezés").btn.btn-primary
             
