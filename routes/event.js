@@ -8,6 +8,21 @@ const CONFIG = require("../config");
 const { onlyLogined, onlyNotLogined } = require("../src/utils");
 
 
+EVENT_ROUTE.get("/create", onlyLogined, (req, res) => {    
+    return res.render("event_create", {
+        title: CONFIG.BASE_TITLE + " - Esemény meghirdetése",
+        messages: req.consumeFlash('info'),
+        user: req.session.user,
+    });
+});
+
+EVENT_ROUTE.post("/create", onlyLogined, (req, res) => {    
+    // TODO
+
+    req.flash('info', "Az eseményt sikeresen meghirdettük");
+    return res.redirect("/");
+});
+
 EVENT_ROUTE.get("/:id/:name", onlyLogined, (req, res) => {
     return DB.query(`SELECT * FROM ${CONFIG.EVENT_TABLE_NAME} e WHERE e.id=?`, [req.params.id], (errors, results) => {
         if (errors) {

@@ -1,0 +1,13 @@
+extends layout 
+
+block content 
+    h1.ms-3.mt-3.fw-bold Esemény meghirdetése
+
+    div(class="container-fluid")
+        .row
+            form(action="/event/create", method="POST", class="col-4")
+
+                br
+                input(type="submit", name="submit" value="Meghirdetés").btn.btn-success
+    
+    div(style="margin-bottom:500px;")
