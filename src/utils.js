@@ -45,3 +45,8 @@ exports.isFriend = (aid, bid) => {
         }
     );
 };
+
+exports.newLock = () => {
+    var unlock, lock = new Promise((res,rej)=>{ unlock=res; });
+    return [lock, unlock];
+}

@@ -5,10 +5,10 @@ const USER_ROUTE = express.Router();
 const DB = require("../src/database");
 const User = require("../models/user");
 const CONFIG = require("../config");
-const { onlyLogined, onlyNotLogined, isFriend } = require("../src/utils");
+const { onlyLogined, onlyNotLogined, isFriend, newLock } = require("../src/utils");
 
 
-USER_ROUTE.get("/:id/unfriend", onlyLogined, (req, res) => {
+USER_ROUTE.post("/:id/unfriend", onlyLogined, (req, res) => {
     return DB.query("SELECT * FROM user WHERE id=?", [req.params.id], (error, result) => {
         if (error || !result || result.length == 0) {
             req.flash('info', CONFIG.ERROR_MSG);
@@ -25,18 +25,21 @@ USER_ROUTE.get("/:id/unfriend", onlyLogined, (req, res) => {
                     return res.redirect("/user/" + req.params.id);
                 }
 
+                return res.redirect("/user/"+req.params.id+"/s");
+                /*
                 return res.render("user", {
                     title: CONFIG.BASE_TITLE,
                     messages: req.consumeFlash('info'),
                     user: req.session.user,
                     view_user: result[0]
                 });
+                */
             }
         );
     });
 });
 
-USER_ROUTE.get("/:id/friend", onlyLogined, (req, res) => {
+USER_ROUTE.post("/:id/friend", onlyLogined, (req, res) => {
     return DB.query("SELECT * FROM user WHERE id=?", [req.params.id], (error, result) => {
         if (error || !result || result.length == 0) {
             console.log(error)
@@ -46,6 +49,13 @@ USER_ROUTE.get("/:id/friend", onlyLogined, (req, res) => {
 
         const aid = req.session.user.id;
         const bid = result[0].id;
+
+        if (aid == bid) {
+            console.log(error)
+            req.flash('info', CONFIG.ERROR_MSG);
+            return res.redirect("/user/" + req.params.id);
+        }
+
         const user = result[0];
 
         return DB.query("SELECT * FROM friend WHERE (src_user_id=? AND dest_user_id=?) OR (src_user_id=? AND dest_user_id=?)",
@@ -58,13 +68,8 @@ USER_ROUTE.get("/:id/friend", onlyLogined, (req, res) => {
                     }
                     console.log(fr);
                     if (fr && fr.length != 0) {
-                        req.flash('info', "Már küldött barát felkérést!");
-                        return res.render("user", {
-                            title: CONFIG.BASE_TITLE,
-                            messages: await req.consumeFlash('info'),
-                            user: req.session.user,
-                            view_user: result[0]
-                        });
+                        await req.flash('info', "Már küldött barát felkérést!");
+                        return res.redirect("/user/"+req.params.id+"/s");
                     }
                     return await DB.query("INSERT INTO friend (src_user_id, dest_user_id, date, is_approved) VALUES (?, ?, ?, ?)",
                         [aid, bid, new Date(), 0], async (error, _result) => {
@@ -74,12 +79,15 @@ USER_ROUTE.get("/:id/friend", onlyLogined, (req, res) => {
                                 return res.redirect("/user/" + req.params.id);
                             }
 
+                            return res.redirect("/user/"+req.params.id+"/s");
+                            /*
                             return await res.render("user", {
                                 title: CONFIG.BASE_TITLE,
                                 messages: req.consumeFlash('info'),
                                 user: req.session.user,
                                 view_user: result[0]
                             });
+                            */
                         }
                     );
                 }
@@ -87,10 +95,10 @@ USER_ROUTE.get("/:id/friend", onlyLogined, (req, res) => {
     });
 });
 
-USER_ROUTE.get("/settings", onlyLogined, (req, res) => {
+USER_ROUTE.get("/settings", onlyLogined, async (req, res) => {
     return res.render("settings", {
         title: CONFIG.BASE_TITLE + " - Beállítások",
-        messages: req.consumeFlash('info'),
+        messages: await req.consumeFlash('info'),
         user: req.session.user
     });
 });
@@ -166,6 +174,28 @@ USER_ROUTE.post("/settings", onlyLogined, (req, res) => {
     return DB.query(`SELECT * FROM ${CONFIG.USER_TABLE_NAME} u WHERE u.email=?`, [req.session.user.email], databaseResCallback);
 });
 
+USER_ROUTE.get("/friends", onlyLogined, async (req, res) => {
+    return await DB.query("SELECT u.id, u.name FROM user u RIGHT JOIN friend f ON (f.src_user_id=u.id OR f.dest_user_id=u.id) WHERE u.id<>? AND f.is_approved=1",
+    [req.session.user.id], async (errors, results) => {
+        if (errors) {
+            console.log(errors);
+            req.flash('info', CONFIG.ERROR_MSG);
+            return res.redirect("/");
+        }
+
+        if (results.length == 0) {
+            results = false;
+        }
+
+        return res.render("friends", {
+            title: CONFIG.BASE_TITLE + " - Barátok",
+            messages: await req.consumeFlash('info'),
+            user: req.session.user,
+            friends: results
+        });
+    });
+});
+
 USER_ROUTE.get("/:id", onlyLogined, (req, res) => {    
     return res.redirect("/user/" + req.params.id + "/s")
 });
@@ -184,43 +214,28 @@ USER_ROUTE.get("/:id/:name", onlyLogined, async (req, res) => {
         }
 
         let user = new User().fromDB(results[0]);
-        return res.render("user", {
-            title: CONFIG.BASE_TITLE + " - " + user.name,
-            messages: req.consumeFlash('info'),
-            user: req.session.user,
-            view_user: user,
-            is_friend: await DB.query("SELECT * FROM friend WHERE (src_user_id=? AND dest_user_id=?) OR (src_user_id=? AND dest_user_id=?)",
-                [req.session.user.id, user.id, user.id, req.session.user.id],
-                async (error, fr) => {
-                    console.log(fr)
-                    return await (() => fr[0])();
+
+        return await DB.query("SELECT * FROM friend WHERE (src_user_id=? AND dest_user_id=?) OR (src_user_id=? AND dest_user_id=?)",
+            [req.session.user.id, user.id, user.id, req.session.user.id],
+            async (error, fr) => {
+                if (error) {
+                    console.log(errors);
+                    await req.flash('info', CONFIG.ERROR_MSG);
+                    return res.redirect("/");
                 }
-            )
-        });
+
+                console.log(fr);
+
+                return res.render("user", {
+                    title: CONFIG.BASE_TITLE + " - " + user.name,
+                    messages: await req.consumeFlash('info'),
+                    user: req.session.user,
+                    view_user: user,
+                    is_friend: (fr.length == 0) ? false : (fr[0].is_approved==1)
+                });
+            }
+        );
     });
-});
-
-USER_ROUTE.get("/friends", onlyLogined, async (req, res) => {
-    let dbQuery = `SELECT * FROM ${CONFIG.FRIEND_TABLE_NAME} WHERE (src_user_id=? OR dest_user_id=?) AND is_approved=1`;
-    return await DB.query(dbQuery, [req.session.user.id, req.session.user.id], async (errors, friends) => {
-        if (errors) {
-            console.log(errors);
-            req.flash('info', CONFIG.ERROR_MSG);
-            return res.redirect("/");
-        }
-
-        if (friends.length == 0) {
-            friends = false;
-        }
-
-        return res.render("friends", {
-            title: CONFIG.BASE_TITLE + " - " + "Barátok",
-            messages: await req.consumeFlash('info'),
-            user: req.session.user,
-            friends: friends
-        });
-    });
-    
 });
 
 module.exports = USER_ROUTE;
