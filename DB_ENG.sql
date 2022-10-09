@@ -70,13 +70,14 @@ DROP TABLE IF EXISTS `user_event_switch`;
 CREATE TABLE `user_event_switch` (
   `user_id` int(11) NOT NULL,
   `event_id` int(11) NOT NULL,
-  `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `is_editor` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
-INSERT INTO `user_event_switch` (`user_id`, `event_id`, `date`) VALUES
-(1, 2, '2022-10-05 17:04:46'),
-(3, 1, '2022-10-05 17:05:55'),
-(3, 3, '2022-10-05 17:05:55');
+INSERT INTO `user_event_switch` (`user_id`, `event_id`, `date`, `is_editor`) VALUES
+(1, 2, '2022-10-05 17:04:46', 1),
+(3, 1, '2022-10-05 17:05:55', 1),
+(3, 3, '2022-10-05 17:05:55', 1);
 
 
 ALTER TABLE `friend`
