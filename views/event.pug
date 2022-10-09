@@ -2,6 +2,10 @@ extends layout
 
 block content 
     h1= event.name
+    
+    if is_editor
+        a(href="/event/"+event.id+"/edit") Szerkesztés
+
     br
     p= event.text
     br

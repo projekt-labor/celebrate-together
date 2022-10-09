@@ -5,7 +5,10 @@ user            /user/:id/friend
 user            /user/:id/unfriend
 settings        /user/settings
 contact         /contact
-event           /event
+events           /event - A felhasználó által létrehozott események
+event           /event/:id
+event           /event/create
+event           /event/:id/edit
 terms           /terms
 chat            /chat
 friends         /user/friends

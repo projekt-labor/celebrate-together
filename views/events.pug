@@ -1,0 +1,10 @@
+extends layout 
+
+block content 
+    h1 Eseményeim
+
+    if events
+        for event in events
+            a(href=makeEventUrl(event))= event.name
+    else  
+        p(style="font-style: italic;").text-muted Még nincs saját eseményed!

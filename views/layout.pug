@@ -34,15 +34,15 @@ html(lang='hu')
     body
         
         - var makeUserUrl = function(user) {
-        -   //var name = user.name.replaceAll(/[^0-9a-zA-ZöüóőúáűéíÖÜÓŐÚŰÁÉÍ]*/gmi, " ");
-        -   //name = name.toLowerCase();    
-        -   return `/user/${user.id}/t`;
+        -   var name = event.name.replace(/[^0-9a-zA-ZöüóőúáűéíÖÜÓŐÚŰÁÉÍ]/gmi, "-");
+        -   name = name.toLowerCase();    
+        -   return `/user/${user.id}/${name}`;
         - }
 
         - var makeEventUrl = function(event) {
-        -   //var name = event.name.replaceAll(/[^0-9a-zA-ZöüóőúáűéíÖÜÓŐÚŰÁÉÍ]*/gmi, " ");
-        -   //name = name.toLowerCase();    
-        -   return `/event/${event.id}/t`;
+        -   var name = event.name.replace(/[^0-9a-zA-ZöüóőúáűéíÖÜÓŐÚŰÁÉÍ]/gmi, "-");
+        -   name = name.toLowerCase();    
+        -   return `/event/${event.id}/${name}`;
         - }
 
         - var getBirthDay = function(user) {
@@ -85,6 +85,9 @@ html(lang='hu')
                                     a.dropdown-item(href='/user/settings')
                                         i.fas.fa-cogs.me-1
                                         | Beállítások
+                                li
+                                    a.dropdown-item(href='/event')
+                                        | Eseményeim
                                 li
                                     a.dropdown-item(href='/event/create')
                                         | Esemény meghirdetése
