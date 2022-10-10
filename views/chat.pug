@@ -2,3 +2,9 @@ extends layout
 
 block content 
     h1 Chat
+
+    if friends
+        for friend in friends 
+            p= friend
+    else 
+        p(style="font-style: italic;").text-muted Még nincs barátod!

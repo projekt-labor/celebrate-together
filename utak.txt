@@ -5,7 +5,7 @@ user            /user/:id/friend
 user            /user/:id/unfriend
 settings        /user/settings
 contact         /contact
-events           /event - A felhasználó által létrehozott események
+my_events       /event - A felhasználó által létrehozott események
 event           /event/:id
 event           /event/create
 event           /event/:id/edit
@@ -15,3 +15,4 @@ friends         /user/friends
 search          /search
 search          /search/event
 search          /search/user
+birthdays       /birthdays - Az aktuális szülinaposok

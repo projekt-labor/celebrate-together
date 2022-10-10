@@ -34,7 +34,7 @@ html(lang='hu')
     body
         
         - var makeUserUrl = function(user) {
-        -   var name = event.name.replace(/[^0-9a-zA-ZöüóőúáűéíÖÜÓŐÚŰÁÉÍ]/gmi, "-");
+        -   var name = user.name.replace(/[^0-9a-zA-ZöüóőúáűéíÖÜÓŐÚŰÁÉÍ]/gmi, "-");
         -   name = name.toLowerCase();    
         -   return `/user/${user.id}/${name}`;
         - }
@@ -67,10 +67,6 @@ html(lang='hu')
                 ul.navbar-nav.me-auto.mb-2.mb-lg-0
 
                     if user
-                        li.nav-item
-                            a.nav-link(href='/user/friends')
-                                | Barátok
-
                         li.nav-item.dropdown.me-2
                             a.nav-link.dropdown-toggle(href='#' role='button' data-bs-toggle='dropdown' aria-expanded='false')
                                 i.far.fa-compass.me-1
@@ -97,6 +93,27 @@ html(lang='hu')
                                     a.dropdown-item(href='/logout')
                                         i.fas.fa-sign-out-alt.me-1
                                         | Kijelentkezés
+
+                        li.nav-item
+                            a.nav-link(href='/')
+                                | Kezdőlap
+                        
+                        li.nav-item
+                            a.nav-link(href='#')
+                                | Események
+
+                        li.nav-item
+                            a.nav-link(href='#')
+                                | Szülinapok
+
+                        li.nav-item
+                            a.nav-link(href='/user/friends')
+                                | Barátok
+
+                        li.nav-item
+                            a.nav-link(href='/search')
+                                i.fas.fa-search
+
                     else
                         li.nav-item
                             
@@ -107,7 +124,7 @@ html(lang='hu')
                             a.nav-link(href='/register')
                                 | Regisztráció
 
-                if user
+                //if user
                     form.d-flex(role='search', method="POST", action="/search/user").me-4
                         input(type='text' name="q_user" placeholder='Keresés' aria-label='Search').form-control.me-2
                         button.btn.btn-outline-primary(type="submit", name="submit")

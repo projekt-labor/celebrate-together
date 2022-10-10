@@ -5,10 +5,8 @@ Máté:
     - Logó, ikon, ilyesmi
   
 Norbi:
-    - Adatbázis tervezése továbbfejlesztése
-    - Adatbázis triggerek, egyebek
-    - Adatbázis exportálása 
-    - Adatbázis példa adatokkal való megtöltése
+    - Adatbázis trigger USER törlésére
+    - Adatbázis trigger USER nevének formázására
 
 Martin:
     - x

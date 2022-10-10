@@ -97,6 +97,7 @@ APP.use("/", require("./routes/index"));
 APP.use("/", require("./routes/search"));
 APP.use("/event", require("./routes/event"));
 APP.use("/user", require("./routes/user"));
+APP.use("/chat", require("./routes/chat"));
 
 APP.use((req, res, next) => {
     redirect_to = null;

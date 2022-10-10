@@ -17,5 +17,8 @@ block content
 
                 br
                 input(type="submit", name="submit" value="Módosítások mentése").btn.btn-success
+
+            form(action="/event/" + event.id + "/delete", method="POST", class="col-4")
+                input(type="submit", name="submit" value="Esemény törlése").btn.btn-outline-danger
     
     div(style="margin-bottom:500px;")

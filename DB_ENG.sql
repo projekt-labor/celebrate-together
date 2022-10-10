@@ -2,6 +2,15 @@
 START TRANSACTION;
 SET time_zone = "+00:00";
 
+DROP TABLE IF EXISTS `user_event_switch`;
+CREATE TABLE `user_event_switch` (
+  `user_id` int(11) NOT NULL,
+  `event_id` int(11) NOT NULL,
+  `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `is_editor` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
+
+
 DROP TABLE IF EXISTS `friend`;
 CREATE TABLE `friend` (
   `id` int(11) NOT NULL,
@@ -65,20 +74,10 @@ INSERT INTO `user` (`id`, `name`, `email`, `password`, `phone`, `profile`, `birt
 (3, 'Kasza Blanka', 'jelszó@gmail.com', '$2b$10$oXg1Sg56GG4uKLrpPBMilOK/fDad2N02uQiZP7H7zuDEHhFwApXta', '06301578984', NULL, '2004-03-10', 'Debrecen', 'Debrecen'),
 (4, 'Kér Ede', 'asdasd@gmail.com', '$2b$10$BU90mYAR1jV/8U/BzQKu8uSSxeWMl/MaC1afHzSBiMuRFapRHYbna', '06301478526', NULL, '2005-10-11', 'Zalaegerszeg', 'Körmend');
 
-
-DROP TABLE IF EXISTS `user_event_switch`;
-CREATE TABLE `user_event_switch` (
-  `user_id` int(11) NOT NULL,
-  `event_id` int(11) NOT NULL,
-  `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `is_editor` tinyint(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
-
 INSERT INTO `user_event_switch` (`user_id`, `event_id`, `date`, `is_editor`) VALUES
 (1, 2, '2022-10-05 17:04:46', 1),
 (3, 1, '2022-10-05 17:05:55', 1),
 (3, 3, '2022-10-05 17:05:55', 1);
-
 
 ALTER TABLE `friend`
   ADD PRIMARY KEY (`id`),
@@ -113,8 +112,8 @@ ALTER TABLE `user`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 ALTER TABLE `friend`
-  ADD CONSTRAINT `friend_fk_1` FOREIGN KEY (`src_user_id`) REFERENCES `user` (`id`),
-  ADD CONSTRAINT `friend_fk_2` FOREIGN KEY (`dest_user_id`) REFERENCES `user` (`id`);
+ ADD CONSTRAINT `friend_fk_1` FOREIGN KEY (`src_user_id`) REFERENCES `user` (`id`),
+ ADD CONSTRAINT `friend_fk_2` FOREIGN KEY (`dest_user_id`) REFERENCES `user` (`id`);
 
 ALTER TABLE `post`
   ADD CONSTRAINT `post_fk1` FOREIGN KEY (`src_user_id`) REFERENCES `user` (`id`),

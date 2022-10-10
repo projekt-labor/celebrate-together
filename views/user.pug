@@ -7,6 +7,7 @@ block content
         if is_friend
             form(action="/user/"+view_user.id+"/unfriend" method="POST")
                 input(type="submit" name="submit" value="- Barát törlés").btn.btn-outline-danger
+            a(href="/chat/"+view_user.id).btn.btn-primary Üzenetek megnyitása
         else 
             form(action="/user/"+view_user.id+"/friend" method="POST")
                 input(type="submit" name="submit" value="+ Barátnak jelölés").btn.btn-outline-success

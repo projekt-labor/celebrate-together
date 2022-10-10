@@ -65,6 +65,44 @@ EVENT_ROUTE.post("/:id/edit", onlyLogined, async (req, res) => {
     });
 });
 
+EVENT_ROUTE.post("/:id/delete", onlyLogined, async (req, res) => {    
+    return DB.query("SELECT * FROM event e LEFT JOIN user_event_switch ue ON(ue.event_id=e.id) WHERE ue.is_editor=1 AND ue.user_id=5",
+    [req.params.id],
+    (errors, result) => {
+        if (errors) {
+            console.log(errors);
+            req.flash('info', CONFIG.ERROR_MSG);
+            return res.redirect("/event/"+req.params.id+"/edit");
+        }
+
+        if (result.length == 0) {
+            req.flash('info', "Az esemény nem törölhető");
+            return res.redirect("/event/");    
+        }
+
+        return DB.query("DELETE FROM user_event_switch WHERE event_id=? AND user_id=?",
+        [req.params.id, req.session.user.id],
+        (errors, result) => {
+            if (errors) {
+                console.log(errors);
+                req.flash('info', CONFIG.ERROR_MSG);
+                return res.redirect("/event/"+req.params.id+"/edit");
+            }
+
+            return DB.query("DELETE FROM event WHERE id=?", [req.params.id], (errors, results) => {
+                if (errors) {
+                    console.log(errors);
+                    req.flash('info', CONFIG.ERROR_MSG);
+                    return res.redirect("/event/"+req.params.id+"/edit");
+                }
+
+                req.flash('info', "Az esemény sikeresen törölve");
+                return res.redirect("/event/");
+            })
+        });
+    });
+});
+
 EVENT_ROUTE.get("/", onlyLogined, async (req, res) => { 
     return await DB.query("SELECT * FROM event e LEFT JOIN user_event_switch ue ON(ue.event_id=e.id) WHERE ue.user_id=? AND ue.is_editor=1",
     [req.session.user.id],
@@ -75,7 +113,11 @@ EVENT_ROUTE.get("/", onlyLogined, async (req, res) => {
             return res.redirect("/");
         }
 
-        return res.render("events", {
+        if (results.length == 0) {
+            results = false;
+        }
+
+        return res.render("my_events", {
             title: CONFIG.BASE_TITLE + " - Eseményeim",
             messages: await req.consumeFlash('info'),
             user: req.session.user,

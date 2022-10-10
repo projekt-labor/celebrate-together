@@ -95,6 +95,25 @@ USER_ROUTE.post("/:id/friend", onlyLogined, (req, res) => {
     });
 });
 
+USER_ROUTE.post("/delete", onlyLogined, async (req, res) => {
+    /**
+     * TRIGGER NEEDED
+     */
+    return DB.query("DELETE FROM user WHERE id=?",
+    [req.session.user.id],
+    (errors, results) => {
+        if (errors) {
+            console.log(errors);
+            req.flash('info', CONFIG.ERROR_MSG);
+            return res.redirect("/user/settings");
+        }
+
+        req.session.user = null;
+        req.flash('info', "A profilodat sikeresen töröltük!");
+        return res.redirect("/login");
+    });
+});
+
 USER_ROUTE.get("/settings", onlyLogined, async (req, res) => {
     return res.render("settings", {
         title: CONFIG.BASE_TITLE + " - Beállítások",

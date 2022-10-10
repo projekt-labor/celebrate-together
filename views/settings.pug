@@ -24,5 +24,10 @@ block content
                 input(type="password", name="password", placeholder="Az Ön jelszava", required="ture", value="").form-control
                 br
                 input(type="submit", name="submit" value="Módosítások mentése").btn.btn-success
-    
+
+            form(action="/user/delete", method="POST", class="col-4")
+                br
+                input(type="submit", name="submit" value="Fiókom törlése").btn.btn-outline-danger
+
+
     div(style="margin-bottom:500px;")

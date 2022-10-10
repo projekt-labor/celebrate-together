@@ -22,15 +22,17 @@ block content
         br
 
         for res in results
-            a(href=makeEventUrl(res))
-               span.mr-5= res.id
-               span= res.name
+            if res
+                a(href=makeEventUrl(res))
+                   span.mr-5= res.id
+                   span= res.name
 
     if results && result_type=="user"
         h2 Eredmények:
         br
 
         for res in results
-            a(href=makeUserUrl(res))
-               span.mr-5= res.id
-               span= res.name
+            if res
+                a(href=makeUserUrl(res))
+                    span.mr-5= res.id
+                    span= res.name
