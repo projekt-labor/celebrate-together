@@ -107,6 +107,13 @@ img {
     width: 10%;
 }
 
+#notification-badge {
+    color: white;
+    background-color: red;
+    margin-left: 5px;
+    font-size: 8px;
+}
+
 @media screen and (max-width: 1300px) {
  
     /* Mobilon az adott elem nem fog látszódni */

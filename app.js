@@ -101,6 +101,10 @@ APP.use("/chat", require("./routes/chat"));
 
 APP.use((req, res, next) => {
     redirect_to = null;
+
+    // Add url to response
+    
+
     next();
 });
 

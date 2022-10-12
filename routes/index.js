@@ -8,6 +8,16 @@ const CONFIG = require("../config");
 const { onlyLogined, onlyNotLogined } = require("../src/utils");
 
 
+INDEX_ROUTE.get("/friend_request/positive", async (req, res) => {
+    // TODO
+    return res.redirect("/user/friends");
+});
+
+INDEX_ROUTE.get("/friend_request/negative", async (req, res) => {
+    // TODO
+    return res.redirect("/user/friends");
+});
+
 INDEX_ROUTE.get("/", async (req, res) => {
     return res.render("index", {
         title: CONFIG.BASE_TITLE,

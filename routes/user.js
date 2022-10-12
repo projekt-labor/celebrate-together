@@ -8,6 +8,26 @@ const CONFIG = require("../config");
 const { onlyLogined, onlyNotLogined, isFriend, newLock } = require("../src/utils");
 
 
+USER_ROUTE.get("/notif", onlyLogined, (req, res) => {
+    DB.query("SELECT * FROM user u RIGHT JOIN friend f ON(f.src_user_id=u.id) WHERE f.dest_user_id=?", 
+    [req.session.user.id],
+    (errors, result) => {
+        if (errors) {
+            return res.json({status:0});
+        }
+
+        return res.json({
+            status: 1,
+            notifications: result.map((r) => {
+                return {
+                    url: "/friend_request",
+                    text: `${r.name} barátnak jelölte Önt`
+                }
+            })
+        });
+    });
+});
+
 USER_ROUTE.post("/:id/unfriend", onlyLogined, (req, res) => {
     return DB.query("SELECT * FROM user WHERE id=?", [req.params.id], (error, result) => {
         if (error || !result || result.length == 0) {

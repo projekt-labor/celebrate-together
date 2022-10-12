@@ -94,6 +94,15 @@ html(lang='hu')
                                         i.fas.fa-sign-out-alt.me-1
                                         | Kijelentkezés
 
+                        li.nav-item.dropdown.me-2
+                            a.nav-link.dropdown-toggle(href='#' role='button' data-bs-toggle='dropdown' aria-expanded='false')
+                                i.far.fa-bell
+                                #notification-badge.badge.badge-light
+
+                            ul#notification-list.dropdown-menu
+                                //li
+                                    p.dropdown-item
+
                         li.nav-item
                             a.nav-link(href='/')
                                 | Kezdőlap
