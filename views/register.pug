@@ -1,12 +1,28 @@
 extend layout
 
 block content
-    h1 Register oldal
+    h1 Celebrate Together!
 
-    form(action="/register", method="POST")
-        input(type="text", name="name", placeholder="Teljes név", required="ture").form-control
-        input(type="email", name="email", placeholder="Email", required="ture").form-control
-        input(type="password", name="password", placeholder="Jelszó", required="ture").form-control
-        input(type="password", name="password_again", placeholder="Jelszó ismét", required="ture").form-control
-        input(type="date", name="birthday", placeholder="Születésnap", required="ture").form-control
-        input(type="submit", name="submit").btn.btn-primary
+    section.h-100.gradient-form.gradient-custom-1
+        .container.py-5.h-100
+            .row.d-flex.justify-content-center.align-items-center.h-100
+                .col-xl-10
+                    .card.rounded-3.text-black
+                        .row.g-0
+                            .col-lg-6
+                                .card-body.p-md-5.mx-md-4
+                                    .text-center
+                                        h4.mt-1 Még nem vagy tag? 
+                                        h2.mb-5
+                                            b Regisztrálj!
+                                    form(action="/register", method="POST").form-outline.mb-4.pt-1.mb-5.pb-1
+                                        input(type="text", name="name", placeholder="Teljes név", required="ture").form-control.mb-1
+                                        input(type="email", name="email", placeholder="Email", required="ture").form-control.mb-1
+                                        input(type="password", name="password", placeholder="Jelszó", required="ture").form-control.mb-1
+                                        input(type="password", name="password_again", placeholder="Jelszó ismét", required="ture").form-control.mb-1
+                                        input(type="date", name="birthday", placeholder="Születésnap", required="ture").form-control.mb-1
+                                        br
+                                        input(type="submit", name="submit" value="Regisztrálok").btn.btn-primary.gradient-custom-2
+                                        // <a class="text-muted" href="#!">Forgot password?</a>
+                            .col-lg-6.d-flex.align-items-center
+                                img.loginpic(src='images/kep.png')
