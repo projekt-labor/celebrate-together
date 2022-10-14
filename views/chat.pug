@@ -1,10 +1,32 @@
 extends layout 
 
-block content 
-    h1 Chat
+block styles
+    link(href='/css/chat.css?v=1', rel='stylesheet', type='text/css')
 
-    if friends
-        for friend in friends 
-            p= friend
-    else 
-        p(style="font-style: italic;").text-muted Még nincs barátod!
+block content 
+    h1 Chat - 
+        a(href=makeUserUrl(other_user))= other_user.name
+
+    h2 Üzenetek:
+    div
+        ul
+            for m in chat_messages
+                if m.src_user_id == user.id
+                    li.message.self-message
+                        p= m.message
+                        p.text-muted= m.date
+                else 
+                    li.message.other-message
+                        p= m.message
+                        p.text-white= m.date
+
+        // Példa:
+        //
+            li.message.other-message Üzenet a másiktól
+            li.message.self-message Üzenet tőlem
+            li.message.other-message Üzenet a másiktól
+            li.message.self-message Üzenet tőlem
+
+    form(action="/chat/"+other_user.id+"/send", method="POST")
+        input(type="text" name="message" placeholder="Írd ide az üzenetedet!", required="true").form-control
+        input(type="submit", name="submit", value="Üzenet küldése").btn.btn-primary.w-100.mt-2.btn-lg

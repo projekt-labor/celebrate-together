@@ -9,5 +9,6 @@ module.exports = {
     USER_NOT_FOUND: "Az felhasználó nem található",
     FRIEND_TABLE_NAME: "friend",
     USER_TABLE_NAME: "user",
-    EVENT_TABLE_NAME: "event"
+    EVENT_TABLE_NAME: "event",
+    WRTIE_SOMETHING_AS_MESSAGE: "Az üzenetnek tartalma kell hogy legyen!"
 }

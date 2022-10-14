@@ -165,4 +165,6 @@ html(lang='hu')
         script(defer='', src='https://use.fontawesome.com/releases/v5.0.8/js/all.js')
         script#cookieinfo(type='text/javascript', src='/lib/cookies.js?v=1')
         script(src="/js/index.js?v=1", type="text/javascript")
+        if user 
+            script(src="/js/notif.js?v=1", type="text/javascript")
         block scripts
