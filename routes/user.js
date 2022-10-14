@@ -9,7 +9,7 @@ const { onlyLogined, onlyNotLogined, isFriend, newLock } = require("../src/utils
 
 
 USER_ROUTE.get("/notif", onlyLogined, (req, res) => {
-    DB.query("SELECT * FROM user u RIGHT JOIN friend f ON(f.src_user_id=u.id) WHERE f.dest_user_id=?", 
+    DB.query("SELECT * FROM user u RIGHT JOIN friend f ON(f.src_user_id=u.id) WHERE f.dest_user_id=? AND f.is_approved=0", 
     [req.session.user.id],
     (errors, result) => {
         if (errors) {
@@ -20,7 +20,9 @@ USER_ROUTE.get("/notif", onlyLogined, (req, res) => {
             status: 1,
             notifications: result.map((r) => {
                 return {
-                    url: "/friend_request",
+                    id: r.id,
+                    url: "/user/"+r.src_user_id+"/s",
+                    rurl: "/friend_request",
                     text: `${r.name} barátnak jelölte Önt`
                 }
             })
@@ -214,8 +216,8 @@ USER_ROUTE.post("/settings", onlyLogined, (req, res) => {
 });
 
 USER_ROUTE.get("/friends", onlyLogined, async (req, res) => {
-    return await DB.query("SELECT u.id, u.name FROM user u RIGHT JOIN friend f ON (f.src_user_id=u.id OR f.dest_user_id=u.id) WHERE u.id<>? AND f.is_approved=1",
-    [req.session.user.id], async (errors, results) => {
+    return await DB.query("SELECT u.id, u.name FROM user u RIGHT JOIN friend f ON(f.src_user_id=u.id OR f.dest_user_id=u.id) WHERE u.id<>? AND f.is_approved=1 AND (f.src_user_id=? OR f.dest_user_id=?)",
+    [req.session.user.id, req.session.user.id, req.session.user.id], async (errors, results) => {
         if (errors) {
             console.log(errors);
             req.flash('info', CONFIG.ERROR_MSG);

@@ -14,12 +14,12 @@
             <br/>
             <div class="row"> 
                 <div class="col-sm">
-                    <a class="btn btn-sm btn-success" href="${n.url}/positive">
+                    <a class="btn btn-sm btn-success" href="${n.rurl}/${n.id}/positive">
                         Elfogadás
                     </a>
                 </div>
                 <div class="col-sm">
-                    <a class="btn btn-sm btn-danger" href="${n.url}/negative">
+                    <a class="btn btn-sm btn-danger" href="${n.rurl}/${n.id}/negative">
                         Elutasítás
                     </a>
                 </div>

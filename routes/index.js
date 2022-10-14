@@ -8,14 +8,20 @@ const CONFIG = require("../config");
 const { onlyLogined, onlyNotLogined } = require("../src/utils");
 
 
-INDEX_ROUTE.get("/friend_request/positive", async (req, res) => {
-    // TODO
-    return res.redirect("/user/friends");
+INDEX_ROUTE.get("/friend_request/:id/positive", async (req, res, next) => {
+    return DB.query("UPDATE friend SET is_approved=1 WHERE id=?",
+    [req.params.id],
+    (errors, result) => {
+        return res.redirect("/user/friends");
+    });
 });
 
-INDEX_ROUTE.get("/friend_request/negative", async (req, res) => {
-    // TODO
-    return res.redirect("/user/friends");
+INDEX_ROUTE.get("/friend_request/:id/negative", async (req, res, next) => {
+    return DB.query("DELETE FROM friend WHERE id=?",
+    [req.params.id],
+    (errors, result) => {
+        return res.redirect("/user/friends");
+    });
 });
 
 INDEX_ROUTE.get("/", async (req, res) => {
