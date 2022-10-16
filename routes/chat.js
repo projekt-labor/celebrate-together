@@ -8,6 +8,9 @@ const CONFIG = require("../config");
 const { onlyLogined, onlyNotLogined } = require("../src/utils");
 
 
+let LAST_CHAT_UPDATE = 0;
+
+
 CHAT_ROUTE.get("/:id", onlyLogined, (req, res) => {
 
     function getMsgs(errors, self_messages) {
@@ -87,6 +90,49 @@ CHAT_ROUTE.post("/:id/send", onlyLogined, (req, res) => {
         }
         return res.redirect("/chat/" + req.params.id);
     });
+});
+
+CHAT_ROUTE.post("/:id/:time/api", onlyLogined, (req, res) => {
+    
+    //console.log(req.params.id);
+    //console.log(req.params.time);
+
+    // If one of them is not number
+    if (isNaN(req.params.time) || isNaN(req.params.id)) {
+        return res.json({
+            status: 0,
+            reason: "NaN"
+        });
+    }
+
+    return DB.query("SELECT * FROM `post` p WHERE p.is_public=0 AND ((p.src_user_id=? AND p.dest_user_id=?) OR p.src_user_id=? AND p.dest_user_id=?) ORDER BY date",
+        [req.params.id, req.session.user.id, req.session.user.id, req.params.id],
+        (errors, results) => {
+            if (errors || results.length == 0) {
+                console.log(errors);
+                return res.json({
+                    status: 0,
+                    reason: errors
+                });
+            }
+            let lcu = LAST_CHAT_UPDATE;
+            LAST_CHAT_UPDATE = req.params.time;
+            return res.json({
+                status: 1,
+                /*
+                messages: results.filter((r) => {
+                    if (lcu !== 0) {
+                        return r.date.getTime() > lcu;
+                    }
+                    else {
+                        return false;
+                    }
+                })
+                */
+               messages: results
+            });
+        });
+    
 });
 
 module.exports = CHAT_ROUTE;

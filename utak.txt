@@ -17,3 +17,4 @@ search          /search/event
 search          /search/user
 birthdays       /birthdays - Az aktuális szülinaposok
 -               /user/notif
+-               /chat/:id/:time/api
