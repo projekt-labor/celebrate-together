@@ -26,6 +26,7 @@ block content
                 a(href=makeEventUrl(res))
                    span.mr-5= res.id
                    span= res.name
+                br
 
     if results && result_type=="user"
         h2 Eredmények:
@@ -36,3 +37,4 @@ block content
                 a(href=makeUserUrl(res))
                     span.mr-5= res.id
                     span= res.name
+                br

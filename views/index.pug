@@ -8,7 +8,13 @@ block content
                 span !
             br
 
-        a(href="/chat/4/") Chat teszt "Kér Ede"-vel
+            h3 Publikus posztok:
+
+            ul#posts-list
+                for post in posts 
+                    li 
+                        p= post.name
+                        p= post.message
 
         //if !user
             br

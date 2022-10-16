@@ -6,6 +6,7 @@ block content
     if friends 
         for friend in friends 
             a(href=makeUserUrl(friend))= friend.name
+            br
 
     else 
         p(style="font-style: italic;").text-muted Még nincs barátod!
