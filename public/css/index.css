@@ -86,7 +86,8 @@ footer {
     left: 0;
     bottom: 0;
     clear: both;
-    margin-top: 42px;
+    position: relative;
+    margin-top: 500px;
     width: 100%;
     text-align: center;
 }
@@ -165,4 +166,11 @@ img {
         border-top-right-radius: .3rem;
         border-bottom-right-radius: .3rem;
     }
+}
+.piros{
+    background-color: #FF0000;
+    ;
+}
+.zold{
+    background-color: #0BC000;
 }
