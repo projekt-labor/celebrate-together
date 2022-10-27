@@ -31,7 +31,7 @@ html(lang='hu')
         link(href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css', rel='stylesheet', type='text/css')
         link(href='/css/index.css?v=1', rel='stylesheet', type='text/css')
         block styles
-    body
+    body.gradient-form.gradient-custom-1
         
         - var makeUserUrl = function(user) {
         -   var name = user.name.replace(/[^0-9a-zA-ZöüóőúáűéíÖÜÓŐÚŰÁÉÍ]/gmi, "-");
@@ -156,7 +156,7 @@ html(lang='hu')
                 li 
                     p  - 
                 li
-                    a(href="/contact").nav-link Névjegy
+                    a(href="/contact").nav-link Rólunk
             p.text-muted Copyright &copy; 2022 Celebrate Together
 
         script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')

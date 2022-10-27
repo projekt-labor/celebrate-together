@@ -126,6 +126,9 @@ img {
 .loginpic{
     width: 100%;
 }
+.rolunkkep{
+    width: 100%;
+}
 .gradient-custom-2 {
     /* fallback for old browsers */
     background: #fccb90;
@@ -135,6 +138,12 @@ img {
     
     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     background: linear-gradient(to right, blue, purple,red);
+}
+.felkover{
+    font-weight: bold;
+}
+.feher{
+    color: white;
 }
 .gradient-custom-1 {
     /* fallback for old browsers */
