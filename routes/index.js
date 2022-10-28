@@ -245,15 +245,32 @@ INDEX_ROUTE.get("/contact", async (req, res) => {
     });
 });
 
-INDEX_ROUTE.post("/events", onlyLogined, async (req, res) => {
-    return res.render("events", {
-        title: CONFIG.BASE_TITLE,
-        messages: await req.consumeFlash('info'),
-        user: req.session.user
+INDEX_ROUTE.get("/events", onlyLogined, async (req, res) => {
+    return await DB.query(`
+    SELECT DISTINCT e.id event_id, e.name event_name, e.text event_text, e.place event_place,
+    (SELECT ue1.date FROM event e1 LEFT JOIN user_event_switch ue1 ON(ue1.event_id=e1.id) WHERE e.id=e1.id AND ue1.is_editor=1) event_date
+    FROM (event e LEFT JOIN user_event_switch ue ON(ue.event_id=e.id))
+    LEFT JOIN friend f ON(f.src_user_id=ue.user_id OR f.dest_user_id=ue.user_id)
+    WHERE f.is_approved=1 AND (f.src_user_id=? OR f.dest_user_id=?);
+    `,
+    [req.session.user.id, req.session.user.id],
+    async (error, result) => {
+        if (error) {
+            console.error(error);
+            req.flash('info', CONFIG.ERROR_MSG);
+            return res.redirect("/");
+        }
+
+        return res.render("events", {
+            title: CONFIG.BASE_TITLE,
+            messages: await req.consumeFlash('info'),
+            user: req.session.user,
+            events: result
+        });
     });
 });
 
-INDEX_ROUTE.post("/birthdays", onlyLogined, async (req, res) => {
+INDEX_ROUTE.get("/birthdays", onlyLogined, async (req, res) => {
     return res.render("birthdays", {
         title: CONFIG.BASE_TITLE,
         messages: await req.consumeFlash('info'),

@@ -2,3 +2,8 @@ extends layout
 
 block content 
     h1 Események
+
+    for e in events
+        a(href="/event/" + e.event_id)= e.event_name
+        p.fw-bold= e.event_date
+        br

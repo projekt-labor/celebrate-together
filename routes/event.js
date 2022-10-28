@@ -186,7 +186,18 @@ EVENT_ROUTE.post("/create", onlyLogined, async (req, res) => {
 });
 
 EVENT_ROUTE.get("/:id/:name", onlyLogined, async (req, res) => {
-    return await DB.query(`SELECT * FROM event e LEFT JOIN user_event_switch ue ON(e.id=ue.event_id) WHERE e.id=?`, [req.params.id], async (errors, results) => {
+    return await DB.query(`
+    SELECT *,
+    (SELECT ue1.is_editor
+    FROM event e1
+    LEFT JOIN user_event_switch ue1 ON(e1.id=ue1.event_id)
+    WHERE e1.id=? AND ue1.user_id=?) is_user_editor
+    FROM event e
+    LEFT JOIN user_event_switch ue ON(e.id=ue.event_id)
+    WHERE e.id=3
+    `,
+    [req.params.id, req.session.user.id, req.params.id],
+    async (errors, results) => {
         if (errors) {
             console.log(errors);
             req.flash('info', CONFIG.ERROR_MSG);
@@ -198,13 +209,13 @@ EVENT_ROUTE.get("/:id/:name", onlyLogined, async (req, res) => {
             return res.redirect("/");
         }
 
-        let e = new Event().fromDB(results[0]);
+        console.log(results[0]);
+
         return res.render("event", {
-            title: CONFIG.BASE_TITLE + " - " + e.name,
+            title: CONFIG.BASE_TITLE + " - " + results[0].name,
             messages: await req.consumeFlash('info'),
             user: req.session.user,
-            event: e,
-            is_editor: results[0].is_editor==1
+            event: results[0]
         });
     });
 });
