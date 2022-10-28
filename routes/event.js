@@ -194,7 +194,7 @@ EVENT_ROUTE.get("/:id/:name", onlyLogined, async (req, res) => {
     WHERE e1.id=? AND ue1.user_id=?) is_user_editor
     FROM event e
     LEFT JOIN user_event_switch ue ON(e.id=ue.event_id)
-    WHERE e.id=3
+    WHERE e.id=?
     `,
     [req.params.id, req.session.user.id, req.params.id],
     async (errors, results) => {

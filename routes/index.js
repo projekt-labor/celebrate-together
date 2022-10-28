@@ -8,6 +8,12 @@ const CONFIG = require("../config");
 const { onlyLogined, onlyNotLogined } = require("../src/utils");
 
 
+Date.prototype.addDays = function(days) {
+    let date = new Date(this.valueOf());
+    date.setDate(date.getDate() + days);
+    return date;
+}
+
 INDEX_ROUTE.get("/friend_request/:id/positive", async (req, res, next) => {
     return DB.query("UPDATE friend SET is_approved=1 WHERE id=?",
     [req.params.id],
@@ -271,10 +277,54 @@ INDEX_ROUTE.get("/events", onlyLogined, async (req, res) => {
 });
 
 INDEX_ROUTE.get("/birthdays", onlyLogined, async (req, res) => {
-    return res.render("birthdays", {
-        title: CONFIG.BASE_TITLE,
-        messages: await req.consumeFlash('info'),
-        user: req.session.user
+    let dates = [
+        new Date().addDays(-4),
+        new Date().addDays(-3),
+        new Date().addDays(-2),
+        new Date().addDays(-1),
+        new Date(),
+        new Date().addDays(1),
+        new Date().addDays(2),
+        new Date().addDays(3),
+        new Date().addDays(4),
+    ];
+
+    return await DB.query(`
+    SELECT * FROM user u WHERE
+       (MONTH(u.birth_day)=? AND DAY(u.birth_day)=?) 
+    OR (MONTH(u.birth_day)=? AND DAY(u.birth_day)=?)
+    OR (MONTH(u.birth_day)=? AND DAY(u.birth_day)=?) 
+    OR (MONTH(u.birth_day)=? AND DAY(u.birth_day)=?) 
+    OR (MONTH(u.birth_day)=? AND DAY(u.birth_day)=?)
+    OR (MONTH(u.birth_day)=? AND DAY(u.birth_day)=?)
+    OR (MONTH(u.birth_day)=? AND DAY(u.birth_day)=?)
+    OR (MONTH(u.birth_day)=? AND DAY(u.birth_day)=?)
+    OR (MONTH(u.birth_day)=? AND DAY(u.birth_day)=?) 
+        `,
+    [
+        dates[0].getMonth()+1, dates[0].getDate(),
+        dates[1].getMonth()+1, dates[1].getDate(),
+        dates[2].getMonth()+1, dates[2].getDate(),
+        dates[3].getMonth()+1, dates[3].getDate(),
+        dates[4].getMonth()+1, dates[4].getDate(),
+        dates[5].getMonth()+1, dates[5].getDate(),
+        dates[6].getMonth()+1, dates[6].getDate(),
+        dates[7].getMonth()+1, dates[7].getDate(),
+        dates[8].getMonth()+1, dates[8].getDate(),
+    ],
+    async (error, result) => {
+        if (error) {
+            console.error(error);
+            req.flash('info', CONFIG.ERROR_MSG);
+            return res.redirect("/");
+        }
+
+        return res.render("birthdays", {
+            title: CONFIG.BASE_TITLE,
+            messages: await req.consumeFlash('info'),
+            user: req.session.user,
+            birthdays: result
+        });
     });
 });
 

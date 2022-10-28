@@ -2,3 +2,8 @@ extends layout
 
 block content 
     h1 Szülinapok
+
+    for b in birthdays 
+        a(href=makeUserUrl(b))= b.name
+        p= b.birth_day
+        br
