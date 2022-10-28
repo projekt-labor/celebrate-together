@@ -16,7 +16,9 @@ x friends         /user/friends
 x search          /search
 x search          /search/event
 x search          /search/user
-birthdays       /birthdays - Az aktuális szülinaposok
-events          /events - Események a baráti körben
--               /user/notif
--               /chat/:id/:time/api
+x birthdays       /birthdays - Az aktuális szülinaposok
+x events          /events - Események a baráti körben
+x -               /user/notif
+x -               /chat/:id/:time/api
+-                 /event/:id/attend
+-                 /event/:id/unattend

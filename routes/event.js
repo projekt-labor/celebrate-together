@@ -185,18 +185,52 @@ EVENT_ROUTE.post("/create", onlyLogined, async (req, res) => {
     });
 });
 
+EVENT_ROUTE.get("/:id/attend", onlyLogined, async (req, res) => {
+    return await DB.query("INSERT INTO user_event_switch (user_id, event_id, date, is_editor) VALUES (?, ?, ?, ?)",
+    [req.session.user.id, req.params.id, new Date(), 0],
+    async (errors, result) => {
+        if (errors) {
+            console.log(errors);
+            req.flash('info', CONFIG.ERROR_MSG);
+            return res.redirect("/event/" + req.params.id + "/s");
+        }
+        
+        await req.flash('info', "Az eseményen való részvételi jelzést sikeresen mentettük!");
+        return res.redirect("/event/" + req.params.id + "/s");
+    });
+});
+
+EVENT_ROUTE.get("/:id/unattend", onlyLogined, async (req, res) => {
+    return await DB.query("DELETE FROM user_event_switch WHERE user_id=? AND event_id=?",
+    [req.session.user.id, req.params.id],
+    async (errors, result) => {
+        if (errors) {
+            console.log(errors);
+            req.flash('info', CONFIG.ERROR_MSG);
+            return res.redirect("/event/" + req.params.id + "/s");
+        }
+        
+        await req.flash('info', "Az eseményen való részvételi jelzést sikeresen töröltük!");
+        return res.redirect("/event/" + req.params.id + "/s");
+    });
+});
+
 EVENT_ROUTE.get("/:id/:name", onlyLogined, async (req, res) => {
     return await DB.query(`
     SELECT *,
     (SELECT ue1.is_editor
     FROM event e1
     LEFT JOIN user_event_switch ue1 ON(e1.id=ue1.event_id)
-    WHERE e1.id=? AND ue1.user_id=?) is_user_editor
+    WHERE e1.id=? AND ue1.user_id=?) is_user_editor,
+    (SELECT COUNT(*)
+     FROM event e1
+     LEFT JOIN user_event_switch ue1 ON(e1.id=ue1.event_id)
+     WHERE e1.id=? AND ue1.user_id=?) is_user_attending
     FROM event e
     LEFT JOIN user_event_switch ue ON(e.id=ue.event_id)
     WHERE e.id=?
     `,
-    [req.params.id, req.session.user.id, req.params.id],
+    [req.params.id, req.session.user.id, req.params.id, req.session.user.id, req.params.id],
     async (errors, results) => {
         if (errors) {
             console.log(errors);
