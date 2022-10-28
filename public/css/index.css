@@ -85,10 +85,8 @@ i.far {
 footer {
     left: 0;
     bottom: 0;
-    clear: both;
+    margin-top: 100px;
     position: relative;
-    margin-top: 400px;
-    width: 100%;
     text-align: center;
 }
 
@@ -139,12 +137,17 @@ img {
     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     background: linear-gradient(to right, blue, purple,red);
 }
+
+/** helyette van a: .fw-bold beépítve */
 .felkover{
     font-weight: bold;
 }
+
+/** helyette van a: .text-white beépítve */
 .feher{
     color: white;
 }
+
 .gradient-custom-1 {
     /* fallback for old browsers */
     background: #fccb90;
