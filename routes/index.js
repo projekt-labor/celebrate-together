@@ -27,11 +27,7 @@ INDEX_ROUTE.get("/friend_request/:id/negative", async (req, res, next) => {
 INDEX_ROUTE.get("/", async (req, res) => {
 
     if (!req.session.user) {
-        return res.render("index", {
-            title: CONFIG.BASE_TITLE,
-            messages: await req.consumeFlash('info'),
-            user: req.session.user
-        });
+        return res.redirect("/login");
     }
 
     return await DB.query(
@@ -243,6 +239,22 @@ INDEX_ROUTE.get("/terms", async (req, res) => {
 
 INDEX_ROUTE.get("/contact", async (req, res) => {
     return res.render("contact", {
+        title: CONFIG.BASE_TITLE,
+        messages: await req.consumeFlash('info'),
+        user: req.session.user
+    });
+});
+
+INDEX_ROUTE.post("/events", onlyLogined, async (req, res) => {
+    return res.render("events", {
+        title: CONFIG.BASE_TITLE,
+        messages: await req.consumeFlash('info'),
+        user: req.session.user
+    });
+});
+
+INDEX_ROUTE.post("/birthdays", onlyLogined, async (req, res) => {
+    return res.render("birthdays", {
         title: CONFIG.BASE_TITLE,
         messages: await req.consumeFlash('info'),
         user: req.session.user

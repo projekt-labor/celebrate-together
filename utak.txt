@@ -1,20 +1,22 @@
 pug fájl neve | útvonal
-login           /login
-user            /user/:id
-user            /user/:id/friend
-user            /user/:id/unfriend
-settings        /user/settings
-contact         /contact
-my_events       /event - A felhasználó által létrehozott események
-event           /event/:id
-event           /event/create
-event           /event/:id/edit
-terms           /terms
-chat            /chat
-friends         /user/friends
-search          /search
-search          /search/event
-search          /search/user
+x login           /login
+x register        /register
+x user            /user/:id
+x user            /user/:id/friend
+x user            /user/:id/unfriend
+x settings        /user/settings
+x contact         /contact
+x my_events       /event - A felhasználó által létrehozott események
+x event           /event/:id
+x event           /event/create
+x event           /event/:id/edit
+x terms           /terms
+x chat            /chat
+x friends         /user/friends
+x search          /search
+x search          /search/event
+x search          /search/user
 birthdays       /birthdays - Az aktuális szülinaposok
+events          /events - Események a baráti körben
 -               /user/notif
 -               /chat/:id/:time/api
