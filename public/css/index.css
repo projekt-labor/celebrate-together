@@ -120,6 +120,10 @@ img {
         visibility: none !important;
     }
 
+    .logo-text {
+        font-size: 15px !important;
+    }
+
 }
 .loginpic{
     width: 100%;
