@@ -3,6 +3,7 @@
 :root {
     --dark-color: #252627;
     --light-color: #FFF9FB;
+    --light-mid-color: #e6e1e2;
     --active-color: #ffc5d9;
     --link-color: rgb(109, 109, 199);
 }
@@ -162,7 +163,14 @@ img {
     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     background: linear-gradient(to right, red, purple, blue);
 }
-    
+
+.section-white {
+    background-color: var(--light-color);
+    border-radius: 20px;
+    margin: 10px;
+    padding: 30px;
+}
+
 @media (min-width: 768px) {
     .gradient-form {
         height: 100vh !important;
@@ -180,4 +188,22 @@ img {
 }
 .zold{
     background-color: #0BC000;
+}
+
+.event-row {
+    margin-top: 50px;
+    margin-bottom: 20px;
+    width: 750px;
+    background-color: var(--light-mid-color);
+    border-radius: 10px !important;
+    padding: 20px;
+    color: var(--dark-color);
+    box-shadow: 0px 0px 20px rgba(42, 42, 42, 0.594);
+}
+
+a.event-row::before,
+a.event-row::after,
+a.event-row:active,
+a.event-row:hover {
+    color: var(--dark-color);
 }

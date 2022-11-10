@@ -1,21 +1,25 @@
 extends layout 
 
-block content 
-    h1.ms-3.mt-3.fw-bold Esemény meghirdetése
+block content
+    main.section-white
+        h1.ms-3.mt-3.fw-bold Esemény meghirdetése
 
-    div(class="container-fluid")
-        .row
-            form(action="/event/create", method="POST", class="col-4")
-                label(for="name") Az esemény neve:
-                input(type="text", name="name", placeholder="Az esemény neve", required="ture", value="").form-control
+        div(class="container-fluid")
+            .row
+                form(action="/event/create", method="POST", class="col-4")
+                    br
+                    label(for="name") Az esemény neve:
+                    input(type="text", name="name", placeholder="Az esemény neve", required="ture", value="").form-control
 
-                label(for="text") Az esemény leírása:
-                input(type="text", name="text", placeholder="Az esemény leírása", required="ture", value="").form-control
+                    br
+                    label(for="text") Az esemény leírása:
+                    input(type="text", name="text", placeholder="Az esemény leírása", required="ture", value="").form-control
 
-                label(for="place") Az esemény helyszine:
-                input(type="text", name="place", placeholder="Az esemény helyszine", required="ture", value="").form-control
+                    br
+                    label(for="place") Az esemény helyszine:
+                    input(type="text", name="place", placeholder="Az esemény helyszine", required="ture", value="").form-control
 
-                br
-                input(type="submit", name="submit" value="Meghirdetés").btn.btn-success
-    
+                    br
+                    input(type="submit", name="submit" value="Meghirdetés").btn.btn-success
+        
     div(style="margin-bottom:500px;")

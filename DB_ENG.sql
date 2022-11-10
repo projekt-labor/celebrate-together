@@ -236,6 +236,27 @@ ALTER TABLE `user_event_switch`
   ADD CONSTRAINT `user_event_switch_fk_1` FOREIGN KEY (`event_id`) REFERENCES `event` (`id`);
 COMMIT;
 
+DROP TRIGGER IF EXISTS insert_user;
+DELIMITER $$
+CREATE TRIGGER insert_user
+BEFORE INSERT on user
+FOR EACH ROW
+BEGIN
+    SET NEW.name = (SELECT (CONCAT(UPPER(substr(NEW.name, 1,1)), substr(NEW.name, 2, (POSITION(" " in NEW.name) - 2)))), (Concat(UPPER(substr(NEW.name, (POSITION(" " in NEW.name)) + 1,1)), (substr(NEW.name, (Position(" " in NEW.name)) + 2)))));
+END $$
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS delete_users ;
+DELIMITER $$
+CREATE TRIGGER delete_users
+BEFORE DELETE on user
+FOR EACH ROW 
+BEGIN    
+	DELETE from user_event_switch where user_id = user.id;
+  DELETE from friend where src_user_id = id or dest_user_id = user.id;
+END $$
+DELIMITER ;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

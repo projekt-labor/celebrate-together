@@ -1,15 +1,18 @@
-pug fájl neve | útvonal
-x login           /login
-x register        /register
+Megvan 6 az összesen 17 odalból.
+(Ahol "-" van oda nem is lehet oldalt szerkeszteni)
+
+pug fájl neve | útvonal                                                 | Megvan a front-end?
+x login           /login                                                    x
+x register        /register                                                 x
 x user            /user/:id
-x user            /user/:id/friend
-x user            /user/:id/unfriend
-x settings        /user/settings
-x contact         /contact
-x my_events       /event - A felhasználó által létrehozott események
+x user            /user/:id/friend                                          -
+x user            /user/:id/unfriend                                        -
+x settings        /user/settings                                            x
+x contact         /contact                                                  ?
+x my_events       /event - A felhasználó által létrehozott események        x
 x event           /event/:id
-x event           /event/create
-x event           /event/:id/edit
+x event           /event/create                                             x
+x event           /event/:id/edit                                           x
 x terms           /terms
 x chat            /chat
 x friends         /user/friends
@@ -17,8 +20,8 @@ x search          /search
 x search          /search/event
 x search          /search/user
 x birthdays       /birthdays - Az aktuális szülinaposok
-x events          /events - Események a baráti körben
-x -               /user/notif
-x -               /chat/:id/:time/api
--                 /event/:id/attend
--                 /event/:id/unattend
+x events          /events - Események a baráti körben                       x
+x -               /user/notif                                               -
+x -               /chat/:id/:time/api                                       -
+-                 /event/:id/attend                                         -
+-                 /event/:id/unattend                                       -

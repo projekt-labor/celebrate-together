@@ -54,6 +54,15 @@ html(lang='hu')
         -   return new String(date.getFullYear()) + "-" + m + "-" + d;
         - }
 
+        - var formatDate = function(date) {
+        -   var d = new Date(date);
+        -   return new String(d.getFullYear()) + "-" + new String(d.getMonth()+1) + "-" + new String(d.getDate());
+        - }
+
+        - function stripEventName(desc) {
+        -  return desc.substring(0, 15) + "...";  
+        - }
+
         nav.navbar.navbar-expand-lg.bg-dark.navbar-dark
             .container-fluid
                 a.ms-4.navbar-brand.nav-link(href='/', title='Celebrate Together', alt='Celebrate Together')
@@ -76,16 +85,18 @@ html(lang='hu')
                                 li
                                     a.dropdown-item(href='/user/' + user.id + "/u")
                                         i.fas.fa-user-circle.me-1
-                                        | Profil
+                                        = user.name
                                 li
                                     a.dropdown-item(href='/user/settings')
                                         i.fas.fa-cogs.me-1
                                         | Beállítások
                                 li
                                     a.dropdown-item(href='/event')
+                                        i.fas.fa-calendar.me-1
                                         | Eseményeim
                                 li
                                     a.dropdown-item(href='/event/create')
+                                        i.fas.fa-calendar-plus.me-1
                                         | Esemény meghirdetése
                                 li
                                     hr.dropdown-divider
