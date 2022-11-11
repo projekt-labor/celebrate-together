@@ -3,18 +3,22 @@ extend layout
 block content
     .ps-5.pe-5.pt-2
         if user
-            h2 Üdvözöllek 
-                span= user.name
-                span !
-            br
-
-            h3 Publikus posztok:
-
-            ul#posts-list
-                for post in posts 
-                    li 
-                        p= post.name
-                        p= post.message
+            section
+                h2.text-center.p-3.felkover.feher Üdvözöllek 
+                    span= user.name
+                    span !
+                .container
+                    .row.d-flex.justify-content-center.align-items-center
+                        .col-xl-12
+                            .card.rounded-3.text-black.bg-light
+                                .row.g-0
+                                    .col-lg-12.p-2.pt-4
+                                        h3 Publikus posztok:
+                                            for post in posts 
+                                                .container
+                                                    p= post.name
+                                                .container
+                                                    p= post.message
 
         //if !user
             br
