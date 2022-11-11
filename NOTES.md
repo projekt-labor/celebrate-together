@@ -7,3 +7,4 @@
 - Adatbázis tervezése, adatbázis ábrák, triggerek
 - Jelszó titkosítás bcrypt-el és sóval
 - A különböző funkciói az odalnak (események, szülinapok, chat stb.)
+- OpenGameArt használata ingyenes licenszű profilfotók beszerzésére
