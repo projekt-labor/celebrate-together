@@ -1,20 +1,31 @@
 extend layout
 
 block content
-    .ps-5.pe-5.pt-2
+    section.section-white.me-5.ms-5.pe-5.ps-5
+        h1.text-center Üdvözöljük,
+            span.fw-bold.ms-1= user.name
+            | !
+        hr
+
+        for post in posts 
+            p= post.name
+            p= post.message
+
+    div(style="margin-bottom:500px;")
+
+    // .ps-5.pe-5.pt-2
         if user
             h2 Üdvözöllek 
                 span= user.name
                 span !
             br
 
-            h3 Publikus posztok:
-
             ul#posts-list
                 for post in posts 
                     li 
                         p= post.name
                         p= post.message
+
 
         //if !user
             br

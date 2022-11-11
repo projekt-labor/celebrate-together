@@ -1,17 +1,21 @@
 extends layout 
 
 block content 
-    h1= event.name
-    
-    if event.is_user_editor
-        a(href="/event/"+event.id+"/edit") Szerkesztés
-    else if event.is_user_attending
-        a.btn.btn-danger(href="/event/"+event.id+"/unattend") Részvétel törlése
-    else if !event.is_user_attending
-        a.btn.btn-success(href="/event/"+event.id+"/attend") Részvétel
+    section.section-white
+        h1.fw-bold= event.name
+        hr
 
-    br
-    p= event.text
-    br
-    p= event.date
+        if event.is_user_editor
+            a(href="/event/"+event.id+"/edit") Szerkesztés
+        else if event.is_user_attending
+            a.btn.btn-danger(href="/event/"+event.id+"/unattend") Részvétel törlése
+        else if !event.is_user_attending
+            a.btn.btn-success(href="/event/"+event.id+"/attend") Részvétel
 
+        br
+        p= event.text
+        br
+        p= event.date
+
+
+    div(style="margin-bottom:500px;")
