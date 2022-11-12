@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2022. Nov 12. 16:15
+-- Létrehozás ideje: 2022. Nov 12. 18:20
 -- Kiszolgáló verziója: 10.4.18-MariaDB
 -- PHP verzió: 8.0.3
 
@@ -121,7 +121,9 @@ INSERT INTO `user` (`id`, `name`, `email`, `password`, `phone`, `profile`, `birt
 (1, 'Remek Elek', 'kecske@gmail.com', '$2b$10$ZKE.QYBBo1ekICbR2RvJs.OWXs/wsUUxfFP2S0jZ2.JZCw5UZ29C6', '06308218311', NULL, '2004-03-09', 'Budapest', 'Budapest'),
 (3, 'Kasza Blanka', 'jelszó@gmail.com', '$2b$10$ZKE.QYBBo1ekICbR2RvJs.OWXs/wsUUxfFP2S0jZ2.JZCw5UZ29C6', '06301578984', NULL, '2004-03-10', 'Debrecen', 'Debrecen'),
 (4, 'Kér Ede', 'asdasd@gmail.com', '$2b$10$ZKE.QYBBo1ekICbR2RvJs.OWXs/wsUUxfFP2S0jZ2.JZCw5UZ29C6', '06301478526', NULL, '2005-10-11', 'Zalaegerszeg', 'Körmend'),
-(7, 'kecske Kecske2', 'kecske2@gmail.com', '$2b$10$ZKE.QYBBo1ekICbR2RvJs.OWXs/wsUUxfFP2S0jZ2.JZCw5UZ29C6', NULL, NULL, '2000-01-01', NULL, NULL);
+(7, 'kecske Kecske2', 'kecske2@gmail.com', '$2b$10$ZKE.QYBBo1ekICbR2RvJs.OWXs/wsUUxfFP2S0jZ2.JZCw5UZ29C6', NULL, NULL, '2000-01-01', NULL, NULL),
+(19, 'Zsíros B. Ödön', 'zsirosb.odon@gmail.com', '$2b$10$MxTAZUUdzoqNdDKfK65mJutycx11mzXrncTzlG/se.oniGfZTRdLG', NULL, NULL, '2010-06-23', NULL, NULL),
+(20, 'Kukor Ica', 'kukor.ica@gmail.com', '$2b$10$aYKzvFbpvXNBVEk3/bwQR.9kyzRslypPdwXXK0JuS5bfAeqExRz5m', NULL, NULL, '2015-05-21', NULL, NULL);
 
 --
 -- Eseményindítók `user`
@@ -136,8 +138,18 @@ $$
 DELIMITER ;
 DELIMITER $$
 CREATE TRIGGER `insert_user` BEFORE INSERT ON `user` FOR EACH ROW BEGIN
-    SET NEW.name = (SELECT CONCAT(CONCAT(UCASE(LEFT(NEW.name, 1)), LCASE(SUBSTRING(NEW.name, 2, LOCATE(" ", NEW.name)-1))),
+    DECLARE fs1 TEXT;
+    DECLARE fs2 TEXT;
+    Set fs1 = (SELECT SUBSTRING_INDEX(SUBSTRING_INDEX(NEW.name, ' ', 2), ' ', -1));
+    Set fs2 = (SELECT SUBSTRING_INDEX(SUBSTRING_INDEX(NEW.name, ' ', 3), ' ', -1));
+    IF(fs1 = fs2) THEN
+       SET NEW.name = (SELECT CONCAT(CONCAT(UCASE(LEFT(NEW.name, 1)), LCASE(SUBSTRING(NEW.name, 2, LOCATE(" ", NEW.name)-1))),
 	               CONCAT(UCASE(SUBSTRING(NEW.name, LOCATE(" ", NEW.name)+1,1)), LCASE(SUBSTRING(NEW.name, (LOCATE(" ", NEW.name)+2))))));
+    ELSE
+        SET NEW.name = (SELECT CONCAT(CONCAT(UCASE(LEFT(NEW.name, 1)), LCASE(SUBSTRING(NEW.name, 2, LOCATE(" ", NEW.name)-1))),
+	                                  CONCAT(UCASE(SUBSTRING(NEW.name, LOCATE(" ", NEW.name)+1,1)), LCASE(SUBSTRING(NEW.name, (LOCATE(" ", NEW.name)+2), (LOCATE(" ", SUBSTRING_INDEX(SUBSTRING_INDEX(NEW.name, ' ', 3), ' ', -2))-1))),
+                                      CONCAT(UCASE(LEFT(SUBSTRING_INDEX(SUBSTRING_INDEX(NEW.name, ' ', 3), ' ', -1),1)), LCASE(SUBSTRING(SUBSTRING_INDEX(SUBSTRING_INDEX(NEW.name, ' ', 3), ' ', -1),2))))));
+    END IF;
 END
 $$
 DELIMITER ;
@@ -229,7 +241,7 @@ ALTER TABLE `post`
 -- AUTO_INCREMENT a táblához `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- Megkötések a kiírt táblákhoz
