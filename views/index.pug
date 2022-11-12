@@ -8,6 +8,15 @@ block content
                     span= user.name
                     span !
                 .container
+                    .row.d-flex.justify-content-center.align-items-center.pb-5
+                        .col-xl-10
+                            .card.rounded-3.text-black.bg-light
+                                .row.g-0
+                                    .col-lg-12
+                                        h1.p-2 Posztolj!
+                                        .container.pb-3.col-xl-11
+                                            textarea(name="publikusposzt", rows="5" placeholder="Ide azt írsz, amit akarsz").form-control.lmfao.textareadetails.rounded
+                                        input(type="submit", name="submitpost" value="Posztolás").btn.btn-primary.btn-lg.m-2
                     .row.d-flex.justify-content-center.align-items-center
                         .col-xl-10
                             .card.rounded-3.text-black.bg-light

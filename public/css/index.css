@@ -225,3 +225,10 @@ a.event-row:active,
 a.event-row:hover {
     color: var(--dark-color);
 }
+
+.textareadetails {
+    padding: 8px;
+    font-size: 20px;
+    border: solid 1px;
+    border-radius: 4px;
+  }
