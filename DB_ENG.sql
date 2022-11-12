@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.1.0
 -- https://www.phpmyadmin.net/
 --
--- Gép: localhost
--- Létrehozás ideje: 2022. Okt 14. 16:36
--- Kiszolgáló verziója: 10.4.21-MariaDB
--- PHP verzió: 8.1.6
+-- Gép: 127.0.0.1
+-- Létrehozás ideje: 2022. Nov 12. 16:15
+-- Kiszolgáló verziója: 10.4.18-MariaDB
+-- PHP verzió: 8.0.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Adatbázis: `celebrate_together`
 --
+CREATE DATABASE IF NOT EXISTS `celebrate_together` DEFAULT CHARACTER SET utf8 COLLATE utf8_hungarian_ci;
+USE `celebrate_together`;
 
 -- --------------------------------------------------------
 
@@ -121,6 +123,25 @@ INSERT INTO `user` (`id`, `name`, `email`, `password`, `phone`, `profile`, `birt
 (4, 'Kér Ede', 'asdasd@gmail.com', '$2b$10$ZKE.QYBBo1ekICbR2RvJs.OWXs/wsUUxfFP2S0jZ2.JZCw5UZ29C6', '06301478526', NULL, '2005-10-11', 'Zalaegerszeg', 'Körmend'),
 (7, 'kecske Kecske2', 'kecske2@gmail.com', '$2b$10$ZKE.QYBBo1ekICbR2RvJs.OWXs/wsUUxfFP2S0jZ2.JZCw5UZ29C6', NULL, NULL, '2000-01-01', NULL, NULL);
 
+--
+-- Eseményindítók `user`
+--
+DELIMITER $$
+CREATE TRIGGER `delete_users` BEFORE DELETE ON `user` FOR EACH ROW BEGIN
+	DELETE from user_event_switch where user_id = OLD.id;
+    DELETE from friend where src_user_id = OLD.id or dest_user_id = OLD.id;
+    DELETE from post where src_user_id = OLD.id or dest_user_id = OLD.id;
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `insert_user` BEFORE INSERT ON `user` FOR EACH ROW BEGIN
+    SET NEW.name = (SELECT CONCAT(CONCAT(UCASE(LEFT(NEW.name, 1)), LCASE(SUBSTRING(NEW.name, 2, LOCATE(" ", NEW.name)-1))),
+	               CONCAT(UCASE(SUBSTRING(NEW.name, LOCATE(" ", NEW.name)+1,1)), LCASE(SUBSTRING(NEW.name, (LOCATE(" ", NEW.name)+2))))));
+END
+$$
+DELIMITER ;
+
 -- --------------------------------------------------------
 
 --
@@ -208,7 +229,7 @@ ALTER TABLE `post`
 -- AUTO_INCREMENT a táblához `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Megkötések a kiírt táblákhoz
@@ -235,27 +256,6 @@ ALTER TABLE `user_event_switch`
   ADD CONSTRAINT `user_event_switch_fk1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
   ADD CONSTRAINT `user_event_switch_fk_1` FOREIGN KEY (`event_id`) REFERENCES `event` (`id`);
 COMMIT;
-
-DROP TRIGGER IF EXISTS insert_user;
-DELIMITER $$
-CREATE TRIGGER insert_user
-BEFORE INSERT on user
-FOR EACH ROW
-BEGIN
-    SET NEW.name = (SELECT (CONCAT(UPPER(substr(NEW.name, 1,1)), substr(NEW.name, 2, (POSITION(" " in NEW.name) - 2)))), (Concat(UPPER(substr(NEW.name, (POSITION(" " in NEW.name)) + 1,1)), (substr(NEW.name, (Position(" " in NEW.name)) + 2)))));
-END $$
-DELIMITER ;
-
-DROP TRIGGER IF EXISTS delete_users ;
-DELIMITER $$
-CREATE TRIGGER delete_users
-BEFORE DELETE on user
-FOR EACH ROW 
-BEGIN    
-	DELETE from user_event_switch where user_id = user.id;
-  DELETE from friend where src_user_id = id or dest_user_id = user.id;
-END $$
-DELIMITER ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
