@@ -129,8 +129,26 @@ img {
 .loginpic{
     width: 100%;
 }
+.borderalul{
+    border-bottom: dotted;
+}
+.divfont {
+    font-size: 20px;
+}
 .rolunkkep{
     width: 100%;
+}
+.avatarkep {
+    border-radius: 50%;
+    width: 5%;
+    display: inline-block;
+    vertical-align: top;
+  }
+.inlineblock{
+    display: inline-block;
+}
+.hatter{
+    background: #CFCFCF;
 }
 .gradient-custom-2 {
     /* fallback for old browsers */

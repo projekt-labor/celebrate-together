@@ -1,25 +1,26 @@
 extend layout
 
 block content
-    block content
-        .ps-5.pe-5.pt-2
-            if user
-                section
-                    h2.text-center.p-3.felkover.feher Üdvözöllek 
-                        span= user.name
-                        span !
-                    .container
-                        .row.d-flex.justify-content-center.align-items-center
-                            .col-xl-12
-                                .card.rounded-3.text-black.bg-light
-                                    .row.g-0
-                                        .col-lg-12.p-2.pt-4
-                                            h3 Publikus posztok:
-                                                for post in posts 
-                                                    .container
-                                                        p= post.name
-                                                    .container
-                                                        p= post.message
+    .pe-5.ps-5.pt-2
+        if user
+            section
+                h2.text-center.p-3.felkover.feher Üdvözöllek 
+                    span= user.name
+                    span !
+                .container
+                    .row.d-flex.justify-content-center.align-items-center
+                        .col-xl-10
+                            .card.rounded-3.text-black.bg-light
+                                .row.g-0
+                                    .col-lg-12.p-2.pt-4
+                                        for post in posts
+                                            .container.hatter.rounded-3.mb-3
+                                                .container.border-bottom.border-dark.divfont.p-1
+                                                    img(src='images/profiles/avatar1.png', alt='logo').avatarkep
+                                                    p.felkover.inlineblock.ps-1=post.name
+                                                .container.divfont.pt-1.ps-3
+                                                    p= post.message   
+
 
         //if !user
             br
