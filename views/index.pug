@@ -15,8 +15,11 @@ block content
                                     .col-lg-12
                                         h1.p-2 Posztolj!
                                         .container.pb-3.col-xl-11
-                                            textarea(name="publikusposzt", rows="5" placeholder="Ide azt írsz, amit akarsz").form-control.lmfao.textareadetails.rounded
-                                        input(type="submit", name="submitpost" value="Posztolás").btn.btn-primary.btn-lg.m-2
+                                            form(method="POST", action="/chat/" + user.id + "/public_post")
+                                                textarea(name="text", rows="5" placeholder="Ide azt írsz, amit akarsz").form-control.lmfao.textareadetails.rounded
+                                                .row
+                                                    input(type="submit", name="submitpost" value="Posztolás").btn.btn-primary.btn-lg.m-2
+                    
                     .row.d-flex.justify-content-center.align-items-center
                         .col-xl-10
                             .card.rounded-3.text-black.bg-light
@@ -26,9 +29,10 @@ block content
                                             .container.hatter.rounded-3.mb-3
                                                 .container.border-bottom.divfont.p-1
                                                     img(src='images/profiles/avatar1.png', alt='logo').avatarkep
-                                                    p.felkover.inlineblock.ps-1=post.name
+                                                    p.felkover.inlineblock.ps-1
+                                                        a(href="/user/" + post.user_id + "/s")= post.name
                                                 .container.divfont.pt-1.ps-3
-                                                    p= post.message   
+                                                    p= post.message
 
 
         //if !user

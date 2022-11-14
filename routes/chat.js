@@ -135,4 +135,32 @@ CHAT_ROUTE.post("/:id/:time/api", onlyLogined, (req, res) => {
     
 });
 
+CHAT_ROUTE.post("/:userid/public_post", onlyLogined, async (req, res) => {
+    req.checkBody("text", "")
+        .isLength({ min: 1 });
+
+    const errors = req.validationErrors();
+    
+    if (errors) {
+        console.log("\nHiba a bemenetekkel!\n");
+        console.log(errors);
+        await req.flash('info', CONFIG.ERROR_MSG);
+        return res.redirect("/");
+    }
+
+    return await DB.query(
+        `INSERT INTO post (src_user_id, dest_user_id, date, message, is_public) VALUES
+        (?, NULL, ?, ?, 1);`,
+        [req.params.userid, new Date(), req.body.text],
+        async (err, result) => {
+            if (err) {
+                await req.flash('info', CONFIG.ERROR_MSG);
+                return res.redirect("/");
+            } 
+            req.flash('info', "A posztot sikeresen elmentettük!");
+            return res.redirect("/");
+        }
+    )
+});
+
 module.exports = CHAT_ROUTE;

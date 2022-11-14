@@ -37,7 +37,7 @@ INDEX_ROUTE.get("/", async (req, res) => {
     }
 
     return await DB.query(
-    `SELECT u.name \`name\`, u.id id  FROM user u RIGHT JOIN friend f ON(f.src_user_id=u.id OR f.dest_user_id=u.id)
+    `SELECT f.src_user_id \`user_id\`, u.name \`name\`, u.id id  FROM user u RIGHT JOIN friend f ON(f.src_user_id=u.id OR f.dest_user_id=u.id)
     WHERE f.is_approved=1 AND (f.src_user_id=? OR f.dest_user_id=?) GROUP BY u.id`,
     [req.session.user.id, req.session.user.id],
     async (errors, friendResults) => {
@@ -54,7 +54,8 @@ INDEX_ROUTE.get("/", async (req, res) => {
         return await DB.query(`
         SELECT u.id user_id, u.name, name, p.message message, p.date date
         FROM \`post\` p LEFT JOIN user u ON(u.id=p.src_user_id)
-        WHERE p.is_public=1 AND u.id IN (${friendResults.map((r) => r.id).join(",")})`,
+        WHERE p.is_public=1 AND u.id IN (${friendResults.map((r) => r.id).join(",")})
+        ORDER BY date DESC`,
             [],
             async (errors, results) => {
                 if (errors) {
