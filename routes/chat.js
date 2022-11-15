@@ -163,4 +163,36 @@ CHAT_ROUTE.post("/:userid/public_post", onlyLogined, async (req, res) => {
     )
 });
 
+CHAT_ROUTE.get("/:postid/delete", onlyLogined, async (req, res) => {
+    return await DB.query(
+        `SELECT * FROM post WHERE (src_user_id=? AND id=?);`,
+        [req.session.user.id, req.params.postid],
+        async (err, results) => {
+            if (err || !results) {
+                await req.flash('info', CONFIG.ERROR_MSG+" 1");
+                console.log(err);
+                return res.redirect("/");
+            }
+            if (results[0].src_user_id != req.session.user.id) {
+                await req.flash('info', CONFIG.ERROR_MSG+" 2");
+                console.log("not maching users");
+                return res.redirect("/");
+            }
+            return await DB.query(
+                `DELETE FROM post WHERE (src_user_id=? AND id=?)`,
+                [req.session.user.id, req.params.postid],
+                async (err, results) => {
+                    if (err || !results) {
+                        console.log(err);
+                        await req.flash('info', CONFIG.ERROR_MSG + " 3");
+                        return res.redirect("/");
+                    }
+                    await req.flash('info', "A poszt sikeresen törlésre került.");
+                    return res.redirect("/");
+                }
+            )
+        }
+    )
+});
+
 module.exports = CHAT_ROUTE;

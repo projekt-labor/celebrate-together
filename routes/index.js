@@ -52,7 +52,7 @@ INDEX_ROUTE.get("/", async (req, res) => {
             });
         }
         return await DB.query(`
-        SELECT u.id user_id, u.name, name, p.message message, p.date date
+        SELECT u.id user_id, u.name, name, p.id post_id, p.message message, p.date date
         FROM \`post\` p LEFT JOIN user u ON(u.id=p.src_user_id)
         WHERE p.is_public=1 AND u.id IN (${friendResults.map((r) => r.id).join(",")})
         ORDER BY date DESC`,

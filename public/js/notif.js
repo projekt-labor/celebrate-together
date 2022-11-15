@@ -33,11 +33,16 @@
         data: {}
     }).done((data) => {
         if (data.status !== 1) return false;
-
-        $("#notification-badge").html(new String(data.notifications.length));
         
         for (let n of data.notifications) {
             $("#notification-list").html($("#notification-list").html() + getNofif(n));
+        }
+
+        if (data.notifications.length == 0) {
+            //$("#notification-list").html('<i style="text-size: 5px;" class="pe-5 ps-5 pt-5 pb-5 text-muted">Nincsenek értesítéseid</i>');
+        }
+        else {
+            $("#notification-badge").html(new String(data.notifications.length));
         }
     });    
 

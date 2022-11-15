@@ -31,24 +31,17 @@ block content
                                                         img(src='images/profiles/avatar1.png', alt='logo').avatarkep
                                                         p.felkover.inlineblock.ps-1
                                                             a(href="/user/" + post.user_id + "/s")= post.name
+                                                    
+                                                    .dropdown
+                                                        button.btn.btn-outline-primary.btn-sm.dropdown-toggle(id="postdd-"+post.post_id href="#" type="button" data-bs-toggle="dropdown" aria-expanded="false")
+                                                            | 
+
+                                                        ul.dropdown-menu(aria-labelledby="postdd-"+post.post_id)
+                                                            li
+                                                                a(href="/chat/"+post.post_id+"/delete").post-del-btn.dropdown-item Törlés
+                                                                //form(method="POST" action="/chat/"+post.post_id+"/delete")
+                                                                    input(type="submit" value="Törlés").post-del-btn.dropdown-item
+
                                                     .container.divfont.pt-1.ps-3
                                                         p= post.message
-
-
-        //if !user
-            br
-            a(href="/login").mt-5.ml-5 Bejelentkezés
-            br
-            a(href="/register").mt-5.ml-5 Regisztráció
-        
-        //if user
-            br
-            a(href=makeUserUrl(user)).mt-5.ml-5 Saját profilom
-            br
-            a(href="/user/settings").mt-5.ml-5 Fehlasználó beállítások
-            br
-            a(href="/search").mt-5.ml-5 Keresés
-            br
-            a(href="/user/friends").mt-5.ml-5 Barátok
-            br
-            a(href="/logout").mt-5.ml-5 Kijelentkezés
+                                                        
