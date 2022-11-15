@@ -25,6 +25,12 @@ USE `celebrate_together`;
 
 -- --------------------------------------------------------
 
+DROP TABLE IF EXISTS `post`;
+DROP TABLE IF EXISTS `friend`;
+DROP TABLE IF EXISTS `user_event_switch`;
+DROP TABLE IF EXISTS `event`;
+DROP TABLE IF EXISTS `user`;
+
 --
 -- Tábla szerkezet ehhez a táblához `event`
 --
@@ -74,7 +80,6 @@ INSERT INTO `friend` (`id`, `src_user_id`, `dest_user_id`, `is_approved`, `date`
 --
 -- Tábla szerkezet ehhez a táblához `post`
 --
-
 CREATE TABLE `post` (
   `id` int(11) NOT NULL,
   `src_user_id` int(11) NOT NULL,
