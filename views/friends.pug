@@ -1,12 +1,14 @@
 extends layout 
 
-block content 
-    h1 Barátok
+block content
+    section.section-white
+        h1 Barátok
+        hr
 
-    if friends 
-        for friend in friends 
-            a(href=makeUserUrl(friend))= friend.name
-            br
+        if friends 
+            for friend in friends 
+                a(href=makeUserUrl(friend))= friend.name
+                br
 
-    else 
-        p(style="font-style: italic;").text-muted Még nincs barátod!
+        else 
+            p(style="font-style: italic;").text-muted A barátaid litáját itt találod majd, miután visszajelöl egy pár ember! ;)

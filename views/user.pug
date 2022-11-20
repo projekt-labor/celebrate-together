@@ -1,22 +1,22 @@
 extends layout 
 
-block content 
-    h1= view_user.name
+block content
+    section.section-white
+        h1= view_user.name
 
-    if user.id != view_user.id
-        if is_friend
-            form(action="/user/"+view_user.id+"/unfriend" method="POST")
-                input(type="submit" name="submit" value="- Barát törlés").btn.btn-outline-danger
-            a(href="/chat/"+view_user.id).btn.btn-primary Üzenetek megnyitása
-        else 
-            form(action="/user/"+view_user.id+"/friend" method="POST")
-                input(type="submit" name="submit" value="+ Barátnak jelölés").btn.btn-outline-success
+        if user.id != view_user.id
+            if is_friend
+                form(action="/user/"+view_user.id+"/unfriend" method="POST")
+                    input(type="submit" name="submit" value="- Barát törlés").btn.btn-outline-danger
+                a(href="/chat/"+view_user.id).btn.btn-primary Üzenetek megnyitása
+            else 
+                form(action="/user/"+view_user.id+"/friend" method="POST")
+                    input(type="submit" name="submit" value="+ Barátnak jelölés").btn.btn-outline-success
 
-    br
-    p= view_user.id
-    br
-    p= view_user.name
-    br
-    p= view_user.email
-    br
-    p= view_user.password
+        br
+        p= view_user.id
+        br
+        p= view_user.name
+        br
+        p= view_user.email
+        

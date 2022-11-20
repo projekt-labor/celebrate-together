@@ -1,9 +1,14 @@
 extends layout 
 
-block content 
-    h1 Szülinapok
+block content
+    section.section-white
+        h1 Szülinapok
+        hr
 
-    for b in birthdays 
-        a(href=makeUserUrl(b))= b.name
-        p= b.birth_day
-        br
+        if birthdays.length != 0
+            for b in birthdays 
+                a(href=makeUserUrl(b))= b.name
+                p= b.birth_day
+                br
+        else
+            p(style="font-style: italic;").text-muted Ugy néz ki mostanában nem lesz egy barátodnak sem szülinapja

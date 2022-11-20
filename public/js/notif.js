@@ -39,7 +39,11 @@
         }
 
         if (data.notifications.length == 0) {
-            //$("#notification-list").html('<i style="text-size: 5px;" class="pe-5 ps-5 pt-5 pb-5 text-muted">Nincsenek értesítéseid</i>');
+            $("#notification-list").html(`
+                <div style="width: 350px; padding: 20px;" class="text-center">
+                    <i class="small pe-5 ps-5 pt-5 pb-5 text-muted">Nincsenek újabb értesítéseid</i>
+                </div>
+            `);
         }
         else {
             $("#notification-badge").html(new String(data.notifications.length));
