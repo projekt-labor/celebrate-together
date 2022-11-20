@@ -16,7 +16,7 @@ block content
                                         h1.p-2 Posztolj!
                                         .container.pb-3.col-xl-11
                                             form(method="POST", action="/chat/" + user.id + "/public_post")
-                                                textarea(name="text", rows="5" placeholder="Ide azt írsz, amit akarsz").form-control.lmfao.textareadetails.rounded
+                                                textarea(name="text", rows="5" placeholder="Ide azt írsz, amit akarsz" required="true").form-control.lmfao.textareadetails.rounded
                                                 input(type="submit", name="submitpost" value="Posztolás").btn.btn-primary.btn-lg.m-2
                     
                     if posts
