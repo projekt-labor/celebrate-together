@@ -6,7 +6,6 @@
         return `
         <li class="message ${m.src_user_id==otherUserId? "other-message" : "self-message"}">
             <p>${m.message}</p>
-            <p class="text-muted">${m.date}</p>
         </li>`;
     }
 

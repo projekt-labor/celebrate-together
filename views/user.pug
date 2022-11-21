@@ -2,27 +2,34 @@ extends layout
 
 block content
     section.section-white
-        h1= view_user.name
+    
+        .row.text-left
+            .col-sm-1
+                img(src="/images/profiles/" + view_user.profile, style="width: 50px; border-radius: 50%; margin: 0;")
+            .col-sm
+                h1.fw-bold(style="margin: 0;")= view_user.name
 
-        if user.id != view_user.id
-            if status == "not_approved"
-                form(action="/user/"+view_user.id+"/unreq" method="POST")
-                    button(type="submit" name="submit").btn.btn-outline-danger
-                        | Barátnak jelölés törlése
-            else if status == "approved"
-                form(action="/user/"+view_user.id+"/unfriend" method="POST")
-                    button(type="submit" name="submit").btn.btn-outline-danger
-                        | Barát törlése
-                a(href="/chat/"+view_user.id).btn.btn-primary Üzenetek megnyitása
-            else
-                form(action="/user/"+view_user.id+"/friend" method="POST")
-                    button(type="submit" name="submit").btn.btn-primary
-                        | Barátnak jelölés
+            if user.id != view_user.id
+                if status == "approved"
+                    .col-sm-1
+                        a(href="/chat/"+view_user.id, style="border-radius: 50% !important;", title="Üzenet küldése").btn.btn-primary
+                            i.fas.fa-comment
 
+                .col-sm-2
+                    if status == "not_approved"
+                        form(action="/user/"+view_user.id+"/unreq" method="POST")
+                            button(type="submit" name="submit").btn.btn-outline-danger
+                                | Barátnak jelölés törlése
+                    else if status == "approved"
+                        form(action="/user/"+view_user.id+"/unfriend" method="POST")
+                            button(type="submit" name="submit").btn.btn-outline-danger
+                                | Barát törlése
+                    else
+                        form(action="/user/"+view_user.id+"/friend" method="POST")
+                            button(type="submit" name="submit").btn.btn-primary
+                                | Barátnak jelölés
+        hr
         br
-        p= view_user.id
-        br
-        p= view_user.name
-        br
-        p= view_user.email
+
+        p Mi kell ide?
         

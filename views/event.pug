@@ -2,15 +2,20 @@ extends layout
 
 block content 
     section.section-white
-        h1.fw-bold= event.name
-        hr
+        .row
+            .col-sm
+                h1.fw-bold= event.name
+            .col-sm-2
+                if event.is_user_editor
+                    a.btn.btn-primary(href="/event/"+event.id+"/edit")
+                        i.fas.fa-edit.me-2
+                        | Szerkesztés
+                else if event.is_user_attending
+                    a.btn.btn-outline-danger(href="/event/"+event.id+"/unattend") Részvétel törlése
+                else if !event.is_user_attending
+                    a.btn.btn-primary(href="/event/"+event.id+"/attend") Részvétel
 
-        if event.is_user_editor
-            a(href="/event/"+event.id+"/edit") Szerkesztés
-        else if event.is_user_attending
-            a.btn.btn-danger(href="/event/"+event.id+"/unattend") Részvétel törlése
-        else if !event.is_user_attending
-            a.btn.btn-success(href="/event/"+event.id+"/attend") Részvétel
+        hr
 
         br
         p= event.text

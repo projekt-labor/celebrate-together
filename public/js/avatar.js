@@ -1,13 +1,14 @@
 (function ($) {
-    var currentAvatar = 1;
+    var currentAvatar = parseInt($("#avatar-form").attr("value").split(".")[0][6]);
     var max = 8;
     var min = 1;
 
     function showAvatar() {
         var s = "avatar" + new String(currentAvatar);
-        var url = "images/profiles/" + s + '.png';
+        var url = "/images/profiles/" + s + '.png';
         $('#avatar').attr('src', url);
-        $('#avatar-form').attr('value', url);
+        $('#avatar-form').attr('value', s + ".png");
+        console.log(s);
     }
 
     $('#avatar-right-btn').on('click', function () {

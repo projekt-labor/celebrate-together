@@ -36,6 +36,19 @@ INDEX_ROUTE.get("/", async (req, res) => {
         return res.redirect("/login");
     }
 
+    async function getComments(post, callback) {
+        return await DB.query(`
+        SELECT c.user_id user_id, c.other_id other_id, c.type \`type\`, c.text \`text\`, c.date \`date\` FROM comment c
+        LEFT JOIN post p ON(p.id=other_id)
+        WHERE p.id=?;
+        `,
+        [post.id],
+        (err, res) => {
+            if (err) console.log(err);
+            return callback(res);
+        });
+    }
+
     return await DB.query(
     `SELECT f.src_user_id \`user_id\`, u.name \`name\`, u.id id  FROM user u RIGHT JOIN friend f ON(f.src_user_id=u.id OR f.dest_user_id=u.id)
     WHERE f.is_approved=1 AND (f.src_user_id=? OR f.dest_user_id=?) GROUP BY u.id`,
@@ -88,7 +101,14 @@ INDEX_ROUTE.get("/", async (req, res) => {
                                 title: CONFIG.BASE_TITLE,
                                 messages: await req.consumeFlash('info'),
                                 user: req.session.user,
-                                posts: ress,
+                                posts: ress.map((p) => {
+                                    p.comments = [];
+                                    return p;
+                                    return getComments(p, (r) => {
+                                        p.comments = r;
+                                        return p;
+                                    });
+                                }),
                                 user_recs: user_recs
                             });
                         });
@@ -106,7 +126,14 @@ INDEX_ROUTE.get("/", async (req, res) => {
                         title: CONFIG.BASE_TITLE,
                         messages: await req.consumeFlash('info'),
                         user: req.session.user,
-                        posts: results,
+                        posts: results.map((p) => {
+                            p.comments = [];
+                            return p;
+                            return getComments(p, (r) => {
+                                p.comments = r;
+                                return p;
+                            });
+                        }),
                         user_recs: user_recs
                     });
                 });
@@ -156,7 +183,13 @@ INDEX_ROUTE.post("/register", onlyNotLogined, async (req, res) => {
     const password = req.body.password;
     const passwordAgain = req.body.password_again;
     const birthday = req.body.birthday;
-    const profile = req.body.profile || 'avatar1.png';
+
+    let profile = req.body.profile || 'avatar1.png';
+    
+    if (profile.includes("/")) {
+        profile = profile.split("/");
+        profile = profile[profile.length - 1];
+    }
 
     if (errors) {
         console.log("\nHiba a bemenetekkel!\n");
@@ -370,12 +403,25 @@ INDEX_ROUTE.get("/birthdays", onlyLogined, async (req, res) => {
             return res.redirect("/");
         }
 
+        console.log(dates[0].getMonth()+1);
+        console.log(dates[0].getDate());
+
         return res.render("birthdays", {
             title: CONFIG.BASE_TITLE,
             messages: await req.consumeFlash('info'),
             user: req.session.user,
             birthdays: result
         });
+    });
+});
+
+// friends
+// the messages for the choosen person
+INDEX_ROUTE.get("/messages", onlyLogined, async (req, res) => {
+    return res.render("messages", {
+        title: CONFIG.BASE_TITLE,
+        messages: await req.consumeFlash('info'),
+        user: req.session.user,
     });
 });
 

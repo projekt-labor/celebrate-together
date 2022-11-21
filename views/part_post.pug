@@ -23,3 +23,12 @@
 
     .container.divfont.pt-1.ps-3
         p= post.message
+
+    //if post.comments.length != 0
+        hr
+        p 
+            i.fas.fa-comments.me-2
+            | Kommentek
+        
+        ul(style="list-style: none;")
+            include part_comment

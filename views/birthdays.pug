@@ -1,16 +1,34 @@
 extends layout 
 
 block content
+    - function parseBday(bday) {
+    -   return new Date(bday).getDate();
+    - }
+
+    - function parseAge(bday) {
+    -   var n = new Date();
+    -   return n.getYear() - new Date(bday).getYear();
+    - }
+
     section.section-white
         h1.fw-bold
-            <i class="fas fa-birthday-cake me-2"></i>
+            i.fas.fa-birthday-cake.me-2
             | Szülinapok
         hr
 
         if birthdays.length != 0
             for b in birthdays 
-                a(href=makeUserUrl(b))= b.name
-                p= b.birth_day
+                a(href=makeUserUrl(b))
+                    span= b.name
+                span  e hónap 
+                span= parseBday(b.birth_day)
+                span . napján lesz 
+                span= parseAge(b.birth_day) 
+                span  éves!
+                
+                br
                 br
         else
             p(style="font-style: italic;").text-muted Ugy néz ki mostanában nem lesz egy barátodnak sem szülinapja
+
+    div(style="margin-bottom:500px;")

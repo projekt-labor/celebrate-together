@@ -6,37 +6,41 @@ block styles
 block scripts
     script(src="/js/chat.js", type='text/javascript') 
 
-block content 
-    h1 Chat - 
-        a(href=makeUserUrl(other_user))= other_user.name
+block content
+    section.section-white
+        h1 
+            a(href=makeUserUrl(other_user))= other_user.name
 
-    h2 Üzenetek:
-    div
-        ul#messages-list
+        hr
+        
+        div
+            ul#messages-list
 
+                //
+                // PUBLIC/JS/CHAT.JS
+                //
+                //for m in chat_messages
+                    if m.src_user_id == user.id
+                        li.message.self-message
+                            p= m.message
+                            p.text-muted= m.date
+                    else 
+                        li.message.other-message
+                            p= m.message
+                            p.text-white= m.date
+
+            // Példa:
             //
-            // PUBLIC/JS/CHAT.JS
-            //
-            //for m in chat_messages
-                if m.src_user_id == user.id
-                    li.message.self-message
-                        p= m.message
-                        p.text-muted= m.date
-                else 
-                    li.message.other-message
-                        p= m.message
-                        p.text-white= m.date
+                li.message.other-message Üzenet a másiktól
+                li.message.self-message Üzenet tőlem
+                li.message.other-message Üzenet a másiktól
+                li.message.self-message Üzenet tőlem
 
-        // Példa:
-        //
-            li.message.other-message Üzenet a másiktól
-            li.message.self-message Üzenet tőlem
-            li.message.other-message Üzenet a másiktól
-            li.message.self-message Üzenet tőlem
+        form(action="/chat/"+other_user.id+"/send", method="POST")
+            input(type="text" name="message" placeholder="Írd ide az üzenetedet!", required="true").form-control
+            input(type="submit", name="submit", value="Üzenet küldése").btn.btn-primary.w-100.mt-2.btn-lg
 
-    form(action="/chat/"+other_user.id+"/send", method="POST")
-        input(type="text" name="message" placeholder="Írd ide az üzenetedet!", required="true").form-control
-        input(type="submit", name="submit", value="Üzenet küldése").btn.btn-primary.w-100.mt-2.btn-lg
+        // EZT NE TÖRÖLD:
+        span#other_user_id(style="display:none;")= other_user.id
 
-    // EZT NE TÖRÖLD:
-    span#other_user_id(style="display:none;")= other_user.id
+    div(style="margin-bottom:500px;")

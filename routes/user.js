@@ -195,6 +195,12 @@ USER_ROUTE.post("/settings", onlyLogined, (req, res) => {
         .isLength({ min: 1 });
     req.checkBody("birth_day", "")
         .isLength({ min: 4 });
+    let profile = req.body.profile || 'avatar1.png';
+    
+    if (profile.includes("/")) {
+        profile = profile.split("/");
+        profile = profile[profile.length - 1];
+    }
 
     const errors = req.validationErrors();
 
@@ -224,8 +230,8 @@ USER_ROUTE.post("/settings", onlyLogined, (req, res) => {
             }
 
             return await DB.query(
-                "UPDATE user SET name=?, birth_day=?, birth_place=?, phone=?, residence=? WHERE id=?",
-                [req.body.name, req.body.birth_day, req.body.birth_place, req.body.phone, req.body.residence, req.session.user.id],
+                "UPDATE user SET name=?, birth_day=?, birth_place=?, phone=?, residence=?, `profile`=? WHERE id=?",
+                [req.body.name, req.body.birth_day, req.body.birth_place, req.body.phone, req.body.residence, profile, req.session.user.id],
                 async (error, result) => {
                     if (error) {
                         console.error(error);
@@ -260,7 +266,7 @@ USER_ROUTE.post("/settings", onlyLogined, (req, res) => {
 });
 
 USER_ROUTE.get("/friends", onlyLogined, async (req, res) => {
-    return await DB.query("SELECT u.id, u.name FROM user u RIGHT JOIN friend f ON(f.src_user_id=u.id OR f.dest_user_id=u.id) WHERE u.id<>? AND f.is_approved=1 AND (f.src_user_id=? OR f.dest_user_id=?)",
+    return await DB.query("SELECT u.id, u.name name, u.profile `profile` FROM user u RIGHT JOIN friend f ON(f.src_user_id=u.id OR f.dest_user_id=u.id) WHERE u.id<>? AND f.is_approved=1 AND (f.src_user_id=? OR f.dest_user_id=?)",
     [req.session.user.id, req.session.user.id, req.session.user.id], async (errors, results) => {
         if (errors) {
             console.log(errors);

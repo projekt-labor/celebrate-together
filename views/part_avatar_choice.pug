@@ -1,5 +1,9 @@
 #avatar-box.text-center
-    - let avatar_url = "images/profiles/avatar1.png";
+    - function getAvatar(url) {
+    -   var parts = url.split("/");
+    -   return parts[parts.length - 1];
+    - }
+    - let avatar_url = profile || "/images/profiles/avatar1.png";
 
     img#avatar(src=avatar_url alt='A profilképed' title='A profilképed').mb-1
     br
@@ -10,4 +14,4 @@
     button#avatar-right-btn.btn.btn-secondary(type='button' title='Következő' style="border-radius: 50% !important;").ms-3
         i.fas.fa-arrow-circle-right
 
-    input#avatar-form(type='text' name='avatar_url' value=avatar_url hidden='')
+    input#avatar-form(type='text' name='profile' value=getAvatar(avatar_url) hidden='true')
