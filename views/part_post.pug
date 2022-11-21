@@ -1,0 +1,25 @@
+.post-card.container.hatter.rounded-3.mb-5
+    .container.border-bottom.divfont.p-1
+        .row 
+            .col-sm-10
+                a(href="/user/" + post.user_id + "/s")
+                    img(src='images/profiles/' + post.user_profile, alt='logo').avatarkep
+                    p.fw-bold.inlineblock.ps-1= post.name
+    
+            .col-sm-2
+                if post.user_id == user.id
+                    .dropdown
+                        button.btn.btn-outline-primary.btn-sm.dropdown-toggle(id="postdd-"+post.post_id href="#" type="button" data-bs-toggle="dropdown" aria-expanded="false")
+                            i.fas.fa-edit.me-2
+                            | Szerk.
+
+                        ul.dropdown-menu(aria-labelledby="postdd-"+post.post_id)
+                            li
+                                a(href="/chat/"+post.post_id+"/delete").post-del-btn.dropdown-item
+                                    i.fas.fa-trash.me-2
+                                    | Törlés
+                                //form(method="POST" action="/chat/"+post.post_id+"/delete")
+                                    input(type="submit" value="Törlés").post-del-btn.dropdown-item
+
+    .container.divfont.pt-1.ps-3
+        p= post.message

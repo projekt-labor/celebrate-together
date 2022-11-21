@@ -2,19 +2,16 @@ extends layout
 
 block content 
     main.section-white
-        h1 Események
+        h1.fw-bold
+            i.fas.fa-calendar.me-2
+            | Események
         hr
 
-        .text-center
-            for event in events
-                a(href=makeEventUrl(event)).row.event-row
-                    .col-sm
-                        p.fw-bold= event.name
-                    .col-sm
-                        p= stripEventName(event.text)
-                    .col-sm
-                        p.text-muted= event.place
-                    .col-sm
-                        p.text-muted= formatDate(event.date)
+        if events.length!=0
+            .text-center
+                for event in events
+                    include part_event
+        else 
+            p(style="font-style: italic;").text-muted Nem találtunk eseményeket amiket a barátaid hirdettek meg
 
     div(style="margin-bottom:500px;")

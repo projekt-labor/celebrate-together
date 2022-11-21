@@ -1,0 +1,18 @@
+extends layout 
+
+block content
+    section.section-white 
+        h1.fw-bold
+            i.fas.fa-search.me-2
+            | Események keresése
+        hr
+
+        form(action="/search/event", method="POST" style="margin-left: 350px; margin-right: 350px;").form-outline.mb-4.pt-1.mb-5.pb-1.row
+            .col-sm
+                input(type="text", name="q_event", placeholder="A keresett esemény neve").form-control
+            .col-sm-3
+                .row
+                    input(type="submit", name="submit" value="Keresek!").btn.btn-primary
+
+
+    div(style="margin-bottom:500px;")

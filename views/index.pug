@@ -4,44 +4,67 @@ block content
     .pe-5.ps-5.pt-2
         if user
             section
-                h2.text-center.p-3.felkover.feher Üdvözöllek 
-                    span= user.name
-                    span !
+                h2.text-center.p-3.text-white Üdvözöllek 
+                    span.fw-bold= user.name
                 .container
-                    .row.d-flex.justify-content-center.align-items-center.pb-5
+                    .row.d-flex.justify-content-center.align-items-center
                         .col-xl-10
-                            .card.rounded-3.text-black.bg-light
+                            .card.rounded-3.text-black.bg-light(style="margin-bottom: 0px; margin-top: 5px;")
                                 .row.g-0
                                     .col-lg-12
-                                        h1.p-2 Posztolj!
+                                        h1.p-2.fw-bold.text-left
+                                            i.fas.fa-align-center.me-2.fw-bold
+                                            | Posztolj!
                                         .container.pb-3.col-xl-11
                                             form(method="POST", action="/chat/" + user.id + "/public_post")
-                                                textarea(name="text", rows="5" placeholder="Ide azt írsz, amit akarsz" required="true").form-control.lmfao.textareadetails.rounded
-                                                input(type="submit", name="submitpost" value="Posztolás").btn.btn-primary.btn-lg.m-2
+                                                textarea(name="text", rows="4" placeholder="Ide azt írsz, amit szeretnél" required="true").form-control.lmfao.textareadetails.rounded
+                                                .row
+                                                    .col-sm
+                                                        .row.me-1
+                                                            button(type="submit", name="submitpost").btn.btn-primary.btn-lg.m-2
+                                                                i.fas.fa-pencil-alt.me-2
+                                                                | Posztolás
+                                                    .col-sm
+                                                        .row.ms-1
+                                                            button(type="submit", name="submitpost").btn.btn-secondary.btn-lg.m-2
+                                                                i.fas.fa-pencil-alt.me-2
+                                                                | Esetleg más?
                     
-                    if posts
-                        .row.d-flex.justify-content-center.align-items-center
+                    if user_recs && user_recs.length != 0
+                        .row.d-flex.justify-content-center.align-items-center.mt-2
                             .col-xl-10
                                 .card.rounded-3.text-black.bg-light
+                                    h2.fw-bold.mb-2
+                                        i.fas.fa-users.me-2
+                                        | Kit ismerhetek?
+                                    
+                                    ul#user-recs.horizontal-list
+                                        for user in user_recs
+                                            li
+                                                include part_user_box
+
+                    if posts.length != 0
+                        .row.d-flex.justify-content-center.align-items-center.mt-2
+                            .col-xl-10
+                                .card.rounded-3.text-black.bg-light(style="margin-top: 0px;")
                                     .row.g-0
                                         .col-lg-12.p-2.pt-4
                                             for post in posts
-                                                .container.hatter.rounded-3.mb-3
-                                                    .container.border-bottom.divfont.p-1
-                                                        img(src='images/profiles/avatar1.png', alt='logo').avatarkep
-                                                        p.felkover.inlineblock.ps-1
-                                                            a(href="/user/" + post.user_id + "/s")= post.name
-                                                    
-                                                    .dropdown
-                                                        button.btn.btn-outline-primary.btn-sm.dropdown-toggle(id="postdd-"+post.post_id href="#" type="button" data-bs-toggle="dropdown" aria-expanded="false")
-                                                            | 
+                                                include part_post
 
-                                                        ul.dropdown-menu(aria-labelledby="postdd-"+post.post_id)
-                                                            li
-                                                                a(href="/chat/"+post.post_id+"/delete").post-del-btn.dropdown-item Törlés
-                                                                //form(method="POST" action="/chat/"+post.post_id+"/delete")
-                                                                    input(type="submit" value="Törlés").post-del-btn.dropdown-item
 
-                                                    .container.divfont.pt-1.ps-3
-                                                        p= post.message
-                                                        
+    div(style="margin-bottom:500px;")
+
+    script.
+        (() => {
+            "use strict";
+            let scrollTime = 20000;
+
+            setTimeout(() => {
+                setInterval(() => {
+                    let width = $('#user-recs').width();
+                    $('#user-recs').animate({scrollLeft: width}, scrollTime);
+                    $('#user-recs').animate({scrollLeft: -width}, scrollTime);
+                }, 100);
+            }, 100);
+        })();

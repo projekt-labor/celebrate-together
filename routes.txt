@@ -22,3 +22,5 @@
 /chat/:id/:time/api                                       
 /event/:id/attend                                         
 /event/:id/unattend                                       
+
+/user/messages

@@ -8,7 +8,7 @@ block content
         .container.py-5.h-100
             .row.d-flex.justify-content-center.align-items-center.h-100
                 .col-xl-10
-                    .card.rounded-3.text-black
+                    .card.rounded-3.text-black(style="background-color: white; margin-top: 0px;")
                         .row.g-0
                             .col-lg-6
                                 .card-body.p-md-5.mx-md-4
@@ -17,7 +17,7 @@ block content
                                         h4.mt-1.mb-5.pb-1 Ünnepeljünk együtt!
                                     form(action="/login", method="POST").form-outline.mb-4.pt-1.mb-5.pb-1
                                         label.form-label(for='form2Example11') E-mail cím
-                                        input(type="email", name="email", placeholder="Email", required="ture", value="kecske2@gmail.com").form-control.rounded
+                                        input(type="email", name="email", placeholder="Email", required="ture", value="teszt@teszt.teszt").form-control.rounded
                                         label.form-label(for='form2Example22') Jelszó
                                         input(type="password", name="password", placeholder="Jelszó", required="ture", value="asdasd").form-control.rounded
                                         br
@@ -26,3 +26,4 @@ block content
                             .col-lg-6.d-flex.align-items-center
                                 img.loginpic(src='images/kep.png')
             
+    div(style="margin-bottom:500px;")

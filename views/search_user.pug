@@ -1,0 +1,18 @@
+extends layout 
+
+block content
+    section.section-white 
+        h1.fw-bold
+            i.fas.fa-search.me-2
+            | Felhasználók keresése
+        hr
+
+        form(action="/search/user", method="POST" style="margin-left: 350px; margin-right: 350px;").form-outline.mb-4.pt-1.mb-5.pb-1.row
+            .col-sm
+                input(type="text", name="q_user", placeholder="A keresett felhasználó neve").form-control
+            .col-sm-3
+                .row
+                    input(type="submit", name="submit" value="Keresek!").btn.btn-primary
+
+
+    div(style="margin-bottom:500px;")

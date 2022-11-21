@@ -117,6 +117,50 @@ USER_ROUTE.post("/:id/friend", onlyLogined, (req, res) => {
     });
 });
 
+USER_ROUTE.post("/:id/unreq", onlyLogined, (req, res) => {
+    return DB.query("SELECT * FROM user WHERE id=?", [req.params.id], (error, result) => {
+        if (error || !result || result.length == 0) {
+            console.log(error)
+            req.flash('info', CONFIG.ERROR_MSG);
+            return res.redirect("/user/" + req.params.id);
+        }
+
+        const aid = req.session.user.id;
+        const bid = result[0].id;
+
+        if (aid == bid) {
+            console.log(error)
+            req.flash('info', CONFIG.ERROR_MSG);
+            return res.redirect("/user/" + req.params.id);
+        }
+
+        const user = result[0];
+
+        return DB.query("SELECT * FROM friend WHERE (src_user_id=? AND dest_user_id=?) OR (src_user_id=? AND dest_user_id=?)",
+                [req.session.user.id, user.id, user.id, req.session.user.id],
+                async (error, fr) => {
+                    if (error) {
+                        console.log(error)
+                        req.flash('info', CONFIG.ERROR_MSG);
+                        return res.redirect("/user/" + req.params.id);
+                    }
+                    console.log(fr);
+                    return await DB.query("DELETE FROM friend WHERE src_user_id=? AND dest_user_id=?",
+                        [req.session.user.id, user.id], async (error, _result) => {
+                            if (error) {
+                                console.log(error)
+                                req.flash('info', CONFIG.ERROR_MSG);
+                                return res.redirect("/user/" + req.params.id);
+                            }
+                            req.flash('info', "Sikeresen töröltük a barátnak jelölést!");
+                            return res.redirect("/user/"+req.params.id+"/s");
+                        }
+                    );
+                }
+            )
+    });
+});
+
 USER_ROUTE.post("/delete", onlyLogined, async (req, res) => {
     /**
      * TRIGGER NEEDED
@@ -265,14 +309,19 @@ USER_ROUTE.get("/:id/:name", onlyLogined, async (req, res) => {
                     return res.redirect("/");
                 }
 
-                console.log(fr);
-
                 return res.render("user", {
                     title: CONFIG.BASE_TITLE + " - " + user.name,
                     messages: await req.consumeFlash('info'),
                     user: req.session.user,
                     view_user: user,
-                    is_friend: (fr.length == 0) ? false : (fr[0].is_approved==1)
+                    status: (function () {
+                        if (fr.length != 0) {
+                            return fr[0].is_approved == 0 ? "not_approved" : "approved"
+                        }
+                        else {
+                            return "none";
+                        }
+                    })()
                 });
             }
         );

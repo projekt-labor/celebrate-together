@@ -1,0 +1,7 @@
+a(href=makeEventUrl(event)).row.event-row
+    .col-sm
+        p.fw-bold= event.name
+    .col-sm
+        p= stripEventName(event.text)
+    .col-sm
+        p.text-muted= event.place

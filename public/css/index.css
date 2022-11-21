@@ -1,11 +1,27 @@
 @charset "UTF-8";
 
+/*
+Szinek:
+
+https://coolors.co/141b41-306bac-6f9ceb-98b9f2-918ef4
+
+*/
+
 :root {
     --dark-color: #252627;
-    --light-color: #FFF9FB;
-    --light-mid-color: #e6e1e2;
-    --active-color: #ffc5d9;
-    --link-color: rgb(109, 109, 199);
+    --light-color: #f9fffe;
+
+    --light-mid-color: #e1e5e6;
+    --active-color: #98B9F2;
+
+    --link-color: #306BAC;
+    --link-hover-color: #141B41;
+
+    --main-dark-color: #141B41;
+    --main-dark-color-active: #306BAC;
+
+    --secondary-dark-color: #6F9CEB;
+    --secondary-dark-color-active: #98B9F2;
 }
 
 html,
@@ -26,13 +42,67 @@ body {
     background-color: var(--light-color);
 }
 
+.post-card {
+    background-color: #f9fffe;
+    padding: 30px;
+    box-shadow: 0px 0px 20px rgb(33, 33, 33, 0.1);
+}
+
+.btn-primary {
+    color: white;
+    background-color: var(--main-dark-color) !important;
+    border-color: var(--main-dark-color) !important;
+}
+
+.btn-primary:active,
+.btn-primary:hover {
+    color: white;
+    background-color: var(--main-dark-color-active) !important;
+    border-color: var(--main-dark-color-active) !important;
+}
+
+.btn-outline-primary {
+    color: black;
+    border-color: var(--main-dark-color) !important;
+}
+
+.btn-outline-primary:active,
+.btn-outline-primary:hover {
+    color: white;
+    background-color: var(--main-dark-color) !important;
+    border-color: var(--main-dark-color-active) !important;
+}
+
+.btn-secondary {
+    color: rgb(255, 255, 255) !important;
+    background-color: var(--secondary-dark-color) !important;
+    border-color: var(--secondary-dark-color) !important;
+}
+
+.btn-secondary:active,
+.btn-secondary:hover {
+    color: rgb(255, 255, 255) !important;
+    background-color: var(--secondary-dark-color-active) !important;
+    border-color: var(--secondary-dark-color-active) !important;
+}
+
+.alert.alert-warning {
+    margin: 10px 100px 10px 100px;
+    padding: 30px;
+    color: black;
+    background-color: #918EF4;
+    border-color: #918EF4;
+    box-shadow: 0px 0px 20px #918EF4;
+    font-size: 20px;
+}
+
 a, input, button, .btn-link, .btn, textarea {
     border-radius: 1px !important;
     transition: all 0.3s ease-out;
 }
 
 a {
-    color: rgb(82, 143, 193);
+    color: var(--link-color);
 }
 
 a,
@@ -54,7 +124,7 @@ a:after,
 .btn-link:hover,
 .btn-link:active,
 .btn-link:after {
-    color: var(--link-color);
+    color: var(--link-hover-color);
     outline: none !important;
     transition: all 0.3s ease;
 }
@@ -115,6 +185,10 @@ img {
 
 @media screen and (max-width: 1300px) {
  
+    .alert.alert-warning {
+        margin: 0px !important;
+    }
+
     /* Mobilon az adott elem nem fog látszódni */
     .non-mobile {
         display: none !important;
@@ -138,55 +212,79 @@ img {
 .rolunkkep{
     width: 100%;
 }
+
 .avatarkep {
-    border-radius: 50%;
-    width: 5%;
+    border-radius: 0%;
+    width: 30px;
     display: inline-block;
     vertical-align: top;
-  }
+    margin-right: 5px;
+}
+
+  
 .inlineblock{
     display: inline-block;
 }
-.hatter{
-    background: #CFCFCF;
-}
-.gradient-custom-2 {
-    /* fallback for old browsers */
-    background: #fccb90;
-    
-    /* Chrome 10-25, Safari 5.1-6 */
-    background: -webkit-linear-gradient(to right, blue, purple,red);
-    
-    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    background: linear-gradient(to right, blue, purple,red);
-}
 
-/** helyette van a: .fw-bold beépítve */
-.felkover{
-    font-weight: bold;
-}
-
-/** helyette van a: .text-white beépítve */
-.feher{
-    color: white;
+.navbar-default {
+    background-color: rgba(20,27,65,1) !important;
+    border-color: rgba(20,27,65,1) !important;
+    box-shadow: 0px 10px 10px rgba(20,27,65,1);
 }
 
 .gradient-custom-1 {
-    /* fallback for old browsers */
-    background: #fccb90;
-    
-    /* Chrome 10-25, Safari 5.1-6 */
-    background: -webkit-linear-gradient(to right, red, purple, blue);
-    
-    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    background: linear-gradient(to right, red, purple, blue);
+    background: rgb(20,27,65);
+    background: -moz-linear-gradient(180deg, rgba(20,27,65,1) 0%, rgba(48,107,172,1) 66%, rgba(111,156,235,1) 100%);
+    background: -webkit-linear-gradient(180deg, rgba(20,27,65,1) 0%, rgba(48,107,172,1) 66%, rgba(111,156,235,1) 100%);
+    background: linear-gradient(180deg, rgba(20,27,65,1) 0%, rgba(48,107,172,1) 66%, rgba(111,156,235,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#141b41",endColorstr="#6f9ceb",GradientType=1);
 }
 
-.section-white {
-    background-color: var(--light-color);
-    border-radius: 20px;
-    margin: 10px;
+.section-white, .card {
+    background-color: #f9fcfff5;
+    border-radius: 15px;
+    box-shadow: 2px 10px 20px rgb(33, 33, 33, 0.2);
+    margin: 30px 30px 30px 30px;
+    padding: 30px 30px 30px 30px;
+}
+
+.horizontal-list {
+    overflow: auto;
+    white-space: nowrap;
+    padding: 50px;
+}
+
+.horizontal-list > li {
+    display: inline;
     padding: 30px;
+    margin: 10px 10px 10px 10px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.677);
+}
+
+#avatar-box {
+    margin: 0 auto;
+    text-align: center;
+    width: 100px;
+}
+
+#avatar {
+    width: 100px;
+    border-radius: 1px;
+    border-style: solid;
+    border-color: var(--main-dark-color);
+}
+
+.btn-box {
+    width: 100%;
+    height: 250px;
+    font-weight: bold;
+    font-size: 30px;
+
+    display: flex;
+    align-items: center;
+    vertical-align: middle;
+    text-align: center;
 }
 
 @media (min-width: 768px) {
@@ -199,13 +297,6 @@ img {
         border-top-right-radius: .3rem;
         border-bottom-right-radius: .3rem;
     }
-}
-.piros{
-    background-color: #FF0000;
-    ;
-}
-.zold{
-    background-color: #0BC000;
 }
 
 .event-row {

@@ -9,6 +9,22 @@ const CONFIG = require("../config");
 const { onlyLogined, onlyNotLogined } = require("../src/utils");
 
 
+SEARCH_ROUTE.get("/search/user", onlyLogined, async (req, res) => {
+    return res.render("search_user", {
+        title: CONFIG.BASE_TITLE + " - Felhasználó keresése",
+        messages: await req.consumeFlash('info'),
+        user: req.session.user
+    });
+});
+
+SEARCH_ROUTE.get("/search/event", onlyLogined, async (req, res) => {
+    return res.render("search_event", {
+        title: CONFIG.BASE_TITLE + " - Esemény keresése",
+        messages: await req.consumeFlash('info'),
+        user: req.session.user
+    });
+});
+
 SEARCH_ROUTE.get("/search", onlyLogined, (req, res) => {    
     return res.render("search", {
         title: CONFIG.BASE_TITLE + " - Keresés",
@@ -38,8 +54,8 @@ SEARCH_ROUTE.post("/search/event", onlyLogined, (req, res) => {
             return res.redirect("/search");
         }
 
-        return res.render("search", {
-            title: CONFIG.BASE_TITLE + " - Keresés",
+        return res.render("search_result", {
+            title: CONFIG.BASE_TITLE + " - A keresés eredménye",
             messages: req.consumeFlash('info'),
             user: req.session.user,
             results: databaseResults,
@@ -71,8 +87,8 @@ SEARCH_ROUTE.post("/search/user", onlyLogined, (req, res) => {
             return res.redirect("/search");
         }
 
-        return res.render("search", {
-            title: CONFIG.BASE_TITLE + " - Keresés",
+        return res.render("search_result", {
+            title: CONFIG.BASE_TITLE + " - A keresés eredménye",
             messages: req.consumeFlash('info'),
             user: req.session.user,
             results: databaseResults,

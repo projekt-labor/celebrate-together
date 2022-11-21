@@ -1,40 +1,20 @@
 extends layout 
 
-block content 
-    h1 Search
+block content
+    section.section-white 
+        h1.fw-bold
+            i.fas.fa-search.me-2
+            | Mire szeretnél keresni?
+        hr
 
-    form(action="/search/event", method="POST")
-        input(type="text", name="q_event", placeholder="Keresés esemenyekre").form-control
-        input(type="submit", name="submit").btn.btn-primary
+        .row.text-center
+            .col-sm
+                a(href="/search/user").btn.btn-primary.btn-box
+                    i.fas.fa-users.me-2
+                    span Felhasználókra
+            .col-sm
+                a(href="/search/event").btn.btn-primary.btn-box
+                    i.fas.fa-calendar.me-2
+                    span Eseményekre
 
-    br
-    br
-
-    form(action="/search/user", method="POST")
-        input(type="text", name="q_user", placeholder="Keresés emberekre").form-control
-        input(type="submit", name="submit").btn.btn-primary
-
-    br
-    br
-
-    if results && result_type=="event"
-        h2 Eredmények:
-        br
-
-        for res in results
-            if res
-                a(href=makeEventUrl(res))
-                   span.mr-5= res.id
-                   span= res.name
-                br
-
-    if results && result_type=="user"
-        h2 Eredmények:
-        br
-
-        for res in results
-            if res
-                a(href=makeUserUrl(res))
-                    span.mr-5= res.id
-                    span= res.name
-                br
+    div(style="margin-bottom:500px;")

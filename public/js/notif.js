@@ -8,19 +8,18 @@
 
     function getNofif(n) {
         return `<li class="dropdown-item">
-            <a href="${n.url}">
+            <a href="${n.url}" style="color: black;">
                 ${n.text}
             </a>
-            <br/>
-            <div class="row"> 
-                <div class="col-sm">
-                    <a class="btn btn-sm btn-success" href="${n.rurl}/${n.id}/positive">
-                        Elfogadás
+            <div class="row text-center mt-2"> 
+                <div class="col-sm-6" title="Elfogadás">
+                    <a class="btn btn-sm btn-success" href="${n.rurl}/${n.id}/positive" style="border-radius: 100% !important;">
+                        <i class="fas fa-check-circle"></i>
                     </a>
                 </div>
-                <div class="col-sm">
-                    <a class="btn btn-sm btn-danger" href="${n.rurl}/${n.id}/negative">
-                        Elutasítás
+                <div class="col-sm-6" title="Elutasítás">
+                    <a class="btn btn-sm btn-danger" href="${n.rurl}/${n.id}/negative" style="border-radius: 100% !important;">
+                        <i class="fas fa-times-circle"></i>
                     </a>
                 </div>
             </div>
@@ -40,8 +39,8 @@
 
         if (data.notifications.length == 0) {
             $("#notification-list").html(`
-                <div style="width: 350px; padding: 20px;" class="text-center">
-                    <i class="small pe-5 ps-5 pt-5 pb-5 text-muted">Nincsenek újabb értesítéseid</i>
+                <div style="width: 250px; padding: 10px;" class="text-center">
+                    <i class="small pe-1 ps-1 pt-1 pb-1 text-muted">Nincsenek újabb értesítéseid</i>
                 </div>
             `);
         }

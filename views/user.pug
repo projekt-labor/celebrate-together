@@ -5,13 +5,19 @@ block content
         h1= view_user.name
 
         if user.id != view_user.id
-            if is_friend
+            if status == "not_approved"
+                form(action="/user/"+view_user.id+"/unreq" method="POST")
+                    button(type="submit" name="submit").btn.btn-outline-danger
+                        | Barátnak jelölés törlése
+            else if status == "approved"
                 form(action="/user/"+view_user.id+"/unfriend" method="POST")
-                    input(type="submit" name="submit" value="- Barát törlés").btn.btn-outline-danger
+                    button(type="submit" name="submit").btn.btn-outline-danger
+                        | Barát törlése
                 a(href="/chat/"+view_user.id).btn.btn-primary Üzenetek megnyitása
-            else 
+            else
                 form(action="/user/"+view_user.id+"/friend" method="POST")
-                    input(type="submit" name="submit" value="+ Barátnak jelölés").btn.btn-outline-success
+                    button(type="submit" name="submit").btn.btn-primary
+                        | Barátnak jelölés
 
         br
         p= view_user.id

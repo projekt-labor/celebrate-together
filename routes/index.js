@@ -51,27 +51,66 @@ INDEX_ROUTE.get("/", async (req, res) => {
                 posts: []
             });
         }
+
+        let REQREQ = `
+        SELECT u.id id, u.name \`name\`, u.profile \`profile\`, f.id fid, f.src_user_id src_user_id, f.dest_user_id dest_user_id
+        FROM user u
+        LEFT JOIN friend f ON(f.src_user_id=u.id OR f.dest_user_id=u.id)
+        WHERE u.id<>? AND (f.id IS NULL OR (f.src_user_id<>? AND f.dest_user_id<>?))
+        GROUP BY 1
+        ORDER BY 1;
+        `;
+
         return await DB.query(`
-        SELECT u.id user_id, u.name, name, p.id post_id, p.message message, p.date date
-        FROM \`post\` p LEFT JOIN user u ON(u.id=p.src_user_id)
-        WHERE p.is_public=1 AND u.id IN (${friendResults.map((r) => r.id).join(",")})
-        ORDER BY date DESC`,
-            [],
+        SELECT u.id user_id, u.profile user_profile, u.name, name, p.id post_id, p.message message, p.date date
+        FROM post p LEFT JOIN user u ON(u.id=p.src_user_id)
+        WHERE p.is_public=1 AND u.id IN (${friendResults.map((r) => r.id).join(",")}, ?)
+        ORDER BY p.date DESC;`,
+            [req.session.user.id],
             async (errors, results) => {
                 if (errors) {
                     results = [];
                     console.log(errors);
+
+                    return await DB.query(`
+                    SELECT u.id user_id, u.profile user_profile, u.name, name, p.id post_id, p.message message, p.date date
+                    FROM post p LEFT JOIN user u ON(u.id=p.src_user_id)
+                    WHERE p.is_public=1 AND u.id=?
+                    ORDER BY p.date DESC;`,
+                    [req.session.user.id],
+                    async (err, ress) => {
+                        if (err) console.log(errors);
+                        return await DB.query(REQREQ,
+                        [req.session.user.id, req.session.user.id, req.session.user.id],
+                        async (error, user_recs) => {
+                            if (error) console.log(errors);
+                            return res.render("index", {
+                                title: CONFIG.BASE_TITLE,
+                                messages: await req.consumeFlash('info'),
+                                user: req.session.user,
+                                posts: ress,
+                                user_recs: user_recs
+                            });
+                        });
+                    });
                 }
                 
+                console.log("Posztok:");
                 console.log(results);
-                console.log(friendResults.map((r) => r.id).join(","));
 
-                return res.render("index", {
-                    title: CONFIG.BASE_TITLE,
-                    messages: await req.consumeFlash('info'),
-                    user: req.session.user,
-                    posts: results
+                return await DB.query(REQREQ,
+                [req.session.user.id, req.session.user.id, req.session.user.id],
+                async (error, user_recs) => {
+                    if (error) console.log(errors);
+                    return res.render("index", {
+                        title: CONFIG.BASE_TITLE,
+                        messages: await req.consumeFlash('info'),
+                        user: req.session.user,
+                        posts: results,
+                        user_recs: user_recs
+                    });
                 });
+
             });
     });
 });
@@ -117,6 +156,7 @@ INDEX_ROUTE.post("/register", onlyNotLogined, async (req, res) => {
     const password = req.body.password;
     const passwordAgain = req.body.password_again;
     const birthday = req.body.birthday;
+    const profile = req.body.profile || 'avatar1.png';
 
     if (errors) {
         console.log("\nHiba a bemenetekkel!\n");
@@ -147,8 +187,8 @@ INDEX_ROUTE.post("/register", onlyNotLogined, async (req, res) => {
     const createAndSaveUser = (callback) => {
         return bcrypt.genSalt(10, (err, salt) => {
             return bcrypt.hash(password, salt, function(err, hash) {
-                const q = `INSERT INTO ${CONFIG.USER_TABLE_NAME} (name, email, password, birth_day) VALUES (?, ?, ?, ?)`;
-                return DB.query(q, [name, email, hash, birthday], callback);
+                const q = `INSERT INTO ${CONFIG.USER_TABLE_NAME} (name, email, password, birth_day, \`profile\`) VALUES (?, ?, ?, ?, ?)`;
+                return DB.query(q, [name, email, hash, birthday, profile], callback);
             });
         });
     };
@@ -253,28 +293,38 @@ INDEX_ROUTE.get("/contact", async (req, res) => {
 });
 
 INDEX_ROUTE.get("/events", onlyLogined, async (req, res) => {
-    return await DB.query(`
-    SELECT DISTINCT e.id id, e.name name, e.text text, e.place place,
-    (SELECT ue1.date FROM event e1 LEFT JOIN user_event_switch ue1 ON(ue1.event_id=e1.id) WHERE e.id=e1.id AND ue1.is_editor=1) date
-    FROM (event e LEFT JOIN user_event_switch ue ON(ue.event_id=e.id))
-    LEFT JOIN friend f ON(f.src_user_id=ue.user_id OR f.dest_user_id=ue.user_id)
-    WHERE f.is_approved=1 AND (f.src_user_id=? OR f.dest_user_id=?);
-    `,
-    [req.session.user.id, req.session.user.id],
-    async (error, result) => {
-        if (error) {
-            console.error(error);
-            req.flash('info', CONFIG.ERROR_MSG);
-            return res.redirect("/");
-        }
+    return await DB.query(
+        `SELECT f.src_user_id \`user_id\`, u.name \`name\`, u.id id  FROM user u RIGHT JOIN friend f ON(f.src_user_id=u.id OR f.dest_user_id=u.id)
+        WHERE f.is_approved=1 AND (f.src_user_id=? OR f.dest_user_id=?) GROUP BY u.id`,
+        [req.session.user.id, req.session.user.id],
+        async (errors, friendResults) => {
+            if (errors) {
+                console.log(errors);
+                req.flash('info', CONFIG.ERROR_MSG);
+                return res.redirect("/");
+            }
 
-        return res.render("events", {
-            title: CONFIG.BASE_TITLE,
-            messages: await req.consumeFlash('info'),
-            user: req.session.user,
-            events: result
+            return await DB.query(`
+            SELECT DISTINCT e.id id, e.name name, e.text text, e.place place, ue.user_id user_id
+            FROM event e LEFT JOIN user_event_switch ue ON(ue.event_id=e.id)
+            WHERE user_id IN (${friendResults.map((r) => r.id).join(",") + new String(req.session.user.id)});
+            `,
+            [req.session.user.id, req.session.user.id],
+            async (error, result) => {
+                if (error) {
+                    console.error(error);
+                    req.flash('info', CONFIG.ERROR_MSG);
+                    return res.redirect("/");
+                }
+
+                return res.render("events", {
+                    title: CONFIG.BASE_TITLE,
+                    messages: await req.consumeFlash('info'),
+                    user: req.session.user,
+                    events: result
+                });
+            });
         });
-    });
 });
 
 INDEX_ROUTE.get("/birthdays", onlyLogined, async (req, res) => {

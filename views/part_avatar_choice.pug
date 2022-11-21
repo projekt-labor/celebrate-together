@@ -1,0 +1,13 @@
+#avatar-box.text-center
+    - let avatar_url = "images/profiles/avatar1.png";
+
+    img#avatar(src=avatar_url alt='A profilképed' title='A profilképed').mb-1
+    br
+    
+    button#avatar-left-btn.btn.btn-secondary(type='button' title='Előző' style="border-radius: 50% !important;")
+        i.fas.fa-arrow-circle-left
+
+    button#avatar-right-btn.btn.btn-secondary(type='button' title='Következő' style="border-radius: 50% !important;").ms-3
+        i.fas.fa-arrow-circle-right
+
+    input#avatar-form(type='text' name='avatar_url' value=avatar_url hidden='')
