@@ -4,7 +4,9 @@ block content
     section.section-white
         .row
             .col-sm
-                h1.fw-bold= event.name
+                h1.fw-bold
+                    span.me-2 🥳
+                    span= event.name
             .col-sm-2
                 if event.is_user_editor
                     a.btn.btn-primary(href="/event/"+event.id+"/edit")
@@ -18,8 +20,18 @@ block content
         hr
 
         br
-        p= event.text
-        br
-        p= event.date
+        p.event-desc= event.text
+
+        hr
+
+        h2.fw-bold.mt-2.mb-3
+            i.fas.fa-user-circle.me-1
+            | Résztvevők
+
+        if attendants.length != 0
+            for user in attendants
+                include part_user
+        else 
+            p(style="font-style: italic;").text-muted Légy te az első!
 
     div(style="margin-bottom:500px;")

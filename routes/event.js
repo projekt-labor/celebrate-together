@@ -245,12 +245,24 @@ EVENT_ROUTE.get("/:id/:name", onlyLogined, async (req, res) => {
 
         console.log(results[0]);
 
-        return res.render("event", {
-            title: CONFIG.BASE_TITLE + " - " + results[0].name,
-            messages: await req.consumeFlash('info'),
-            user: req.session.user,
-            event: results[0]
+        return await DB.query("SELECT * FROM user_event_switch ue LEFT JOIN user u ON(u.id=ue.user_id) WHERE ue.event_id=?;"
+        [req.params.id],
+        async (errors, attendants) => {
+            if (errors) {
+                console.log("Itt ez");
+                console.log(errors);
+                attendants = [];
+            }
+
+            return res.render("event", {
+                title: CONFIG.BASE_TITLE + " - " + results[0].name,
+                messages: await req.consumeFlash('info'),
+                user: req.session.user,
+                event: results[0],
+                attendants: attendants
+            });
         });
+
     });
 });
 

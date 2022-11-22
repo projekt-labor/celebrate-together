@@ -33,15 +33,29 @@ html(lang='hu')
         block styles
     body.gradient-form.gradient-custom-1
         
+        - var hunTextFormat = function (name) {
+        -   name = name.replace("á", "a");
+        -   name = name.replace("é", "e");
+        -   name = name.replace("í", "i");
+        -   name = name.replace("ö", "o");
+        -   name = name.replace("ő", "o");
+        -   name = name.replace("ü", "u");
+        -   name = name.replace("ú", "u");
+        -   name = name.replace("ű", "u");
+        -   return name;
+        - }
+
         - var makeUserUrl = function(user) {
         -   var name = user.name.replace(/[^0-9a-zA-ZöüóőúáűéíÖÜÓŐÚŰÁÉÍ]/gmi, "-");
-        -   name = name.toLowerCase();    
+        -   name = name.toLowerCase();
+        -   name = hunTextFormat(name);
         -   return `/user/${user.id}/${name}`;
         - }
 
         - var makeEventUrl = function(event) {
         -   var name = event.name.replace(/[^0-9a-zA-ZöüóőúáűéíÖÜÓŐÚŰÁÉÍ]/gmi, "-");
-        -   name = name.toLowerCase();    
+        -   name = name.toLowerCase();
+        -   name = hunTextFormat(name);
         -   return `/event/${event.id}/${name}`;
         - }
 
@@ -104,7 +118,7 @@ html(lang='hu')
                                         | Beállítások
                                 li
                                     hr.dropdown-divider
-                                li
+                                //li
                                     a.dropdown-item(href='/user/messages')
                                         i.fas.fa-comments.me-1
                                         | Üzenetek

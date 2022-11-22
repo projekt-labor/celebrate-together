@@ -275,6 +275,11 @@ img {
     border-color: var(--main-dark-color);
 }
 
+.event-desc {
+    font-size: 20px;
+    padding: 10px;
+}
+
 .btn-box {
     width: 100%;
     height: 250px;

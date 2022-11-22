@@ -315,19 +315,35 @@ USER_ROUTE.get("/:id/:name", onlyLogined, async (req, res) => {
                     return res.redirect("/");
                 }
 
-                return res.render("user", {
-                    title: CONFIG.BASE_TITLE + " - " + user.name,
-                    messages: await req.consumeFlash('info'),
-                    user: req.session.user,
-                    view_user: user,
-                    status: (function () {
-                        if (fr.length != 0) {
-                            return fr[0].is_approved == 0 ? "not_approved" : "approved"
-                        }
-                        else {
-                            return "none";
-                        }
-                    })()
+                return await DB.query(`
+                SELECT p.id post_id, p.src_user_id user_id, p.date \`date\`, u.profile user_profile, u.name AS name, p.message message
+                FROM post p
+                LEFT JOIN user u ON p.src_user_id=u.id
+                WHERE p.src_user_id=? AND p.is_public=1
+                ORDER BY \`date\` DESC;
+                `,
+                [user.id],
+                async (error, posts) => {
+                    if (error) {
+                        console.log(errors);
+                        posts = [];
+                    }
+
+                    return res.render("user", {
+                        title: CONFIG.BASE_TITLE + " - " + user.name,
+                        messages: await req.consumeFlash('info'),
+                        user: req.session.user,
+                        view_user: user,
+                        posts: posts,
+                        status: (function () {
+                            if (fr.length != 0) {
+                                return fr[0].is_approved == 0 ? "not_approved" : "approved"
+                            }
+                            else {
+                                return "none";
+                            }
+                        })()
+                    });
                 });
             }
         );
