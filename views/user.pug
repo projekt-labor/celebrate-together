@@ -5,14 +5,14 @@ block content
     
         .row.text-left
             .col-sm-1
-                img(src="/images/profiles/" + view_user.profile, style="width: 50px; border-radius: 50%; margin: 0;")
+                img(src="/images/profiles/" + view_user.profile, style="width: 50px; margin: 0;")
             .col-sm
                 h1.fw-bold(style="margin: 0;")= view_user.name
 
             if user.id != view_user.id
                 if status == "approved"
                     .col-sm-1
-                        a(href="/chat/"+view_user.id, style="border-radius: 50% !important;", title="Üzenet küldése").btn.btn-primary
+                        a(href="/chat/"+view_user.id, style="display:inline-block !important;", title="Üzenet küldése").btn.btn-primary
                             i.fas.fa-comment
 
                 .col-sm-2
@@ -31,6 +31,11 @@ block content
         hr
         br
 
-        for post in posts
-            include part_post
+        if posts && posts.length!=0
+            for post in posts
+                include part_post
+        else 
+            p(style="font-style: italic;").text-muted Hmm, úgy tűnik ez a felhasználó még nem posztolt semmit!
+
+    div(style="margin-bottom:500px;")
 

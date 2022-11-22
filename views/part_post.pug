@@ -4,7 +4,7 @@
             .col-sm-10
                 a(href="/user/" + post.user_id + "/s")
                     img(src='/images/profiles/' + post.user_profile, alt='logo').avatarkep
-                    p.fw-bold.inlineblock.ps-1= post.name
+                    p.text-dark.fw-bold.inlineblock.ps-1= post.name
     
             .col-sm-2
                 if post.user_id == user.id

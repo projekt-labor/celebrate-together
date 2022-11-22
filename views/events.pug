@@ -1,7 +1,7 @@
 extends layout 
 
 block content 
-    main.section-white
+    section.section-white
         h1.fw-bold
             i.fas.fa-calendar.me-2
             | Események
@@ -10,7 +10,7 @@ block content
         if events.length!=0
             .text-center
                 for event in events
-                    include part_event
+                    include part_event_li
         else 
             p(style="font-style: italic;").text-muted Nem találtunk eseményeket amiket a barátaid hirdettek meg
 

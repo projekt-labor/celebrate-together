@@ -18,17 +18,43 @@ block content
                                             b Regisztrálj!
                                     form(action="/register", method="POST").form-outline.mb-4.pt-1.mb-5.pb-1
                                         
+                                        p.small.text-muted.mb-2.text-center Válaszd ki a profilképed
                                         include part_avatar_choice
                                         br
 
-                                        input(type="text", name="name", placeholder="Teljes név", required="ture").form-control.rounded.mb-1
-                                        input(type="email", name="email", placeholder="Email", required="ture").form-control.rounded.mb-1
-                                        input(type="password", name="password", placeholder="Jelszó", required="ture").form-control.rounded.mb-1
-                                        input(type="password", name="password_again", placeholder="Jelszó ismét", required="ture").form-control.rounded.mb-1
-                                        input(type="date", name="birthday", placeholder="Születésnap", required="ture").form-control.rounded.mb-1
+                                        label.form-label
+                                            i.fas.fa-user.me-2
+                                            | Teljes név
+                                        input(type="text", name="name", placeholder="pl. Példa Péter", required="ture").form-control.rounded.mb-3
+                                        
+                                        label.form-label
+                                            i.fas.fa-envelope.me-2
+                                            | E-mail cím
+                                        input(type="email", name="email", placeholder="pl. pelda@cim.com", required="ture").form-control.rounded.mb-3
+                                        
+                                        label.form-label
+                                            i.fa.fa-lock.me-2
+                                            | Jelszó
+                                        input(type="password", name="password", placeholder="*******", required="ture").form-control.rounded.mb-3
+                                        
+                                        label.form-label
+                                            i.fa.fa-lock.me-2
+                                            | Jelszó ismét
+                                        input(type="password", name="password_again", placeholder="*******", required="ture").form-control.rounded.mb-3
+                                        
+                                        label.form-label
+                                            i.fa.fa-calendar.me-2
+                                            | Születési dátum
+                                        input(type="date", name="birthday", placeholder="Születésnap", required="ture").form-control.rounded.mb-3
                                         br
-                                        input(type="submit", name="submit" value="Regisztrálok").btn.btn-primary.gradient-custom-2
+                                        a(href="/login").small Már van fiókod?
+                                        br
+                                        br
+                                        .row
+                                            input(type="submit", name="submit" value="Regisztrálok").btn.btn-primary.gradient-custom-2
+                                        
                                         // <a class="text-muted" href="#!">Forgot password?</a>
+
                             .col-lg-6.d-flex.align-items-center
                                 img.loginpic(src='images/kep.png')
 

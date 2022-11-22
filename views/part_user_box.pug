@@ -1,3 +1,8 @@
-a(href=makeUserUrl(user) style="display:inline;")
+a(href=makeUserUrl(user) style="display:inline-block !important;")
     img(src='images/profiles/' + user.profile, alt='logo').pb-4.me-2.avatarkep
-    span.fw-bold= user.name
+    span.text-dark.fw-bold= user.name
+    
+    //if user.common_friends
+        span  (
+        span= user.common_friends
+        span közös barát)

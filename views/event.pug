@@ -5,7 +5,7 @@ block content
         .row
             .col-sm
                 h1.fw-bold
-                    span.me-2 🥳
+                    i.fas.fa-calendar.me-2
                     span= event.name
             .col-sm-2
                 if event.is_user_editor
@@ -15,7 +15,7 @@ block content
                 else if event.is_user_attending
                     a.btn.btn-outline-danger(href="/event/"+event.id+"/unattend") Részvétel törlése
                 else if !event.is_user_attending
-                    a.btn.btn-primary(href="/event/"+event.id+"/attend") Részvétel
+                    a.btn.btn-primary(href="/event/"+event.id+"/attend") Részvétel jelzése!
 
         hr
 
