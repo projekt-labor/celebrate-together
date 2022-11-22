@@ -1,6 +1,65 @@
 extends layout 
 
+block styles
+    link(href='/css/chat.css?v=1', rel='stylesheet', type='text/css')
+
+block scripts
+    script(src="/js/chat.js", type='text/javascript') 
+    script(src="/js/messages.js", type='text/javascript') 
+
 block content
-    h1 Üzenetek
+    .row 
+        .col-sm-4
+            .section-white
+                h2.fw-bold
+                    i.fas.fa-users.me-2
+                    | Barátok 
+                hr
+
+                ul
+                    if friends && friends.length != 0
+                        for user in friends
+                            if friends[0].id == user.id
+                                - var state = "active-friend";
+                            else 
+                                - var state = "";
+                            
+                            div(class=state, style="padding: 10px;")
+                                a(href="#" + user.id style="display:inline;" class="friend-link")
+                                    img(src='/images/profiles/' + user.profile, alt='logo').me-2.avatarkep
+                                    span.fw-bold= user.name
+                            br
+
+                    else 
+                        i.text-muted.small Még nincsenek barátaid!
+
+        .col-sm-8.text-center
+            .section-white
+                if friends && friends.length != 0
+                    h2#other-user-name.fw-bold
+                        - var user = friends[0];
+
+                        div(class=state, style="padding: 10px;")
+                            a(href="#" + user.id style="display:inline;" class="friend-link")
+                                img(src='/images/profiles/' + user.profile, alt='logo').me-2.avatarkep
+                                span.fw-bold= user.name
+                else 
+                    h2#other-user-name.fw-bold Üzenetek
+                
+                hr
+                ul#messages-list
+
+                if friends && friends.length != 0
+                    //form(action="/chat/"+friends[0].id+"/send", method="POST")
+
+                    .row.mt-4
+                        .col-sm
+                            input#msg-to-send(type="text" name="message" placeholder="Írd ide az üzenetedet!", required="true").form-control
+                        .col-sm-2
+                            button#send-msg-btn(type="submit", name="submit").btn.btn-primary
+                                i.fas.fa-paper-plane.me-2
+                                | Küldés
 
     div(style="margin-bottom:500px;")
+    if friends && friends.length != 0
+        span#other_user_id(style="display:none;")= friends[0].id

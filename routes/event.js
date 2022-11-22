@@ -244,12 +244,12 @@ EVENT_ROUTE.get("/:id/:name", onlyLogined, async (req, res) => {
         }
 
         console.log(results[0]);
+        console.log("igenigenigen");
 
-        return DB.query("SELECT * FROM user_event_switch ue LEFT JOIN user u ON(u.id=ue.user_id) WHERE ue.event_id=?;"
+        return DB.query("SELECT * FROM user_event_switch ue LEFT JOIN user u ON(u.id=ue.user_id) WHERE ue.event_id=?",
         [req.params.id],
         async (errors, attendants) => {
             if (errors) {
-                console.log("Itt ez");
                 console.log(errors);
                 attendants = [];
             }

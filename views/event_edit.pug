@@ -11,16 +11,16 @@ block content
             .row
                 form(action="/event/"+event.id+"/edit", method="POST", class="col-4")
                     label(for="name") Az esemény neve:
-                    input(type="text", name="name", placeholder="Az esemény neve", required="ture", value=event.name).form-control
+                    input(type="text", name="name", placeholder="Az esemény neve", required="ture", value=event.name).form-control.mb-2
 
                     label(for="text") Az esemény leírása:
-                    input(type="text", name="text", placeholder="Az esemény leírása", required="ture", value=event.text).form-control
+                    textarea(type="text", name="text", placeholder="Az esemény leírása", required="ture", rows="4").form-control.mb-2= event.text
 
                     label(for="place") Az esemény helyszine:
-                    input(type="text", name="place", placeholder="Az esemény helyszine", required="ture", value=event.place).form-control
+                    input(type="text", name="place", placeholder="Az esemény helyszine", required="ture", value=event.place).form-control.mb-2
 
                     br
-                    input(type="submit", name="submit" value="Módosítások mentése").btn.btn-success
+                    input(type="submit", name="submit" value="Módosítások mentése").btn.btn-primary
 
             hr
 

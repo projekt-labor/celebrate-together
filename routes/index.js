@@ -418,10 +418,20 @@ INDEX_ROUTE.get("/birthdays", onlyLogined, async (req, res) => {
 // friends
 // the messages for the choosen person
 INDEX_ROUTE.get("/messages", onlyLogined, async (req, res) => {
-    return res.render("messages", {
-        title: CONFIG.BASE_TITLE,
-        messages: await req.consumeFlash('info'),
-        user: req.session.user,
+    return DB.query(`SELECT u.id, u.name name, u.profile \`profile\` FROM user u RIGHT JOIN friend f ON(f.src_user_id=u.id OR f.dest_user_id=u.id) WHERE u.id<>? AND f.is_approved=1 AND (f.src_user_id=? OR f.dest_user_id=?)`,
+    [req.session.user.id, req.session.user.id, req.session.user.id],
+    async (err, friends) => {
+        if (err) {
+            console.log(err);
+            friends = [];
+        }
+
+        return res.render("messages", {
+            title: CONFIG.BASE_TITLE,
+            messages: await req.consumeFlash('info'),
+            user: req.session.user,
+            friends: friends
+        });
     });
 });
 

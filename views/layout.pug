@@ -111,7 +111,7 @@ html(lang='hu')
                                 li
                                     a.dropdown-item(href='/user/' + user.id + "/u")
                                         i.fas.fa-user-circle.me-1
-                                        = user.name
+                                        span.fw-bold= user.name
                                 li
                                     a.dropdown-item(href='/user/settings')
                                         i.fas.fa-cogs.me-1
@@ -179,7 +179,7 @@ html(lang='hu')
 
         if messages
             for message in messages
-                .alert.alert-warning.text-center.fw-bold
+                .alert.alert-warning.text-center.fw-bold.mt-2
                     i.fas.fa-info-circle.me-2
                     span= message
 

@@ -1,45 +1,42 @@
-(($) => {
-    "use strict";
+"use strict";
 
-    function makeMessage(m) {
-        let otherUserId = $("#other_user_id").html();
-        return `
-        <li class="message ${m.src_user_id==otherUserId? "other-message" : "self-message"}">
-            <p>${m.message}</p>
-        </li>`;
-    }
+function makeMessage(m) {
+    let otherUserId = $("#other_user_id").html();
+    return `
+    <li class="message ${m.src_user_id==otherUserId? "other-message" : "self-message"}">
+        <p>${m.message}</p>
+    </li>`;
+}
 
-    var hostname = window.location.hostname;
-    if (window.location.port) {
-        hostname += ":" + window.location.port;
-    }
+var hostname = window.location.hostname;
+if (window.location.port) {
+    hostname += ":" + window.location.port;
+}
 
-    function getNewMessages() {
-        let url = "http://" + hostname + "/chat/" + $("#other_user_id").html() + "/" + new String(Date.now()) + "/api";
-        console.log(new Date())
+function getNewMessages() {
+    let url = "http://" + hostname + "/chat/" + $("#other_user_id").html() + "/" + new String(Date.now()) + "/api";
+    console.log(new Date())
 
-        $.ajax({
-            method: 'POST',
-            url: url,
-            data: {}
-        }).done((data) => {
-            if (data.status !== 1) {
-                return false;
-            }
-            
-            let messagesListContent = "";
+    $.ajax({
+        method: 'POST',
+        url: url,
+        data: {}
+    }).done((data) => {
+        if (data.status !== 1) {
+            return false;
+        }
+        
+        let messagesListContent = "";
 
-            for (let message of data.messages) {
-                messagesListContent += makeMessage(message);
-            }
+        for (let message of data.messages) {
+            messagesListContent += makeMessage(message);
+        }
 
-            $("#messages-list").html(messagesListContent);
-        });
-    }
+        $("#messages-list").html(messagesListContent);
+    });
+}
 
+getNewMessages();
+setInterval(() => {
     getNewMessages();
-    setInterval(() => {
-        getNewMessages();
-    }, 5000);
-
-})(jQuery);
+}, 5000);

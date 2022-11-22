@@ -9,9 +9,9 @@
             .col-sm-2
                 if post.user_id == user.id
                     .dropdown
-                        button.btn.btn-outline-primary.btn-sm.dropdown-toggle(id="postdd-"+post.post_id href="#" type="button" data-bs-toggle="dropdown" aria-expanded="false")
+                        button.btn.btn-primary.btn-sm.dropdown-toggle(id="postdd-"+post.post_id href="#" type="button" data-bs-toggle="dropdown" aria-expanded="false")
                             i.fas.fa-edit.me-2
-                            | Szerk.
+                            | Szerkesztés
 
                         ul.dropdown-menu(aria-labelledby="postdd-"+post.post_id)
                             li
@@ -21,8 +21,13 @@
                                 //form(method="POST" action="/chat/"+post.post_id+"/delete")
                                     input(type="submit" value="Törlés").post-del-btn.dropdown-item
 
-    .container.divfont.pt-1.ps-3
+    .container.divfont.pt-1.ps-3.mt-2
         p= post.message
+
+        //.text-right.small
+            a(href="/post/"+post.post_id+"/comments") 
+                i.fas.fa-comments.me-2
+                | Kommentek
 
     //if post.comments.length != 0
         hr

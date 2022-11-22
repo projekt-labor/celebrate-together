@@ -21,12 +21,13 @@ block content
 
         br
         p.event-desc= event.text
-
-        hr
+        br
 
         h2.fw-bold.mt-2.mb-3
-            i.fas.fa-user-circle.me-1
+            i.fas.fa-users.me-2
             | Résztvevők
+        
+        hr
 
         if attendants.length != 0
             for user in attendants
