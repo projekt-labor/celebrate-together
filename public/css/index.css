@@ -7,9 +7,19 @@ https://coolors.co/141b41-306bac-6f9ceb-98b9f2-918ef4
 
 */
 
+@font-face {
+    font-family: "Roboto";
+    src: url(../fonts/raw/Roboto-Regular.ttf) format("truetype"),
+        url(../fonts/raw/Roboto-Bold.ttf) format("truetype");
+}
+
 :root {
+    --icon-color: #ac5f30;
+    --nice-text: #ac5f30;
+
     --dark-color: #252627;
     --light-color: #f9fffe;
+    --text-color: #454545;
 
     --light-mid-color: #e1e5e6;
     --active-color: #98B9F2;
@@ -38,12 +48,17 @@ body {
     background-size: cover;
     background-position: center;
     
-    color: var(--dark-color);
+    color: var(--text-color);
     /*background-color: var(--light-color);*/
     background: -moz-linear-gradient(180deg, rgba(20,27,65,0.9) 0%, rgba(48,107,172,0.9) 66%, rgba(111,156,235,0.9) 100%);
     background: -webkit-linear-gradient(180deg, rgba(20,27,65,0.9) 0%, rgba(48,107,172,0.9) 66%, rgba(111,156,235,0.9) 100%);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#141b41",endColorstr="#6f9ceb",GradientType=1);
     background: linear-gradient(180deg, rgba(20,27,65,0.9) 0%, rgba(48,107,172,0.9) 66%, rgba(111,156,235,0.9) 100%);
+}
+
+.nice-text {
+    color: var(--icon-color);
+    font-weight: bold;
 }
 
 .wrapper {
@@ -116,7 +131,17 @@ body {
 
 a, input, button, .btn-link, .btn, textarea {
     border-radius: 1px !important;
-    transition: all 0.3s ease-out;
+    transition: all 0.3s ease-in;
+
+    border-style: none !important; 
+    border-color: transparent !important;
+}
+
+input,
+textarea {
+    border-radius: 0px !important;
+    box-shadow: 0px 0px 15px rgb(72, 72, 72, 0.2) !important;
+    background-color: white;
 }
 
 a {
@@ -144,11 +169,15 @@ a:after,
 .btn-link:after {
     color: var(--link-hover-color);
     outline: none !important;
-    transition: all 0.3s ease;
+}
+
+.nav-link > i,
+.nav-link {
+    display: inline-block !important;
 }
 
 a.nav-link {
-    color: var(--light-color) !important;
+    color: var(--light-color);
 }
 
 a.nav-link::before,
@@ -156,13 +185,6 @@ a.nav-link::after,
 a.nav-link:active,
 a.nav-link:hover {
     color: var(--active-color) !important;
-}
-
-i.fas,
-i.fab,
-i.far {
-    margin: 0 !important;
-    white-space: nowrap !important;
 }
 
 .logo-text {
@@ -196,7 +218,7 @@ img {
 
 #notification-badge {
     color: white;
-    background-color: red;
+    background-color: rgb(229, 57, 57);
     margin-left: 5px;
     font-size: 8px;
 }
@@ -244,10 +266,21 @@ img {
     display: inline-block;
 }
 
+.footer-default {
+    background-color: rgb(72, 124, 194) !important;
+    border-color: rgb(72, 124, 194) !important;
+    box-shadow: 0px -10px 25px rgba(72, 124, 194, 1);
+}
+
 .navbar-default {
+    /*
     background-color: rgba(20,27,65,1) !important;
     border-color: rgba(20,27,65,1) !important;
     box-shadow: 0px 10px 10px rgba(20,27,65,1);
+    */
+    background-color: rgb(25, 34, 69) !important;
+    border-color: rgb(25, 34, 69) !important;
+    box-shadow: 0px 10px 25px rgba(25, 34, 69,1);
 }
 /*
 .gradient-custom-1 {
@@ -348,3 +381,5 @@ section.section-white {
     border: solid 1px;
     border-radius: 4px;
   }
+
+

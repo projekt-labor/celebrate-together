@@ -9,9 +9,8 @@
             .col-sm-2
                 if post.user_id == user.id
                     .dropdown
-                        button.btn.btn-primary.btn-sm.dropdown-toggle(id="postdd-"+post.post_id href="#" type="button" data-bs-toggle="dropdown" aria-expanded="false")
+                        button.btn.btn-outline-primary.btn-sm.dropdown-toggle(id="postdd-"+post.post_id href="#" type="button" data-bs-toggle="dropdown" aria-expanded="false")
                             i.fas.fa-edit.me-2
-                            | Szerkesztés
 
                         ul.dropdown-menu(aria-labelledby="postdd-"+post.post_id)
                             li

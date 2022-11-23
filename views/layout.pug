@@ -78,97 +78,93 @@ html(lang='hu')
         -  return desc.substring(0, 15) + "...";  
         - }
 
-        nav.navbar.navbar-expand-lg.bg-dark.navbar-default
-            .container-fluid
+        nav.navbar.navbar-expand-lg.navbar-default
+            ul.navbar-nav.ms-5
                 a.ms-4.navbar-brand.nav-link(href='/', title='Celebrate Together', alt='Celebrate Together')
                     img(title='Celebrate Together', alt='Celebrate Together', src='/images/logo_attetszo.png')
                     span.logo-text.ms-2 Celebrate Together
 
-                button.navbar-toggler(type='button' data-bs-toggle='collapse' data-bs-target='#navbarSupportedContent' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation')
-                    span.navbar-toggler-icon
+            ul.navbar-nav.ms-auto.me-5
+                if user
+
+                    li.nav-item.dropdown
+                        a.nav-link.dropdown-toggle(href='#' role='button' data-bs-toggle='dropdown' aria-expanded='false')
+                            i.fas.fa-bars.me-2(title="Menü")
+                            span Menü
+
+                        ul.dropdown-menu
+                            li
+                                a.dropdown-item(href='/user/' + user.id + "/u")
+                                    i.fas.fa-user-circle.me-1
+                                    span.fw-bold= user.name
+                            li
+                                a.dropdown-item(href='/user/settings')
+                                    i.fas.fa-cogs.me-1
+                                    | Beállítások
+                            li
+                                hr.dropdown-divider
+                            li
+                                a.dropdown-item(href='/messages')
+                                    i.fas.fa-comments.me-1
+                                    | Üzenetek
+                            li
+                                a.dropdown-item(href='/user/friends')
+                                    i.fas.fa-users.me-1
+                                    | Barátok
+                            li
+                                a.dropdown-item(href='/event')
+                                    i.fas.fa-calendar.me-1
+                                    | Eseményeim
+                            li
+                                a.dropdown-item(href='/event/create')
+                                    i.fas.fa-calendar-plus.me-1
+                                    | Esemény meghirdetése
+                            li
+                                hr.dropdown-divider
+                            li
+                                a.dropdown-item(href='/logout')
+                                    i.fas.fa-sign-out-alt.me-1
+                                    | Kijelentkezés
                     
-            #navbarSupportedContent.collapse.navbar-collapse
-                ul.navbar-nav.me-3.mb-2.mb-lg-0
+                    li.nav-item.dropdown
+                        a.nav-link.dropdown-toggle(href='#' role='button' data-bs-toggle='dropdown' aria-expanded='false')
+                            i.fas.fa-bell
+                            #notification-badge.badge.badge-light
 
-                    if user
+                        ul#notification-list.dropdown-menu
+                            //li
+                                p.dropdown-item
 
-                        li.nav-item.dropdown
-                            a.nav-link.dropdown-toggle(href='#' role='button' data-bs-toggle='dropdown' aria-expanded='false')
-                                i.fas.fa-bars.me-2(title="Menü")
-                                //span Menü
+                    li.nav-item(title="Kezdőlap")
+                        a.nav-link(href='/')
+                            i.fas.fa-home.me-2
+                            span Kezdőlap
 
-                            ul.dropdown-menu
-                                li
-                                    a.dropdown-item(href='/user/' + user.id + "/u")
-                                        i.fas.fa-user-circle.me-1
-                                        span.fw-bold= user.name
-                                li
-                                    a.dropdown-item(href='/user/settings')
-                                        i.fas.fa-cogs.me-1
-                                        | Beállítások
-                                li
-                                    hr.dropdown-divider
-                                li
-                                    a.dropdown-item(href='/messages')
-                                        i.fas.fa-comments.me-1
-                                        | Üzenetek
-                                li
-                                    a.dropdown-item(href='/user/friends')
-                                        i.fas.fa-users.me-1
-                                        | Barátok
-                                li
-                                    a.dropdown-item(href='/event')
-                                        i.fas.fa-calendar.me-1
-                                        | Eseményeim
-                                li
-                                    a.dropdown-item(href='/event/create')
-                                        i.fas.fa-calendar-plus.me-1
-                                        | Esemény meghirdetése
-                                li
-                                    hr.dropdown-divider
-                                li
-                                    a.dropdown-item(href='/logout')
-                                        i.fas.fa-sign-out-alt.me-1
-                                        | Kijelentkezés
-                        
-                        li.nav-item.dropdown
-                            a.nav-link.dropdown-toggle(href='#' role='button' data-bs-toggle='dropdown' aria-expanded='false')
-                                i.fas.fa-bell
-                                #notification-badge.badge.badge-light
+                    li.nav-item(title="Események")
+                        a.nav-link(href='/events')
+                            i.fas.fa-calendar.me-2
+                            span Események
 
-                            ul#notification-list.dropdown-menu
-                                //li
-                                    p.dropdown-item
+                    li.nav-item(title="Szülinapok")
+                        a.nav-link(href='/birthdays')
+                            i.fas.fa-birthday-cake.me-2
+                            span Szülinapok
 
-                        li.nav-item(title="Kezdőlap")
-                            a.nav-link(href='/')
-                                i.fas.fa-home.me-2
-                                //span Kezdőlap
+                    li.nav-item(title="Keresés")
+                        a.nav-link(href='/search')
+                            i.fas.fa-search.me-2
+                            span Keresés
 
-                        li.nav-item(title="Események")
-                            a.nav-link(href='/events')
-                                i.fas.fa-calendar.me-2
-                                //span Események
-
-                        li.nav-item(title="Szülinapok")
-                            a.nav-link(href='/birthdays')
-                                i.fas.fa-birthday-cake.me-2
-                                //span Szülinapok
-
-                        li.nav-item(title="Keresés")
-                            a.nav-link(href='/search')
-                                i.fas.fa-search.me-2
-
-                    else
-                        li.nav-item
-                            a.nav-link(href='/login')
-                                //i.fas.fa-sign-in-alt.me-2
-                                | Bejelentkezés
-                                
-                        li.nav-item.me-4
-                            a.nav-link(href='/register')
-                                //i.fas.fa-user-plus
-                                | Regisztráció
+                else
+                    li.nav-item
+                        a.nav-link(href='/login')
+                            i.fas.fa-sign-in-alt.me-2
+                            | Bejelentkezés
+                            
+                    li.nav-item
+                        a.nav-link(href='/register')
+                            i.fas.fa-user-plus.me-2
+                            | Regisztráció
 
         .wrapper
             .wrapper-content
@@ -185,7 +181,7 @@ html(lang='hu')
                     for _ in [1,2,3,4,5,6,7,8,9,10,11]
                         li
 
-        footer.bg-dark.ps-2.pe-2.pt-5.pb-2.text-white
+        footer.ps-2.pe-2.pt-5.pb-2.text-white.footer-default
             ul.footer-list
                 li
                     a(href="/").nav-link Kezdőlap
@@ -197,7 +193,7 @@ html(lang='hu')
                     p  - 
                 li
                     a(href="/contact").nav-link Rólunk
-            p.text-muted Copyright &copy; 2022 Celebrate Together
+            p.text-white Copyright &copy; 2022 Celebrate Together
 
         script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')
         script(src='https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js')
@@ -209,3 +205,18 @@ html(lang='hu')
             script(src="/js/notif.js?v=1", type="text/javascript")
         script(src="/js/bg.js?v=1", type="text/javascript")
         block scripts
+
+        script.
+            var c = "var(--icon-color)";
+            $("h1 > i.fas").css("color", c);
+            $("h2 > i.fas").css("color", c);
+            $("h3 > i.fas").css("color", c);
+            $("h4 > i.fas").css("color", c);
+            $("h5 > i.fas").css("color", c);
+            $("h6 > i.fas").css("color", c);
+            $("p > i.fas").css("color", c);
+            $("span > i.fas").css("color", c);
+            $("a > i.fas").css("color", c);
+            $("label > i.fas").css("color", c);
+            $("label > i.fa").css("color", c);
+            $("label > i.far").css("color", c);

@@ -39,7 +39,7 @@
 
         if (data.notifications.length == 0) {
             $("#notification-list").html(`
-                <div style="width: 250px; padding: 10px;" class="text-center">
+                <div style="width: 200px; padding: 5px;" class="text-center">
                     <i class="small pe-1 ps-1 pt-1 pb-1 text-muted">Nincsenek újabb értesítéseid</i>
                 </div>
             `);

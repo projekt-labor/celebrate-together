@@ -2,9 +2,18 @@ extends layout
 
 block content
     section.section-white
-        h1.fw-bold
-            i.fas.fa-search.me-2
-            | A keresés eredménye 
+
+        .row
+            .col-sm-10
+                h1.fw-bold
+                    i.fas.fa-search.me-2
+                    | A keresés eredménye
+            .col-sm-2
+                - var linkBack = "/search/" + result_type;
+                a(href=linkBack).fw-bold
+                    i.fas.fa-chevron-left.me-2
+                    | Vissza a kereséshez
+
         hr
 
         ul(style="list-style: none;").text-center.mb-4
