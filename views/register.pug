@@ -18,8 +18,9 @@ block content
                                             b Regisztrálj!
                                     form(action="/register", method="POST").form-outline.mb-4.pt-1.mb-5.pb-1
                                         
-                                        p.small.text-muted.mb-2.text-center Válaszd ki a profilképed
-                                        include part_avatar_choice
+                                        .text-center
+                                            p.small.text-muted.mb-2 Válaszd ki a profilképed
+                                            include part_avatar_choice
                                         br
 
                                         label.form-label
@@ -56,6 +57,6 @@ block content
                                         // <a class="text-muted" href="#!">Forgot password?</a>
 
                             .col-lg-6.d-flex.align-items-center
-                                img.loginpic(src='images/kep.png')
+                                img.loginpic(src='images/kep.png' style="filter: blur(2px);")
 
     div(style="margin-bottom:500px;")

@@ -1,6 +1,6 @@
 (function ($) {
     var currentAvatar = parseInt($("#avatar-form").attr("value").split(".")[0][6]);
-    var max = 8;
+    var max = 22;
     var min = 1;
 
     function showAvatar() {
