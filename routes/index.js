@@ -337,10 +337,18 @@ INDEX_ROUTE.get("/events", onlyLogined, async (req, res) => {
                 return res.redirect("/");
             }
 
+            await friendResults.push({id: new String(req.session.user.id)});
+            let fstr = (friendResults.map((r) => r.id).join(",")).trim();
+            await (function() {
+                if (fstr[0]==",") fstr = fstr.substr(1);
+                if (fstr[fstr.length-1]==",") fstr = fstr.substr(0,fstr.length-1);
+            })();
+
             return await DB.query(`
             SELECT DISTINCT e.id id, e.name name, e.text text, e.place place, ue.user_id user_id
             FROM event e LEFT JOIN user_event_switch ue ON(ue.event_id=e.id)
-            WHERE user_id IN (${friendResults.map((r) => r.id).join(",") + new String(req.session.user.id)});
+            WHERE user_id IN (${fstr})
+            GROUP BY id;
             `,
             [req.session.user.id, req.session.user.id],
             async (error, result) => {

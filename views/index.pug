@@ -59,13 +59,14 @@ block content
     script.
         (() => {
             "use strict";
-            let scrollTime = 20000;
+            let baseSeconds = 2500;
+            let scrollTime = $('#user-recs').width()/120 * baseSeconds - 2.5*baseSeconds;
 
             setTimeout(() => {
                 setInterval(() => {
                     let width = $('#user-recs').width();
                     $('#user-recs').animate({scrollLeft: width}, scrollTime);
                     $('#user-recs').animate({scrollLeft: -width}, scrollTime);
-                }, 100);
-            }, 100);
-        })();
+                }, 10);
+            }, 10);
+        })(jQuery);

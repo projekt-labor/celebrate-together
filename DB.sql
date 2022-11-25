@@ -1,39 +1,17 @@
--- phpMyAdmin SQL Dump
--- version 5.1.0
--- https://www.phpmyadmin.net/
---
--- Gép: 127.0.0.1
--- Létrehozás ideje: 2022. Nov 12. 18:20
--- Kiszolgáló verziója: 10.4.18-MariaDB
--- PHP verzió: 8.0.3
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
---
--- Adatbázis: `celebrate_together`
---
-CREATE DATABASE IF NOT EXISTS `celebrate_together` DEFAULT CHARACTER SET utf8 COLLATE utf8_hungarian_ci;
-USE `celebrate_together`;
-
--- --------------------------------------------------------
-
-DROP TABLE IF EXISTS `post`;
+DROP TABLE IF EXISTS `comment`;
 DROP TABLE IF EXISTS `friend`;
 DROP TABLE IF EXISTS `user_event_switch`;
+DROP TABLE IF EXISTS `post`;
 DROP TABLE IF EXISTS `event`;
 DROP TABLE IF EXISTS `user`;
 
---
--- Tábla szerkezet ehhez a táblához `event`
---
+CREATE TABLE `comment` (
+  `user_id` int(11) NOT NULL,
+  `other_id` int(11) NOT NULL,
+  `type` varchar(40) COLLATE utf8_hungarian_ci DEFAULT NULL,
+  `text` varchar(40) COLLATE utf8_hungarian_ci DEFAULT NULL,
+  `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
 CREATE TABLE `event` (
   `id` int(11) NOT NULL,
@@ -41,21 +19,6 @@ CREATE TABLE `event` (
   `text` text COLLATE utf8_hungarian_ci NOT NULL,
   `place` varchar(50) COLLATE utf8_hungarian_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
-
---
--- A tábla adatainak kiíratása `event`
---
-
-INSERT INTO `event` (`id`, `name`, `text`, `place`) VALUES
-(1, 'Elek Birthday party', 'asdaadssdasd', 'Nagykanizsa'),
-(2, 'Party', 'asdasdasdas', 'Zalaegerszeg'),
-(3, 'Party', 'asdasdasdads', 'Budapest');
-
--- --------------------------------------------------------
-
---
--- Tábla szerkezet ehhez a táblához `friend`
---
 
 CREATE TABLE `friend` (
   `id` int(11) NOT NULL,
@@ -65,21 +28,6 @@ CREATE TABLE `friend` (
   `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
---
--- A tábla adatainak kiíratása `friend`
---
-
-INSERT INTO `friend` (`id`, `src_user_id`, `dest_user_id`, `is_approved`, `date`) VALUES
-(1, 1, 3, 0, '2022-10-05 17:07:10'),
-(2, 3, 4, 1, '2022-10-14 13:35:11'),
-(5, 4, 7, 1, '2022-10-14 13:27:04'),
-(6, 7, 3, 1, '2022-10-14 14:16:56');
-
--- --------------------------------------------------------
-
---
--- Tábla szerkezet ehhez a táblához `post`
---
 CREATE TABLE `post` (
   `id` int(11) NOT NULL,
   `src_user_id` int(11) NOT NULL,
@@ -88,23 +36,6 @@ CREATE TABLE `post` (
   `message` text COLLATE utf8_hungarian_ci NOT NULL,
   `is_public` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
-
---
--- A tábla adatainak kiíratása `post`
---
-
-INSERT INTO `post` (`id`, `src_user_id`, `dest_user_id`, `date`, `message`, `is_public`) VALUES
-(1, 4, 7, '2022-10-14 13:58:51', 'Helló', 0),
-(2, 7, 4, '2022-10-14 14:04:48', 'Helló Ede!', 0),
-(3, 3, NULL, '2022-10-05 18:53:17', 'Sziasztok', 1),
-(4, 7, 4, '2022-10-14 14:27:07', 'Teszt üzenet', 0),
-(5, 7, 4, '2022-10-14 14:31:47', 'ez még egy teszt', 0);
-
--- --------------------------------------------------------
-
---
--- Tábla szerkezet ehhez a táblához `user`
---
 
 CREATE TABLE `user` (
   `id` int(11) NOT NULL,
@@ -118,22 +49,7 @@ CREATE TABLE `user` (
   `residence` varchar(40) COLLATE utf8_hungarian_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
---
--- A tábla adatainak kiíratása `user`
--- Mindenkinek alapból a jelszava asdasd
---
 
-INSERT INTO `user` (`id`, `name`, `email`, `password`, `phone`, `profile`, `birth_day`, `birth_place`, `residence`) VALUES
-(1, 'Remek Elek', 'kecske@gmail.com', '$2b$10$ZKE.QYBBo1ekICbR2RvJs.OWXs/wsUUxfFP2S0jZ2.JZCw5UZ29C6', '06308218311', 'avatar1.png', '2004-03-09', 'Budapest', 'Budapest'),
-(3, 'Kasza Blanka', 'jelszó@gmail.com', '$2b$10$ZKE.QYBBo1ekICbR2RvJs.OWXs/wsUUxfFP2S0jZ2.JZCw5UZ29C6', '06301578984', 'avatar1.png', '2004-03-10', 'Debrecen', 'Debrecen'),
-(4, 'Kér Ede', 'asdasd@gmail.com', '$2b$10$ZKE.QYBBo1ekICbR2RvJs.OWXs/wsUUxfFP2S0jZ2.JZCw5UZ29C6', '06301478526', 'avatar1.png', '2005-10-11', 'Zalaegerszeg', 'Körmend'),
-(19, 'Zsíros B. Ödön', 'zsirosb.odon@gmail.com', '$2b$10$ZKE.QYBBo1ekICbR2RvJs.OWXs/wsUUxfFP2S0jZ2.JZCw5UZ29C6', NULL, 'avatar1.png', '2010-06-23', NULL, NULL),
-(20, 'Kukor Ica', 'kukor.ica@gmail.com', '$2b$10$ZKE.QYBBo1ekICbR2RvJs.OWXs/wsUUxfFP2S0jZ2.JZCw5UZ29C6', NULL, 'avatar1.png', '2015-05-21', NULL, NULL),
-(21, 'Teszt Felhasználó', 'teszt@teszt.teszt', '$2b$10$ZKE.QYBBo1ekICbR2RvJs.OWXs/wsUUxfFP2S0jZ2.JZCw5UZ29C6', NULL, 'avatar1.png', '1995-02-27', NULL, NULL);
-
---
--- Eseményindítók `user`
---
 DELIMITER $$
 CREATE TRIGGER `delete_users` BEFORE DELETE ON `user` FOR EACH ROW BEGIN
 	DELETE from user_event_switch where user_id = OLD.id;
@@ -160,12 +76,6 @@ END
 $$
 DELIMITER ;
 
--- --------------------------------------------------------
-
---
--- Tábla szerkezet ehhez a táblához `user_event_switch`
---
-
 CREATE TABLE `user_event_switch` (
   `user_id` int(11) NOT NULL,
   `event_id` int(11) NOT NULL,
@@ -173,32 +83,52 @@ CREATE TABLE `user_event_switch` (
   `is_editor` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
---
--- A tábla adatainak kiíratása `user_event_switch`
---
 
 INSERT INTO `user_event_switch` (`user_id`, `event_id`, `date`, `is_editor`) VALUES
-(1, 2, '2022-10-05 17:04:46', 1),
 (3, 1, '2022-10-05 17:05:55', 1),
-(3, 3, '2022-10-05 17:05:55', 1);
+(3, 3, '2022-10-05 17:05:55', 1),
+(21, 6, '2022-11-25 14:35:08', 1),
+(19, 7, '2022-11-25 14:54:24', 1),
+(1, 7, '2022-11-25 15:04:27', 0),
+(20, 7, '2022-11-25 15:04:57', 0);
 
--- comment
--- tipusok: event, post
-CREATE TABLE `comment` (
-  `user_id` int(11) NOT NULL,
-  `other_id` int(11) NOT NULL,
-  `type` varchar(40) COLLATE utf8_hungarian_ci DEFAULT NULL,
-  `text` varchar(40) COLLATE utf8_hungarian_ci DEFAULT NULL,
-  `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
+INSERT INTO `post` (`id`, `src_user_id`, `dest_user_id`, `date`, `message`, `is_public`) VALUES
+(3, 3, NULL, '2022-11-25 14:32:35', 'Kasza Blanka saját posztja! Figyelem, ez hosszú lesz:\n\"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\"', 1),
+(7, 21, NULL, '2022-11-25 14:30:59', 'Ez egy saját poszt!', 1),
+(8, 21, NULL, '2022-11-25 14:31:09', 'Töröld ezt a posztot', 1),
+(9, 21, 19, '2022-11-25 14:30:18', 'Szia Teszt Felhasználó! ', 0),
+(10, 19, 21, '2022-11-25 14:43:56', 'Szia Ödön :D', 0),
+(11, 19, 21, '2022-11-25 14:43:59', 'Nem is tudtam hogy használod ezt az oldalt', 0),
+(12, 19, 20, '2022-11-25 15:03:58', 'Szia! Gyere el: http://127.0.0.1:8080/event/7/altal%C3%A1nos-iskolai-oszt%C3%A1ly-tal%C3%A1lkoz%C3%B3', 0),
+(13, 19, 1, '2022-11-25 15:04:08', 'Szia! Gyere el: http://127.0.0.1:8080/event/7/altal%C3%A1nos-iskolai-oszt%C3%A1ly-tal%C3%A1lkoz%C3%B3', 0),
+(14, 20, NULL, '2022-11-25 15:05:28', 'Hívj csak kukoricának!', 1);
 
---
--- Indexek a kiírt táblákhoz
---
+INSERT INTO `user` (`id`, `name`, `email`, `password`, `phone`, `profile`, `birth_day`, `birth_place`, `residence`) VALUES
+(1, 'Remek Elek', 'remeke@gmail.com', '$2b$10$ZKE.QYBBo1ekICbR2RvJs.OWXs/wsUUxfFP2S0jZ2.JZCw5UZ29C6', '06308218311', 'avatar1.png', '2004-12-04', 'Budapest', 'Budapest'),
+(3, 'Kasza Blanka', 'kaszab@gmail.com', '$2b$10$ZKE.QYBBo1ekICbR2RvJs.OWXs/wsUUxfFP2S0jZ2.JZCw5UZ29C6', '06301578984', 'avatar2.png', '2004-12-10', 'Debrecen', 'Debrecen'),
+(4, 'Kér Ede', 'kere@gmail.com', '$2b$10$ZKE.QYBBo1ekICbR2RvJs.OWXs/wsUUxfFP2S0jZ2.JZCw5UZ29C6', '06301478526', 'avatar3.png', '2005-12-06', 'Zalaegerszeg', 'Körmend'),
+(19, 'Zsíros B. Ödön', 'zsirosb@gmail.com', '$2b$10$ZKE.QYBBo1ekICbR2RvJs.OWXs/wsUUxfFP2S0jZ2.JZCw5UZ29C6', NULL, 'avatar4.png', '2000-12-03', NULL, NULL),
+(20, 'Kukor Ica', 'kukori@gmail.com', '$2b$10$ZKE.QYBBo1ekICbR2RvJs.OWXs/wsUUxfFP2S0jZ2.JZCw5UZ29C6', NULL, 'avatar5.png', '2002-12-11', NULL, NULL),
+(21, 'Teszt Felhasználó', 'teszt@teszt.teszt', '$2b$10$ZKE.QYBBo1ekICbR2RvJs.OWXs/wsUUxfFP2S0jZ2.JZCw5UZ29C6', NULL, 'avatar6.png', '1999-11-30', NULL, NULL),
+(22, 'Példa Péter', 'peldap@gmail.com', '$2b$10$oBP.xqTsSBIUORlE8GkLD.hQWGJ7uHcXVoOXikUm1ZA06g7to.Ox2', NULL, 'avatar1.png', '2000-12-05', NULL, NULL);
 
---
--- A tábla indexei `event`
---
+INSERT INTO `friend` (`id`, `src_user_id`, `dest_user_id`, `is_approved`, `date`) VALUES
+(1, 1, 3, 0, '2022-10-05 17:07:10'),
+(2, 3, 4, 1, '2022-10-14 13:35:11'),
+(5, 4, 7, 1, '2022-10-14 13:27:04'),
+(6, 7, 3, 1, '2022-10-14 14:16:56'),
+(7, 4, 21, 0, '2022-11-25 14:29:13'),
+(8, 1, 21, 0, '2022-11-25 14:29:31'),
+(9, 21, 20, 0, '2022-11-25 14:31:21'),
+(10, 19, 21, 1, '2022-11-25 14:42:32'),
+(11, 20, 19, 1, '2022-11-25 15:03:29'),
+(12, 1, 19, 1, '2022-11-25 15:03:31');
+
+INSERT INTO `event` (`id`, `name`, `text`, `place`) VALUES
+(1, 'Elek Szülinapi party', 'Mindenkit meghívok egy sörre!', 'Nagykanizsa'),
+(6, 'Teszt Felhasználó saját eseménye!', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\r\n\r\n\r\nSed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?', 'Nagykanizsa'),
+(7, 'Általános iskolai osztály találkozó', 'Bárki jöhet az évfolyamból!', 'Székesfehérvár');
+
 ALTER TABLE `event`
   ADD PRIMARY KEY (`id`);
 
@@ -239,52 +169,24 @@ ALTER TABLE `user_event_switch`
 -- AUTO_INCREMENT a táblához `event`
 --
 ALTER TABLE `event`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT a táblához `friend`
 --
 ALTER TABLE `friend`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT a táblához `post`
 --
 ALTER TABLE `post`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT a táblához `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
-
---
--- Megkötések a kiírt táblákhoz
---
-
---
--- Megkötések a táblához `friend`
---
-ALTER TABLE `friend`
-  ADD CONSTRAINT `friend_fk_1` FOREIGN KEY (`src_user_id`) REFERENCES `user` (`id`),
-  ADD CONSTRAINT `friend_fk_2` FOREIGN KEY (`dest_user_id`) REFERENCES `user` (`id`);
-
---
--- Megkötések a táblához `post`
---
-ALTER TABLE `post`
-  ADD CONSTRAINT `post_fk1` FOREIGN KEY (`src_user_id`) REFERENCES `user` (`id`),
-  ADD CONSTRAINT `post_fk2` FOREIGN KEY (`dest_user_id`) REFERENCES `user` (`id`);
-
---
--- Megkötések a táblához `user_event_switch`
---
-ALTER TABLE `user_event_switch`
-  ADD CONSTRAINT `user_event_switch_fk1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
-  ADD CONSTRAINT `user_event_switch_fk_1` FOREIGN KEY (`event_id`) REFERENCES `event` (`id`);
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 COMMIT;
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

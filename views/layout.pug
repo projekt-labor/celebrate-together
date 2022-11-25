@@ -33,6 +33,7 @@ html(lang='hu')
         link(href='/css/bg.css?v=1', rel='stylesheet', type='text/css')
         block styles
     body.gradient-form.gradient-custom-1
+        script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')
         
         - var hunTextFormat = function (name) {
         -   name = name.replace("á", "a");
@@ -195,7 +196,6 @@ html(lang='hu')
                     a(href="/contact").nav-link Rólunk
             p.text-white Copyright &copy; 2022 Celebrate Together
 
-        script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')
         script(src='https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js')
         script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js')
         script(defer='', src='https://use.fontawesome.com/releases/v5.0.8/js/all.js')
