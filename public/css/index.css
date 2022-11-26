@@ -222,8 +222,14 @@ img {
     font-size: 8px;
 }
 
-@media screen and (max-width: 1300px) {
- 
+@media screen and (max-width: 1444px) {
+    .nav-link {
+        font-size: 14px !important;
+    }
+}
+
+@media screen and (max-width: 1300px) { 
+
     .alert.alert-warning {
         margin: 0px !important;
     }
