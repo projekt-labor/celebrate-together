@@ -59,7 +59,7 @@ block content
     script.
         (() => {
             "use strict";
-            let baseSeconds = 2500;
+            let baseSeconds = 2000;
             let scrollTime = $('#user-recs').width()/120 * baseSeconds - 2.5*baseSeconds;
 
             setTimeout(() => {
@@ -67,6 +67,6 @@ block content
                     let width = $('#user-recs').width();
                     $('#user-recs').animate({scrollLeft: width}, scrollTime);
                     $('#user-recs').animate({scrollLeft: -width}, scrollTime);
-                }, 10);
-            }, 10);
+                }, 0);
+            }, 100);
         })(jQuery);

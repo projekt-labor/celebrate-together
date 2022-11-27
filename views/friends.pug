@@ -7,10 +7,10 @@ block content
             | Barátok
         hr
 
-        if friends 
+        if friends
             for friend in friends 
                 img(src='/images/profiles/' + friend.profile, alt='logo').pb-4.me-2.avatarkep
-                a(href=makeUserUrl(friend))= friend.name
+                a(href=makeUserUrl(friend) style="font-size: 20px;")= friend.name
                 br
 
         else 

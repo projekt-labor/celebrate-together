@@ -9,7 +9,9 @@ block content
 
         div(class="container-fluid")
             .row
-                form(action="/event/create", method="POST", class="col-4")
+                .col-sm-4 
+                    span
+                form(action="/event/create", method="POST").col-sm-4
                     br
                     label(for="name") Az esemény neve:
                     input(type="text", name="name", placeholder="Az esemény neve", required="ture", value="").form-control
@@ -24,5 +26,7 @@ block content
 
                     br
                     input(type="submit", name="submit" value="Meghirdetés").btn.btn-primary
+                .col-sm-4 
+                    span
         
     div(style="margin-bottom:500px;")

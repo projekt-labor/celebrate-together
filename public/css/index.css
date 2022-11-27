@@ -222,9 +222,17 @@ img {
     font-size: 8px;
 }
 
+section.section-white {
+    margin: 30px 275px 30px 275px !important;
+}
+
 @media screen and (max-width: 1444px) {
     .nav-link {
-        font-size: 14px !important;
+        font-size: 15px !important;
+    }
+
+    section.section-white {
+        margin: 30px 175px 30px 175px !important;
     }
 }
 
@@ -302,10 +310,6 @@ img {
     box-shadow: 0px 0px 20px rgb(33, 33, 33, 0.4);
     margin: 30px 30px 30px 30px;
     padding: 30px 30px 30px 30px;
-}
-
-section.section-white {
-    margin: 30px 275px 30px 275px !important;
 }
 
 .horizontal-list {

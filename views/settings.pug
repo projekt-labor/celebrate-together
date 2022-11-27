@@ -14,7 +14,10 @@ block content
 
         div(class="container-fluid")
             .row
-                form(action="/user/settings", method="POST").col-4
+                .col-sm-4
+                    span
+
+                form(action="/user/settings", method="POST").col-sm
 
                     - var profile = "/images/profiles/" + user.profile;
                     include part_avatar_choice
@@ -44,14 +47,23 @@ block content
                     br
                     input(type="submit", name="submit" value="Módosítások mentése").btn.btn-primary
 
+                .col-sm-4
+                    span
+
             hr
 
             .row
-                form#delete-form(action="/user/deletee", method="GET", class="col-4")
+                .col-sm-4
+                    span
+
+                form#delete-form(action="/user/deletee", method="GET").col-sm
                     br
                     input(id="delete-btn" type="submit", name="submit" value="Fiókom törlése").btn.btn-outline-danger
                     br
                     span.small.text-muted Figyelem! A művelet nem vonható vissza!
+
+                .col-sm-4
+                    span
 
 
     div(style="margin-bottom:500px;")

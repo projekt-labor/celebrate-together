@@ -17,17 +17,18 @@ block content
         hr
 
         if birthdays.length != 0
-            for b in birthdays 
-                a(href=makeUserUrl(b))
-                    span= b.name
-                span  e hónap 
-                span= parseBday(b.birth_day)
-                span . napján lesz 
-                span= parseAge(b.birth_day) 
-                span  éves!
-                
-                br
-                br
+            for b in birthdays
+                div(style="font-size: 20px;")
+                    a(href=makeUserUrl(b))
+                        span= b.name
+                    span  e hónap 
+                    span= parseBday(b.birth_day)
+                    span . napján lesz 
+                    span= parseAge(b.birth_day) 
+                    span  éves!
+                    
+                    br
+                    br
         else
             p(style="font-style: italic;").text-muted Ugy néz ki mostanában nem lesz egy barátodnak sem szülinapja
 
