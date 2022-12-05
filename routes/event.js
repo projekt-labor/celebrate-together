@@ -41,6 +41,8 @@ EVENT_ROUTE.post("/:id/edit", onlyLogined, async (req, res) => {
         .isLength({ min: 1 });
     req.checkBody("place", "")
         .isLength({ min: 1 });
+    req.checkBody("date1", "")
+        .isLength({ min: 1 });
 
     const errors = req.validationErrors();
 
@@ -51,8 +53,8 @@ EVENT_ROUTE.post("/:id/edit", onlyLogined, async (req, res) => {
         return res.redirect("/event/"+req.params.id+"/edit");
     }
 
-    return DB.query("UPDATE event e SET name=?, text=?, place=? WHERE e.id=?",
-    [req.body.name, req.body.text, req.body.place, req.params.id],
+    return DB.query("UPDATE event e SET name=?, text=?, place=?, date=? WHERE e.id=?",
+    [req.body.name, req.body.text, req.body.place, req.body.date1, req.params.id],
     (errors, result) => {
         if (errors) {
             console.log(errors);
@@ -141,6 +143,8 @@ EVENT_ROUTE.post("/create", onlyLogined, async (req, res) => {
         .isLength({ min: 1 });
     req.checkBody("place", "")
         .isLength({ min: 1 });
+    req.checkBody("date1", "")
+        .isLength({ min: 1 });
 
     const errors = req.validationErrors();
 
@@ -151,8 +155,8 @@ EVENT_ROUTE.post("/create", onlyLogined, async (req, res) => {
         return res.redirect("/event/create");
     }
 
-    return await DB.query("INSERT INTO event (name, text, place) VALUES (?, ?, ?)",
-        [req.body.name, req.body.text, req.body.place],
+    return await DB.query("INSERT INTO event (name, text, place, date) VALUES (?, ?, ?, ?)",
+        [req.body.name, req.body.text, req.body.place, req.body.date1],
         async (errors, results) => {
         if (errors) {
             console.log(errors);
@@ -160,8 +164,8 @@ EVENT_ROUTE.post("/create", onlyLogined, async (req, res) => {
             return res.redirect("/event/create");
         }
 
-        return DB.query("SELECT * FROM event WHERE name=? AND text=? AND place=?",
-        [req.body.name, req.body.text, req.body.place],
+        return DB.query("SELECT * FROM event WHERE name=? AND text=? AND place=? AND date=?",
+        [req.body.name, req.body.text, req.body.place, req.body.date1],
         (errors, events) => {
             if (errors) {
                 console.log(errors);
