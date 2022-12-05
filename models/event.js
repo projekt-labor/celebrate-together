@@ -1,12 +1,12 @@
 
 class Event {
 
-    constructor(name="", text="", place="", date="", id=0) {
+    constructor(name="", text="", place="", event_date="", id=0) {
         this.id = id;
         this.name = name;
         this.text = text;
         this.place = place;
-        this.date = this.date;
+        this.event_date = event_date;
     }
 
     fromDB(dbo) {
@@ -14,7 +14,7 @@ class Event {
         this.name = dbo.name;
         this.text = dbo.text;
         this.place = dbo.place;
-        this.date = dbo.date;
+        this.event_date = dbo.event_date;
         return this;
     }
 
