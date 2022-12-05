@@ -37,12 +37,20 @@ INDEX_ROUTE.get("/", async (req, res) => {
     }
 
     async function getComments(post, callback) {
+        console.log("\nGETCOMMENTS function: " + post.post_id + "\n-----------------------")
         return await DB.query(`
-        SELECT c.user_id user_id, c.other_id other_id, c.type \`type\`, c.text \`text\`, c.date \`date\` FROM comment c
-        LEFT JOIN post p ON(p.id=other_id)
-        WHERE p.id=?;
+        SELECT u.name, u.profile, c.user_id user_id, c.other_id other_id, IF(c.type=0, "post","event") as location, c.text, c.date, 
+	        CASE
+    	        WHEN c.type=0 THEN p.id
+                WHEN c.type<>0 THEN e.id
+            END as L
+        FROM comment c
+            left OUTER join post p on c.other_id = p.id
+            left OUTER join event e on c.other_id = e.id
+            left join user u on c.user_id = u.id
+        Where c.other_id = ?;
         `,
-        [post.id],
+        [post.post_id],
         (err, res) => {
             if (err) console.log(err);
             return callback(res);
@@ -106,6 +114,7 @@ INDEX_ROUTE.get("/", async (req, res) => {
                                     return p;
                                     return getComments(p, (r) => {
                                         p.comments = r;
+                                        
                                         return p;
                                     });
                                 }),
@@ -128,7 +137,8 @@ INDEX_ROUTE.get("/", async (req, res) => {
                         user: req.session.user,
                         posts: results.map((p) => {
                             p.comments = [];
-                            return p;
+                            //return p;
+                            console.log("---------------\nGetComments():\n " + p.post_id + "\n---------------------------------")
                             return getComments(p, (r) => {
                                 p.comments = r;
                                 return p;
