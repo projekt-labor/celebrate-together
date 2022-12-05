@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2022. Dec 05. 18:34
+-- Létrehozás ideje: 2022. Dec 05. 20:56
 -- Kiszolgáló verziója: 10.4.18-MariaDB
 -- PHP verzió: 8.0.3
 
@@ -33,10 +33,22 @@ DROP TABLE IF EXISTS `comment`;
 CREATE TABLE `comment` (
   `user_id` int(11) NOT NULL,
   `other_id` int(11) NOT NULL,
-  `type` varchar(40) COLLATE utf8_hungarian_ci DEFAULT NULL,
+  `type` tinyint(1) DEFAULT NULL COMMENT 'T/F',
   `text` varchar(40) COLLATE utf8_hungarian_ci DEFAULT NULL,
   `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
+
+--
+-- A tábla adatainak kiíratása `comment`
+--
+
+INSERT INTO `comment` (`user_id`, `other_id`, `type`, `text`, `date`) VALUES
+(21, 8, 0, 'Teszt komment1', '2022-12-05 18:03:45'),
+(21, 8, 0, 'Teszt komment2', '2022-12-05 18:03:45'),
+(21, 8, 0, 'Teszt komment3', '2022-12-05 18:03:45'),
+(21, 10, 1, 'Teszt szöveg eseményhez1', '2022-12-05 18:12:18'),
+(21, 10, 1, 'Teszt szöveg eseményhez2', '2022-12-05 18:12:18'),
+(21, 10, 1, 'Teszt szöveg eseményhez3', '2022-12-05 18:12:18');
 
 -- --------------------------------------------------------
 
