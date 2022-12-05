@@ -51,9 +51,9 @@ INDEX_ROUTE.get("/", async (req, res) => {
         Where c.other_id = ?;
         `,
         [post.post_id],
-        (err, res) => {
+        async (err, res) => {
             if (err) console.log(err);
-            return callback(res);
+            return await callback(res);
         });
     }
 
@@ -109,10 +109,9 @@ INDEX_ROUTE.get("/", async (req, res) => {
                                 title: CONFIG.BASE_TITLE,
                                 messages: await req.consumeFlash('info'),
                                 user: req.session.user,
-                                posts: ress.map((p) => {
+                                posts: await ress.map(async (p) => {
                                     p.comments = [];
-                                    return p;
-                                    return getComments(p, (r) => {
+                                    return await getComments(p, (r) => {
                                         p.comments = r;
                                         
                                         return p;
@@ -135,11 +134,11 @@ INDEX_ROUTE.get("/", async (req, res) => {
                         title: CONFIG.BASE_TITLE,
                         messages: await req.consumeFlash('info'),
                         user: req.session.user,
-                        posts: results.map((p) => {
+                        posts: results.map(async (p) => {
                             p.comments = [];
                             //return p;
                             console.log("---------------\nGetComments():\n " + p.post_id + "\n---------------------------------")
-                            return getComments(p, (r) => {
+                            return await getComments(p, (r) => {
                                 p.comments = r;
                                 return p;
                             });
