@@ -47,9 +47,9 @@ INDEX_ROUTE.get("/", async (req, res) => {
         Where c.other_id = ?;
         `,
         [post.post_id],
-        (err, res) => {
+        async (err, res) => {
             if (err) console.log(err);
-            return callback(res);
+            return await callback(res);
         });
     }*/
 
@@ -107,8 +107,18 @@ INDEX_ROUTE.get("/", async (req, res) => {
                                 title: CONFIG.BASE_TITLE,
                                 messages: await req.consumeFlash('info'),
                                 user: req.session.user,
+<<<<<<< HEAD
                                 posts: ress.map((p) => {
                                     return p;
+=======
+                                posts: await ress.map(async (p) => {
+                                    p.comments = [];
+                                    return await getComments(p, (r) => {
+                                        p.comments = r;
+                                        
+                                        return p;
+                                    });
+>>>>>>> 69bcdd0cd1ad9fbd890ccbdf21ab4bda45d2adca
                                 }),
                                 user_recs: user_recs
                             });
@@ -125,6 +135,7 @@ INDEX_ROUTE.get("/", async (req, res) => {
                 [req.session.user.id, req.session.user.id, req.session.user.id],
                 async (error, user_recs) => {
                     if (error) console.log(errors);
+<<<<<<< HEAD
                     return await DB.query(`SELECT u.id user_id, u.profile user_profile, u.name name, p.id post_id, p.message message, p.date date,
                     c.name c_name, c.text c_text, c.date c_date, c.profile c_profile
                     FROM comments c LEFT JOIN user u ON(u.id=c.user_id)
@@ -143,6 +154,22 @@ INDEX_ROUTE.get("/", async (req, res) => {
                             }),
                             user_recs: user_recs
                         });
+=======
+                    return res.render("index", {
+                        title: CONFIG.BASE_TITLE,
+                        messages: await req.consumeFlash('info'),
+                        user: req.session.user,
+                        posts: results.map(async (p) => {
+                            p.comments = [];
+                            //return p;
+                            console.log("---------------\nGetComments():\n " + p.post_id + "\n---------------------------------")
+                            return await getComments(p, (r) => {
+                                p.comments = r;
+                                return p;
+                            });
+                        }),
+                        user_recs: user_recs
+>>>>>>> 69bcdd0cd1ad9fbd890ccbdf21ab4bda45d2adca
                     });
                 });
             });
