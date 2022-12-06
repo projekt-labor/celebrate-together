@@ -70,9 +70,15 @@ html(lang='hu')
         -   return new String(date.getFullYear()) + "-" + m + "-" + d;
         - }
 
-        - var formatDate = function(date) {
+        - var formatDate = function(date, needs_hour=false) {
         -   var d = new Date(date);
-        -   return new String(d.getFullYear()) + "-" + new String(d.getMonth()+1) + "-" + new String(d.getDate());
+        -   var day = new String(d.getDate());
+        -   if (day.length == 1) day = "0" + day;
+        -   if (!needs_hour) return new String(d.getFullYear()) + "-" + new String(d.getMonth()+1) + "-" + day;
+        -   var b = new String(d.getFullYear()) + "-" + new String(d.getMonth()+1) + "-" + day;
+        -   var minutes = new String(d.getMinutes());
+        -   if (minutes.length == 1) minutes = "0" + minutes;
+        -   return b + " " + new String(d.getHours()) + ":" + minutes;
         - }
 
         - function stripEventName(desc) {
