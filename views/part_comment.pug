@@ -6,9 +6,9 @@ li.comment-body
                     img(src='/images/profiles/' + post.c_profile, alt='logo').avatarkep
                     p.text-dark.fw-bold.inlineblock.ps-1= post.c_name
         .col-sm
-            p= post.c_date        
-            hr
-            p= post.c_text
+            p= formatDate(post.c_date)        
+        hr
+        p= post.c_text
         //.col-sm-2
             - var d = new Date();
             p= LMFAO2
