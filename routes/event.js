@@ -220,6 +220,19 @@ EVENT_ROUTE.get("/:id/unattend", onlyLogined, async (req, res) => {
 });
 
 EVENT_ROUTE.get("/:id/:name", onlyLogined, async (req, res) => {
+    return await DB.query(`SELECT f.src_user_id \`user_id\`, u.name \`name\`, u.id id  FROM user u RIGHT JOIN friend f ON(f.src_user_id=u.id OR f.dest_user_id=u.id)
+    WHERE f.is_approved=1 AND (f.src_user_id=? OR f.dest_user_id=?) GROUP BY u.id`,
+    [req.session.user.id, req.session.user.id],
+    async (error, friendResults) => {
+        if (error) {
+            console.log(error);
+            req.flash('info', CONFIG.ERROR_MSG);
+            return res.render("event", {
+                title: CONFIG.BASE_TITLE,
+                messages: await req.consumeFlash('info'),
+                user: req.session.user
+            });
+        }
     return await DB.query(`
     SELECT *,
     (SELECT ue1.is_editor
@@ -257,17 +270,48 @@ EVENT_ROUTE.get("/:id/:name", onlyLogined, async (req, res) => {
                 console.log(errors);
                 attendants = [];
             }
-            console.log("\nResult:\n" + results[0].event_date + "\n----------------------");
-            return res.render("event", {
-                title: CONFIG.BASE_TITLE + " - " + results[0].name,
-                messages: await req.consumeFlash('info'),
-                user: req.session.user,
-                event: results[0],
-                attendants: attendants
+            return await DB.query(`SELECT u.id user_id, u.profile user_profile, u.name, e.id event_id, e.name event_name, e.text event_text, e.event_date event_date,
+                                c.name c_name, c.text c_text, c.date c_date, c.profile c_profile, c.user_id c_user_id
+                                FROM comments c LEFT JOIN user u ON(u.id=c.user_id)
+                                                LEFT JOIN event e ON(e.id = c.other_id)
+                                WHERE location="event" AND c.other_id = ? AND u.id IN (${friendResults.map((r) => r.id).join(",")}, ?)
+                                ORDER BY e.event_date DESC;`,
+            [req.params.id, req.session.user.id],
+            async (error, eventWithComments) => {
+                if (error) console.log(errors);
+                return res.render("event", {
+                    title: CONFIG.BASE_TITLE + " - " + results[0].name,
+                    messages: await req.consumeFlash('info'),
+                    user: req.session.user,
+                    event: eventWithComments.map((ewc) => {
+                        console.log("EWC: \n: " + ewc.user_id + "\n------------")
+                        return ewc;
+                    }),
+                    attendants: attendants
+                });
             });
-        });
+            console.log("\nResult:\n" + results[0].event_date + "\n----------------------");
+            
+        
 
     });
+});
+});
+});
+
+EVENT_ROUTE.post("/comment/:id/create", onlyLogined, async (req, res) => {
+    req.checkBody("text", "")
+        .isLength({ min: 1 });
+    const errors = req.validationErrors();
+    const text = req.body.text;
+    if (errors) {
+        req.flash('info', CONFIG.LOGIN_NOK);
+        return res.redirect("/");
+    }
+
+    const c = `INSERT INTO ${CONFIG.COMMENT_TABLE_NAME} (user_id, other_id, type, text) VALUES (?, ?, ?, ?)`;
+    return DB.query(c, [req.session.user.id, req.params.id, 1, text], (e,r) => { return res.redirect("/")});
+
 });
 
 EVENT_ROUTE.get("/:id", onlyLogined, (req, res) => {    

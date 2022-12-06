@@ -6,21 +6,21 @@ block content
             .col-sm
                 h1.fw-bold
                     i.fas.fa-calendar.me-2
-                    span= event.name
+                    span= event.event_name
             .col-sm-2
                 if event.is_user_editor
-                    a.btn.btn-primary(href="/event/"+event.id+"/edit")
+                    a.btn.btn-primary(href="/event/"+event.event_id+"/edit")
                         i.fas.fa-edit.me-2
                         | Szerkesztés
                 else if event.is_user_attending
-                    a.btn.btn-outline-danger(href="/event/"+event.id+"/unattend") Részvétel törlése
+                    a.btn.btn-outline-danger(href="/event/"+event.event_id+"/unattend") Részvétel törlése
                 else if !event.is_user_attending
-                    a.btn.btn-primary(href="/event/"+event.id+"/attend") Részvétel jelzése!
+                    a.btn.btn-primary(href="/event/"+event.event_id+"/attend") Részvétel jelzése!
 
         hr
 
         br
-        p.event-desc= event.text
+        p= event.event_text
         br
 
         h2.fw-bold.mt-2.mb-3
@@ -42,5 +42,21 @@ block content
                 include part_user
         else 
             p(style="font-style: italic;").text-muted Légy te az első!
+        
+        hr
+        h2.fw-bold.mt-2.mb-3
+            i.fas.fa-comments.me-2
+            | Kommentek
+        ul(style="list-style: none;")
+            for post in event
+                include part_comment
+            
+        form(method="POST", action="/comment/"+ event.event_id +"/create")  // event_id -> for ciklusban
+            .row.small.mt-1.ps-5.pe-5
+                .col-sm-10
+                    input(type="text", name="text", placeholder="Ide írhatod a kommentedet").form-control
+                .col-sm-2 
+                    input(type="submit", value="Kommentelés!").btn.btn-primary
+
 
     div(style="margin-bottom:500px;")

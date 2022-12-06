@@ -180,6 +180,7 @@ INDEX_ROUTE.post("/comment/:id/create", onlyLogined, async (req, res) => {
 
 });
 
+
 INDEX_ROUTE.post("/logout", onlyLogined, async (req, res) => {
     req.session.user = null;
     return res.redirect("/");
