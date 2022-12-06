@@ -22,17 +22,15 @@
 
     .container.divfont.pt-1.ps-3.mt-2
         p= post.message
-
         //.text-right.small
             a(href="/post/"+post.post_id+"/comments") 
                 i.fas.fa-comments.me-2
                 | Kommentek
-
-    if posts.length != 0
         hr
-        p 
+        h2.fw-bold.mt-2.mb-3 
             i.fas.fa-comments.me-2
             | Kommentek
         
         ul(style="list-style: none;")
             include part_comment
+        

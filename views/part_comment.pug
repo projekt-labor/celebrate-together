@@ -1,9 +1,14 @@
 li.comment-body
     .row 
         .col-sm 
-            a(href="/user/" + comment.user_id + "/s")= comment.user_name
-            
-            p= comment.text
+            //a(href="/user/" + comment.user_id + "/s")= comment.user_name
+            a(href="/user/" + post.user_id + "/s")
+                    img(src='/images/profiles/' + post.c_profile, alt='logo').avatarkep
+                    p.text-dark.fw-bold.inlineblock.ps-1= post.c_name
+        .col-sm
+            p= post.c_date        
+            hr
+            p= post.c_text
         //.col-sm-2
             - var d = new Date();
             p= LMFAO2

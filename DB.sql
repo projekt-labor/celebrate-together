@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2022. Dec 05. 20:56
+-- Létrehozás ideje: 2022. Dec 06. 20:46
 -- Kiszolgáló verziója: 10.4.18-MariaDB
 -- PHP verzió: 8.0.3
 
@@ -49,6 +49,23 @@ INSERT INTO `comment` (`user_id`, `other_id`, `type`, `text`, `date`) VALUES
 (21, 10, 1, 'Teszt szöveg eseményhez1', '2022-12-05 18:12:18'),
 (21, 10, 1, 'Teszt szöveg eseményhez2', '2022-12-05 18:12:18'),
 (21, 10, 1, 'Teszt szöveg eseményhez3', '2022-12-05 18:12:18');
+
+-- --------------------------------------------------------
+
+--
+-- A nézet helyettes szerkezete `comments`
+-- (Lásd alább az aktuális nézetet)
+--
+DROP VIEW IF EXISTS `comments`;
+CREATE TABLE `comments` (
+`name` varchar(30)
+,`profile` varchar(50)
+,`text` varchar(40)
+,`date` timestamp
+,`user_id` int(11)
+,`other_id` int(11)
+,`location` varchar(5)
+);
 
 -- --------------------------------------------------------
 
@@ -231,6 +248,16 @@ INSERT INTO `user_event_switch` (`user_id`, `event_id`, `date`, `is_editor`) VAL
 (21, 8, '2022-12-05 15:50:54', 1),
 (21, 9, '2022-12-05 17:02:00', 1),
 (21, 10, '2022-12-05 17:31:37', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Nézet szerkezete `comments`
+--
+DROP TABLE IF EXISTS `comments`;
+
+DROP VIEW IF EXISTS `comments`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `comments`  AS   (select `u`.`name` AS `name`,`u`.`profile` AS `profile`,`c`.`text` AS `text`,`c`.`date` AS `date`,`c`.`user_id` AS `user_id`,`c`.`other_id` AS `other_id`,if(`c`.`type` = 0,'post','event') AS `location` from (((`comment` `c` left join `post` `p` on(`c`.`other_id` = `p`.`id`)) left join `event` `e` on(`c`.`other_id` = `e`.`id`)) left join `user` `u` on(`c`.`user_id` = `u`.`id`)))  ;
 
 --
 -- Indexek a kiírt táblákhoz

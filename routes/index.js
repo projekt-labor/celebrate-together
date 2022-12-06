@@ -6,6 +6,7 @@ const DB = require("../src/database");
 const User = require("../models/user");
 const CONFIG = require("../config");
 const { onlyLogined, onlyNotLogined } = require("../src/utils");
+const Post = require('../models/post');
 
 
 Date.prototype.addDays = function(days) {
@@ -36,17 +37,12 @@ INDEX_ROUTE.get("/", async (req, res) => {
         return res.redirect("/login");
     }
 
-    async function getComments(post, callback) {
+    /*async function getComments(post, callback) {
         console.log("\nGETCOMMENTS function: " + post.post_id + "\n-----------------------")
         return await DB.query(`
-        SELECT u.name, u.profile, c.user_id user_id, c.other_id other_id, IF(c.type=0, "post","event") as location, c.text, c.date, 
-	        CASE
-    	        WHEN c.type=0 THEN p.id
-                WHEN c.type<>0 THEN e.id
-            END as L
+        SELECT c.user_id user_id, c.other_id other_id, c.text as text, c.date
         FROM comment c
             left OUTER join post p on c.other_id = p.id
-            left OUTER join event e on c.other_id = e.id
             left join user u on c.user_id = u.id
         Where c.other_id = ?;
         `,
@@ -55,7 +51,7 @@ INDEX_ROUTE.get("/", async (req, res) => {
             if (err) console.log(err);
             return callback(res);
         });
-    }
+    }*/
 
     return await DB.query(
     `SELECT f.src_user_id \`user_id\`, u.name \`name\`, u.id id  FROM user u RIGHT JOIN friend f ON(f.src_user_id=u.id OR f.dest_user_id=u.id)
@@ -82,11 +78,13 @@ INDEX_ROUTE.get("/", async (req, res) => {
         ORDER BY 1;
         `;
 
+        
+
         return await DB.query(`
-        SELECT u.id user_id, u.profile user_profile, u.name, name, p.id post_id, p.message message, p.date date
-        FROM post p LEFT JOIN user u ON(u.id=p.src_user_id)
-        WHERE p.is_public=1 AND u.id IN (${friendResults.map((r) => r.id).join(",")}, ?)
-        ORDER BY p.date DESC;`,
+        SELECT u.id user_id, u.profile user_profile, u.name name, post.id post_id, post.message message, post.date date
+        FROM post LEFT JOIN user u ON(u.id=post.src_user_id OR u.id = post.dest_user_id)
+        WHERE post.is_public=1 AND u.id IN (${friendResults.map((r) => r.id).join(",")}, ?)
+        ORDER BY post.date DESC;`,
             [req.session.user.id],
             async (errors, results) => {
                 if (errors) {
@@ -110,19 +108,15 @@ INDEX_ROUTE.get("/", async (req, res) => {
                                 messages: await req.consumeFlash('info'),
                                 user: req.session.user,
                                 posts: ress.map((p) => {
-                                    p.comments = [];
                                     return p;
-                                    return getComments(p, (r) => {
-                                        p.comments = r;
-                                        
-                                        return p;
-                                    });
                                 }),
                                 user_recs: user_recs
                             });
                         });
                     });
                 }
+
+                
                 
                 console.log("Posztok:");
                 console.log(results);
@@ -131,23 +125,26 @@ INDEX_ROUTE.get("/", async (req, res) => {
                 [req.session.user.id, req.session.user.id, req.session.user.id],
                 async (error, user_recs) => {
                     if (error) console.log(errors);
-                    return res.render("index", {
-                        title: CONFIG.BASE_TITLE,
-                        messages: await req.consumeFlash('info'),
-                        user: req.session.user,
-                        posts: results.map((p) => {
-                            p.comments = [];
-                            //return p;
-                            console.log("---------------\nGetComments():\n " + p.post_id + "\n---------------------------------")
-                            return getComments(p, (r) => {
-                                p.comments = r;
-                                return p;
-                            });
-                        }),
-                        user_recs: user_recs
+                    return await DB.query(`SELECT u.id user_id, u.profile user_profile, u.name name, p.id post_id, p.message message, p.date date,
+                    c.name c_name, c.text c_text, c.date c_date, c.profile c_profile
+                    FROM comments c LEFT JOIN user u ON(u.id=c.user_id)
+                                    LEFT JOIN post p ON(p.id = c.other_id)
+                    WHERE p.is_public=1 AND u.id IN (${friendResults.map((r) => r.id).join(",")}, ?)
+                    ORDER BY p.date DESC;`,
+                    [req.session.user.id],
+                    async (error, postWithComments) => {
+                        if (error) console.log(errors);
+                        return res.render("index", {
+                            title: CONFIG.BASE_TITLE,
+                            messages: await req.consumeFlash('info'),
+                            user: req.session.user,
+                            posts: postWithComments.map((pwc) => {
+                                return pwc;
+                            }),
+                            user_recs: user_recs
+                        });
                     });
                 });
-
             });
     });
 });
