@@ -32,4 +32,11 @@
             | Kommentek
         ul(style="list-style: none;")
             include part_comment
+            
+        form(method="POST", action="/comment/"+post.post_id+"/create")
+            .row.small.mt-1.ps-5.pe-5
+                .col-sm-10
+                    input(type="text", name="text", placeholder="Ide írhatod a kommentedet").form-control
+                .col-sm-2 
+                    input(type="submit", value="Kommentelés!").btn.btn-primary
         

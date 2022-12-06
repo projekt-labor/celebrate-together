@@ -10,5 +10,6 @@ module.exports = {
     FRIEND_TABLE_NAME: "friend",
     USER_TABLE_NAME: "user",
     EVENT_TABLE_NAME: "event",
+    COMMENT_TABLE_NAME: "comment",
     WRTIE_SOMETHING_AS_MESSAGE: "Az üzenetnek tartalma kell hogy legyen!"
 }
