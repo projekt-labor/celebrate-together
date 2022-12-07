@@ -34,6 +34,22 @@ EVENT_ROUTE.get("/:id/edit", onlyLogined, async (req, res) => {
     });
 });
 
+EVENT_ROUTE.post("/comment/:id/create", onlyLogined, async (req, res) => {
+    req.checkBody("text", "")
+        .isLength({ min: 1 });
+    
+    const errors = req.validationErrors();
+    const text = req.body.text;
+    if (errors) {
+        req.flash('info', CONFIG.LOGIN_NOK);
+        return res.redirect("/");
+    }
+    console.log("EVENT_ROUTE ID: \n" + req.params.id + "\n----------------");
+    const c = `INSERT INTO ${CONFIG.COMMENT_TABLE_NAME} (user_id, other_id, type, text) VALUES (?, ?, ?, ?)`;
+    return DB.query(c, [req.session.user.id, req.params.id, 1, text], (e,r) => { return res.redirect("/")});
+
+});
+
 EVENT_ROUTE.post("/:id/edit", onlyLogined, async (req, res) => {    
     req.checkBody("name", "")
         .isLength({ min: 1 });
@@ -235,17 +251,15 @@ EVENT_ROUTE.get("/:id/:name", onlyLogined, async (req, res) => {
         }
     return await DB.query(`
     SELECT *,
-    (SELECT ue1.is_editor
-    FROM event e1
-    LEFT JOIN user_event_switch ue1 ON(e1.id=ue1.event_id)
-    WHERE e1.id=? AND ue1.user_id=?) is_user_editor,
+    (SELECT ue1.is_editor FROM event e1 LEFT JOIN user_event_switch ue1
+         ON(e1.id=ue1.event_id) WHERE e1.id=? AND ue1.user_id=?) is_user_editor,
     (SELECT COUNT(*)
      FROM event e1
-     LEFT JOIN user_event_switch ue1 ON(e1.id=ue1.event_id)
-     WHERE e1.id=? AND ue1.user_id=?) is_user_attending
+    LEFT JOIN user_event_switch ue1 ON(e1.id=ue1.event_id)
+    WHERE e1.id=? AND ue1.user_id=?) is_user_attending
     FROM event e
     LEFT JOIN user_event_switch ue ON(e.id=ue.event_id)
-    WHERE e.id=?
+    WHERE e.id= ?
     `,
     [req.params.id, req.session.user.id, req.params.id, req.session.user.id, req.params.id],
     async (errors, results) => {
@@ -263,7 +277,7 @@ EVENT_ROUTE.get("/:id/:name", onlyLogined, async (req, res) => {
         console.log(results[0]);
         console.log("igenigenigen");
 
-        return DB.query("SELECT * FROM user_event_switch ue LEFT JOIN user u ON(u.id=ue.user_id) WHERE ue.event_id=?",
+        return DB.query(`SELECT * FROM user_event_switch ue LEFT JOIN user u ON(u.id=ue.user_id) WHERE ue.event_id=?`,
         [req.params.id],
         async (errors, attendants) => {
             if (errors) {
@@ -277,17 +291,26 @@ EVENT_ROUTE.get("/:id/:name", onlyLogined, async (req, res) => {
                                 WHERE location="event" AND c.other_id = ? AND u.id IN (${friendResults.map((r) => r.id).join(",")}, ?)
                                 ORDER BY e.event_date DESC;`,
             [req.params.id, req.session.user.id],
-            async (error, eventWithComments) => {
+            async (error, commentss) => {
                 if (error) console.log(errors);
-                return res.render("event", {
-                    title: CONFIG.BASE_TITLE + " - " + results[0].name,
-                    messages: await req.consumeFlash('info'),
-                    user: req.session.user,
-                    event: eventWithComments.map((ewc) => {
-                        console.log("EWC: \n: " + ewc.user_id + "\n------------")
-                        return ewc;
-                    }),
-                    attendants: attendants
+                return await DB.query(`SELECT event.id event_id, event.name event_name,
+                 event.text event_text, event.place event_place, event.event_date event_date FROM event WHERE event.id = ?`,
+                [req.params.id],
+                async (err, result_event) => {
+                    if(err) console.log(err);
+                    commentss.push(result_event);
+                    return res.render("event", {
+                        title: CONFIG.BASE_TITLE + " - " + results[0].name,
+                        messages: await req.consumeFlash('info'),
+                        user: req.session.user,
+                        event: commentss.map((re) => {
+                            //console.log("EWC: \n: " + re.event_name + "\n------------");
+                            return re;
+                        }),
+                        attendants: attendants,
+                        result_event: result_event
+                        });
+                    });
                 });
             });
             console.log("\nResult:\n" + results[0].event_date + "\n----------------------");
@@ -296,22 +319,6 @@ EVENT_ROUTE.get("/:id/:name", onlyLogined, async (req, res) => {
 
     });
 });
-});
-});
-
-EVENT_ROUTE.post("/comment/:id/create", onlyLogined, async (req, res) => {
-    req.checkBody("text", "")
-        .isLength({ min: 1 });
-    const errors = req.validationErrors();
-    const text = req.body.text;
-    if (errors) {
-        req.flash('info', CONFIG.LOGIN_NOK);
-        return res.redirect("/");
-    }
-
-    const c = `INSERT INTO ${CONFIG.COMMENT_TABLE_NAME} (user_id, other_id, type, text) VALUES (?, ?, ?, ?)`;
-    return DB.query(c, [req.session.user.id, req.params.id, 1, text], (e,r) => { return res.redirect("/")});
-
 });
 
 EVENT_ROUTE.get("/:id", onlyLogined, (req, res) => {    

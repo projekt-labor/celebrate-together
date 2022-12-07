@@ -1,26 +1,27 @@
 extends layout 
 
 block content 
+    - var event_id = 0;
     section.section-white
         .row
             .col-sm
                 h1.fw-bold
                     i.fas.fa-calendar.me-2
-                    span= event.event_name
+                    span= result_event[0].event_name
             .col-sm-2
                 if event.is_user_editor
-                    a.btn.btn-primary(href="/event/"+event.event_id+"/edit")
+                    a.btn.btn-primary(href="/event/"+result_event[0].event_id+"/edit")
                         i.fas.fa-edit.me-2
                         | Szerkesztés
                 else if event.is_user_attending
-                    a.btn.btn-outline-danger(href="/event/"+event.event_id+"/unattend") Részvétel törlése
+                    a.btn.btn-outline-danger(href="/event/"+result_event[0].event_id+"/unattend") Részvétel törlése
                 else if !event.is_user_attending
-                    a.btn.btn-primary(href="/event/"+event.event_id+"/attend") Részvétel jelzése!
+                    a.btn.btn-primary(href="/event/"+result_event[0].event_id+"/attend") Részvétel jelzése!
 
         hr
 
         br
-        p= event.event_text
+        p= result_event[0].event_text
         br
 
         h2.fw-bold.mt-2.mb-3
@@ -28,7 +29,7 @@ block content
             | Dátum
         hr
         br
-        p.event-desc= event.event_date
+        p.event-desc= result_event[0].event_date
         br
 
         h2.fw-bold.mt-2.mb-3
@@ -44,19 +45,23 @@ block content
             p(style="font-style: italic;").text-muted Légy te az első!
         
         hr
-        h2.fw-bold.mt-2.mb-3
-            i.fas.fa-comments.me-2
-            | Kommentek
-        ul(style="list-style: none;")
-            for post in event
-                include part_comment
-            
-        form(method="POST", action="/comment/"+ event.event_id +"/create")  // event_id -> for ciklusban
-            .row.small.mt-1.ps-5.pe-5
-                .col-sm-10
-                    input(type="text", name="text", placeholder="Ide írhatod a kommentedet").form-control
-                .col-sm-2 
-                    input(type="submit", value="Kommentelés!").btn.btn-primary
+        if event.is_user_editor == 1 || event.is_user_attending != 0
+            h2.fw-bold.mt-2.mb-3
+                i.fas.fa-comments.me-2
+                | Kommentek
+            if event.length != 1
+                ul(style="list-style: none;")
+                    for post in event
+                        - event_id = post.event_id
+                        include part_comment
+            else 
+                p Jelenleg még nincsenek kommentek!
+            form(method="POST", action="/event/comment/"+ result_event[0].event_id +"/create") 
+                    .row.small.mt-1.ps-5.pe-5
+                        .col-sm-10
+                            input(type="text", name="text", placeholder="Ide írhatod a kommentedet").form-control
+                        .col-sm-2 
+                            input(type="submit", value="Kommentelés!").btn.btn-primary
 
 
     div(style="margin-bottom:500px;")

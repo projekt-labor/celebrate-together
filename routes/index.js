@@ -168,13 +168,14 @@ INDEX_ROUTE.get("/logout", onlyLogined, async (req, res) => {
 INDEX_ROUTE.post("/comment/:id/create", onlyLogined, async (req, res) => {
     req.checkBody("text", "")
         .isLength({ min: 1 });
+    
     const errors = req.validationErrors();
     const text = req.body.text;
     if (errors) {
         req.flash('info', CONFIG.LOGIN_NOK);
         return res.redirect("/");
     }
-
+    console.log("INDEX_ROUTE ID: \n" + req.params.id + "\n----------------");
     const c = `INSERT INTO ${CONFIG.COMMENT_TABLE_NAME} (user_id, other_id, type, text) VALUES (?, ?, ?, ?)`;
     return DB.query(c, [req.session.user.id, req.params.id, 0, text], (e,r) => { return res.redirect("/")});
 
