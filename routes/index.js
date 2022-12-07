@@ -125,24 +125,36 @@ INDEX_ROUTE.get("/", async (req, res) => {
                 [req.session.user.id, req.session.user.id, req.session.user.id],
                 async (error, user_recs) => {
                     if (error) console.log(errors);
-                    return await DB.query(`SELECT u.id user_id, u.profile user_profile, u.name name, p.id post_id, p.message message, p.date date,
+                    return await DB.query(`SELECT u.id user_id, u.profile user_profile, u.name \`name\`, p.id post_id, p.message message, p.date date,
                     c.name c_name, c.text c_text, c.date c_date, c.profile c_profile
                     FROM comments c LEFT JOIN user u ON(u.id=c.user_id)
-                                    LEFT JOIN post p ON(p.id = c.other_id)
+                                    LEFT JOIN post p ON(p.id=c.other_id)
                     WHERE p.is_public=1 AND u.id IN (${friendResults.map((r) => r.id).join(",")}, ?)
                     ORDER BY p.date DESC;`,
                     [req.session.user.id],
                     async (error, postWithComments) => {
                         if (error) console.log(errors);
-                        return res.render("index", {
-                            title: CONFIG.BASE_TITLE,
-                            messages: await req.consumeFlash('info'),
-                            user: req.session.user,
-                            posts: postWithComments.map((pwc) => {
-                                return pwc;
-                            }),
-                            user_recs: user_recs
-                        });
+
+                        let queryPostWithoutComments = `
+                        SELECT u.id user_id, u.profile user_profile, u.name \`name\`, p.id post_id, p.message message, p.date date
+                        FROM post p
+                            LEFT JOIN user u ON(u.id=p.src_user_id)
+                            LEFT JOIN comments c ON(c.other_id=p.id)
+                        WHERE u.id IN (${friendResults.map((r) => r.id).join(",")}, ?) AND c.other_id IS NULL
+                        ORDER BY p.date DESC;`;
+
+                        return await DB.query(queryPostWithoutComments,
+                            [req.session.user.id],
+                            async (err, postWithoutComments) => {
+                                return res.render("index", {
+                                    title: CONFIG.BASE_TITLE,
+                                    messages: await req.consumeFlash('info'),
+                                    user: req.session.user,
+                                    posts: postWithComments.concat(postWithoutComments),
+                                    user_recs: user_recs
+                                });
+                            }
+                            );
                     });
                 });
             });

@@ -54,7 +54,7 @@ block content
                                             -     let post_container = {};
                                             -     for (let post of posts) {
                                             -         if (Object.keys(post_container).includes(post.post_id)) {
-                                            -         continue;
+                                            -           continue;
                                             -         }
                                             -         post_container[post.post_id] = post;
                                             -     }
@@ -64,8 +64,17 @@ block content
                                             -     }
                                             -     return new_posts;
                                             - }
-                                            - let comments = posts;
+                                            - function getCommentsFromPosts(posts, s_post_id) {
+                                            -    let comments = [];
+                                            -     for (let post of posts) {
+                                            -         if (post.post_id == s_post_id) {
+                                            -           comments.push(post);
+                                            -         }
+                                            -     }
+                                            -     return comments;
+                                            - }
                                             for post in getPostsFromComments(posts)
+                                                - let comments = getCommentsFromPosts(posts, post.post_id);
                                                 include part_post
 
 
