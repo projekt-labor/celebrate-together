@@ -51,29 +51,24 @@ block content
                                     .row.g-0
                                         .col-lg-12.p-2.pt-4
                                             - function getPostsFromComments(posts) {
-                                            -     let post_container = {};
-                                            -     for (let post of posts) {
-                                            -         if (Object.keys(post_container).includes(post.post_id)) {
-                                            -           continue;
-                                            -         }
-                                            -         post_container[post.post_id] = post;
-                                            -     }
                                             -     let new_posts = [];
-                                            -     for (let post_id of Object.keys(post_container)) {
-                                            -         new_posts.push(post_container[post_id]);
+                                            -     for (let post of posts) {
+                                            -         if (post.is_post) {
+                                            -            new_posts.push(post);
+                                            -         }
                                             -     }
                                             -     return new_posts;
                                             - }
                                             - function getCommentsFromPosts(posts, s_post_id) {
                                             -    let comments = [];
                                             -     for (let post of posts) {
-                                            -         if (post.post_id == s_post_id) {
+                                            -         if (post.post_id == s_post_id && !post.is_post) {
                                             -           comments.push(post);
                                             -         }
                                             -     }
                                             -     return comments;
                                             - }
-                                            for post in getPostsFromComments(posts)
+                                            for post of getPostsFromComments(posts)
                                                 - let comments = getCommentsFromPosts(posts, post.post_id);
                                                 include part_post
 

@@ -146,11 +146,22 @@ INDEX_ROUTE.get("/", async (req, res) => {
                         return await DB.query(queryPostWithoutComments,
                             [req.session.user.id],
                             async (err, postWithoutComments) => {
+                                if (err) console.log(err);
+                                console.log("-------------------------");
+
                                 return res.render("index", {
                                     title: CONFIG.BASE_TITLE,
                                     messages: await req.consumeFlash('info'),
                                     user: req.session.user,
-                                    posts: postWithComments.concat(postWithoutComments),
+                                    posts: postWithComments.concat(postWithoutComments).concat(results).map((e) => {
+                                        if (!e.hasOwnProperty("c_name")) {
+                                            e.is_post = true;
+                                        }
+                                        else {
+                                            e.is_post = false;
+                                        }
+                                        return e;
+                                    }),
                                     user_recs: user_recs
                                 });
                             }
