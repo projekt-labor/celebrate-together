@@ -6,8 +6,17 @@ li.comment-body
             a(href="/user/" + post.user_id + "/s")
                     img(src='/images/profiles/' + post.c_profile, alt='logo').avatarkep
                     p(style="font-size:14px").text-dark.fw-bold.inlineblock.ps-1= post.c_name
-        .col-sm-2
-            p(style="font-size:14px")= formatDate(post.c_date, true)        
+        .col-sm-4
+            if post.user_id == user.id
+                .row
+                    .col-sm
+                        p(style="font-size:14px")= formatDate(post.c_date, true)
+                    .col-sm
+                        form(action="/comment/"+post.post_id+"/delete", method="POST")
+                            input(type="submit" value="x").btn.btn-sm.btn-danger
+            else
+                p(style="font-size:14px")= formatDate(post.c_date, true)
+
         hr(style="width:825px; color: rgb(170,170,170);")
         p(style="font-size:14px")= post.c_text
         //.col-sm-2
