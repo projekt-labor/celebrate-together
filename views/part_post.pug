@@ -31,7 +31,8 @@
             i.fas.fa-comments.me-2
             | Kommentek
         ul(style="list-style: none;")
-            include part_comment
+            for post in comments
+                include part_comment
 
         form(method="POST", action="/comment/"+post.post_id+"/create")
             .row.small.mt-1.ps-5.pe-5

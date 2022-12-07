@@ -50,7 +50,22 @@ block content
                                 .card.rounded-3.text-black.bg-light(style="margin-top: 0px;")
                                     .row.g-0
                                         .col-lg-12.p-2.pt-4
-                                            for post in posts
+                                            - function getPostsFromComments(posts) {
+                                            -     let post_container = {};
+                                            -     for (let post of posts) {
+                                            -         if (Object.keys(post_container).includes(post.post_id)) {
+                                            -         continue;
+                                            -         }
+                                            -         post_container[post.post_id] = post;
+                                            -     }
+                                            -     let new_posts = [];
+                                            -     for (let post_id of Object.keys(post_container)) {
+                                            -         new_posts.push(post_container[post_id]);
+                                            -     }
+                                            -     return new_posts;
+                                            - }
+                                            - let comments = posts;
+                                            for post in getPostsFromComments(posts)
                                                 include part_post
 
 
