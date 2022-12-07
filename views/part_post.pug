@@ -35,10 +35,11 @@
 
         - var at_least_one = false;
         ul(style="list-style: none;")
-            for post in comments
-                if post.c_text
-                    include part_comment
-                    - at_least_one = true;
+            if comments 
+                for post in comments
+                    if post.c_text
+                        include part_comment
+                        - at_least_one = true;
             if !at_least_one
                 i.text-muted.pb-2.pt-2.ps-2.pe-2.small Légy te az első aki kommentel!
 
