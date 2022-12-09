@@ -291,7 +291,7 @@ EVENT_ROUTE.get("/:id/:name", onlyLogined, async (req, res) => {
                 console.log(errors);
                 attendants = [];
             }
-            return await DB.query(`SELECT u.id user_id, u.profile user_profile, u.name, e.id event_id, e.name event_name, e.text event_text, e.event_date event_date,
+            return await DB.query(`SELECT u.id user_id, u.profile user_profile, u.name u_name, e.id event_id, e.name event_name, e.text event_text, e.event_date event_date,
                                 c.c_id c_id, c.name c_name, c.text c_text, c.date c_date, c.profile c_profile, c.user_id c_user_id, c.location c_location
                                 FROM comments c LEFT JOIN user u ON(u.id=c.user_id)
                                                 LEFT JOIN event e ON(e.id = c.other_id)
@@ -305,7 +305,7 @@ EVENT_ROUTE.get("/:id/:name", onlyLogined, async (req, res) => {
                 [req.params.id],
                 async (err, result_event) => {
                     if(err) console.log(err);
-                    commentss.concat(result_event);
+                    commentss.concat(result_event).concat(results);
                     return res.render("event", {
                         title: CONFIG.BASE_TITLE + " - " + results[0].name,
                         messages: await req.consumeFlash('info'),

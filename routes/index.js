@@ -216,7 +216,7 @@ INDEX_ROUTE.post("/comment/:id/delete/:location/", onlyLogined, async (req, res)
     console.log("INDEX_ROUTE id: " + req.params.location + "\n-----------------------");
     var l = "";
     if(req.params.location == "post") l = "/";
-    else l = "/event/";
+    else l = "/events/";
     const c = `DELETE FROM ${CONFIG.COMMENT_TABLE_NAME} WHERE id = ?`;
     return DB.query(c, [req.params.id], (e,r) => { return res.redirect(l)});
 });

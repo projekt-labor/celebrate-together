@@ -10,6 +10,7 @@ block content
                     i.fas.fa-calendar.me-2
                     span= result_event[0].event_name
             .col-sm-2
+                - console.log("EVENT: \n" + event.is_user_editor + "\n--\n" + event.is_user_attending)
                 if event.is_user_editor
                     a.btn.btn-primary(href="/event/"+result_event[0].event_id+"/edit")
                         i.fas.fa-edit.me-2
@@ -17,7 +18,7 @@ block content
                 else if event.is_user_attending
                     a.btn.btn-outline-danger(href="/event/"+result_event[0].event_id+"/unattend") Részvétel törlése
                 else if !event.is_user_attending
-                    - console.log("EVENT: \n" + event.is_user_editor + "\n--------ATTEn: \n" + event.is_user_attending + "\n--------");
+                    //- console.log("EVENT: \n" + event.is_user_editor + "\n--------ATTEn: \n" + event.is_user_attending + "\n--------");
                     a.btn.btn-primary(href="/event/"+result_event[0].event_id+"/attend") Részvétel jelzése!
 
         hr
@@ -47,23 +48,23 @@ block content
             p(style="font-style: italic;").text-muted Légy te az első!
         //- console.log("EVENT_ID: \n" + result_event[0].event_id + "\nCOMMENT loc:\n" + result_event[0].c_location;
         //- loc = result.event[0].c_location;
-        - event_id = event.event_id;
-        - loc = event.c_location;
+        - event_id = result_event[0].event_id;
+        //- loc = event.c_location;
         hr
         if result_event[0].is_user_editor == 1 || result_event[0].is_user_attending != 0
             h2.fw-bold.mt-2.mb-3
                 i.fas.fa-comments.me-2
                 | Kommentek
-            if event.length != 1
+            if event.length != 0
                 ul(style="list-style: none;")
-                    for post in event 
+                    for post in event
                         if post
                             - event_id = post.event_id
                             - loc = post.c_location
                             include part_comment
             else 
                 i.text-muted.small Légy te az első aki kommentel!
-            form(method="POST", action="/comment/"+ event_id +"/create/" + loc + "/") 
+            form(method="POST", action="/comment/"+ event_id +"/create/event/") 
                     .row.small.mt-1.ps-5.pe-5
                         .col-sm-10
                             input(type="text", name="text", placeholder="Ide írhatod a kommentedet").form-control
