@@ -194,8 +194,8 @@ INDEX_ROUTE.post("/comment/:id/create/:location/", onlyLogined, async (req, res)
         .isLength({ min: 1 });
     console.log("INDEX_ROUTE Location: \n" + req.params.location + "\n--------------------");
     var l = "";
-    if(req.params.location == "post") l="/";
-    else l = "/event/";
+    if(req.params.location == "event") l="/event/";
+    else l = "/";
     const errors = req.validationErrors();
     const text = req.body.text;
     if (errors) {
@@ -203,12 +203,11 @@ INDEX_ROUTE.post("/comment/:id/create/:location/", onlyLogined, async (req, res)
         return res.redirect("/");
     }
     console.log("INDEX_ROUTE ID: \n" + req.params.id + "\n----------------");
-    if(l="/"){
-        const c = `INSERT INTO ${CONFIG.COMMENT_TABLE_NAME} (user_id, other_id, type, text) VALUES (?, ?, ?, ?)`;
+    const c = `INSERT INTO ${CONFIG.COMMENT_TABLE_NAME} (user_id, other_id, type, text) VALUES (?, ?, ?, ?)`;
+    if(l=="/"){
         return DB.query(c, [req.session.user.id, req.params.id, 0, text], (e,r) => { return res.redirect(l)});
     }
     else{
-        const c = `INSERT INTO ${CONFIG.COMMENT_TABLE_NAME} (user_id, other_id, type, text) VALUES (?, ?, ?, ?)`;
         return DB.query(c, [req.session.user.id, req.params.id, 1, text], (e,r) => { return res.redirect(l)});
     }
 });

@@ -291,10 +291,10 @@ EVENT_ROUTE.get("/:id/:name", onlyLogined, async (req, res) => {
                 attendants = [];
             }
             return await DB.query(`SELECT u.id user_id, u.profile user_profile, u.name, e.id event_id, e.name event_name, e.text event_text, e.event_date event_date,
-                                c.name c_name, c.text c_text, c.date c_date, c.profile c_profile, c.user_id c_user_id
+                                c.c_id c_id, c.name c_name, c.text c_text, c.date c_date, c.profile c_profile, c.user_id c_user_id, c.location c_location
                                 FROM comments c LEFT JOIN user u ON(u.id=c.user_id)
                                                 LEFT JOIN event e ON(e.id = c.other_id)
-                                WHERE location="event" AND c.other_id = ? AND u.id IN (${friendResults.map((r) => r.id).join(",")}, ?)
+                                WHERE c.location="event" AND c.other_id = ? AND u.id IN (${friendResults.map((r) => r.id).join(",")}, ?)
                                 ORDER BY e.event_date DESC;`,
             [req.params.id, req.session.user.id],
             async (error, commentss) => {

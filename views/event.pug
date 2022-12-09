@@ -2,26 +2,27 @@ extends layout
 
 block content 
     - var event_id = 0;
+    - var loc = "";
     section.section-white
         .row
             .col-sm
                 h1.fw-bold
                     i.fas.fa-calendar.me-2
-                    span= result_event[0].event_name
+                    span= event[0].event_name
             .col-sm-2
                 if event.is_user_editor
-                    a.btn.btn-primary(href="/event/"+result_event[0].event_id+"/edit")
+                    a.btn.btn-primary(href="/event/"+event[0].event_id+"/edit")
                         i.fas.fa-edit.me-2
                         | Szerkesztés
                 else if event.is_user_attending
-                    a.btn.btn-outline-danger(href="/event/"+result_event[0].event_id+"/unattend") Részvétel törlése
+                    a.btn.btn-outline-danger(href="/event/"+event[0].event_id+"/unattend") Részvétel törlése
                 else if !event.is_user_attending
-                    a.btn.btn-primary(href="/event/"+result_event[0].event_id+"/attend") Részvétel jelzése!
+                    a.btn.btn-primary(href="/event/"+event[0].event_id+"/attend") Részvétel jelzése!
 
         hr
 
         br
-        p= result_event[0].event_text
+        p= event[0].event_text
         br
 
         h2.fw-bold.mt-2.mb-3
@@ -29,7 +30,7 @@ block content
             | Dátum
         hr
         br
-        p.event-desc= result_event[0].event_date
+        p.event-desc= event[0].event_date
         br
 
         h2.fw-bold.mt-2.mb-3
@@ -54,10 +55,11 @@ block content
                     for post in event.slice(0, event.length-1)
                         if post
                             - event_id = post.event_id
+                            - loc = post.c_location
                             include part_comment
             else 
                 i.text-muted.small Légy te az első aki kommentel!
-            form(method="POST", action="/comment/"+ result_event[0].event_id +"/create/" + result_event[0].c_location + "/") 
+            form(method="POST", action="/comment/"+ event_id +"/create/" + loc + "/") 
                     .row.small.mt-1.ps-5.pe-5
                         .col-sm-10
                             input(type="text", name="text", placeholder="Ide írhatod a kommentedet").form-control
