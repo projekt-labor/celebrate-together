@@ -57,7 +57,7 @@ block content
                             include part_comment
             else 
                 i.text-muted.small Légy te az első aki kommentel!
-            form(method="POST", action="/comment/"+ result_event[0].event_id +"/create") 
+            form(method="POST", action="/comment/"+ result_event[0].event_id +"/create/" + result_event[0].c_location + "/") 
                     .row.small.mt-1.ps-5.pe-5
                         .col-sm-10
                             input(type="text", name="text", placeholder="Ide írhatod a kommentedet").form-control

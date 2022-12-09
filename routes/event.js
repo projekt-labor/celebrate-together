@@ -34,7 +34,7 @@ EVENT_ROUTE.get("/:id/edit", onlyLogined, async (req, res) => {
     });
 });
 
-EVENT_ROUTE.post("/comment/:id/create", onlyLogined, async (req, res) => {
+/*EVENT_ROUTE.post("/comment/:id/create", onlyLogined, async (req, res) => {
     req.checkBody("text", "")
         .isLength({ min: 1 });
     
@@ -48,13 +48,13 @@ EVENT_ROUTE.post("/comment/:id/create", onlyLogined, async (req, res) => {
     const c = `INSERT INTO ${CONFIG.COMMENT_TABLE_NAME} (user_id, other_id, type, text) VALUES (?, ?, ?, ?)`;
     return DB.query(c, [req.session.user.id, req.params.id, 1, text], (e,r) => { return res.redirect("/")});
 
-});
+});*/
 
-EVENT_ROUTE.post("/comment/:id/delete/", onlyLogined, async (req, res) => {
+/*EVENT_ROUTE.post("/comment/:id/delete/", onlyLogined, async (req, res) => {
     console.log("EVENT_ROUTE: id: \n" + req.params.id + "\n------------------");
     const c = `DELETE FROM ${CONFIG.COMMENT_TABLE_NAME} WHERE id = ?`;
     return DB.query(c, [req.params.id], (e,r) => { return res.redirect("/")});
-});
+});*/
 
 EVENT_ROUTE.post("/:id/edit", onlyLogined, async (req, res) => {    
     req.checkBody("name", "")

@@ -189,10 +189,13 @@ INDEX_ROUTE.get("/logout", onlyLogined, async (req, res) => {
     req.session.user = null;
     return res.redirect("/");
 });
-INDEX_ROUTE.post("/comment/:id/create", onlyLogined, async (req, res) => {
+INDEX_ROUTE.post("/comment/:id/create/:location/", onlyLogined, async (req, res) => {
     req.checkBody("text", "")
         .isLength({ min: 1 });
-    
+    console.log("INDEX_ROUTE Location: \n" + req.params.location + "\n--------------------");
+    var l = "";
+    if(req.params.location == "post") l="/";
+    else l = "/event/";
     const errors = req.validationErrors();
     const text = req.body.text;
     if (errors) {
@@ -200,15 +203,23 @@ INDEX_ROUTE.post("/comment/:id/create", onlyLogined, async (req, res) => {
         return res.redirect("/");
     }
     console.log("INDEX_ROUTE ID: \n" + req.params.id + "\n----------------");
-    const c = `INSERT INTO ${CONFIG.COMMENT_TABLE_NAME} (user_id, other_id, type, text) VALUES (?, ?, ?, ?)`;
-    return DB.query(c, [req.session.user.id, req.params.id, 0, text], (e,r) => { return res.redirect("/")});
-
+    if(l="/"){
+        const c = `INSERT INTO ${CONFIG.COMMENT_TABLE_NAME} (user_id, other_id, type, text) VALUES (?, ?, ?, ?)`;
+        return DB.query(c, [req.session.user.id, req.params.id, 0, text], (e,r) => { return res.redirect(l)});
+    }
+    else{
+        const c = `INSERT INTO ${CONFIG.COMMENT_TABLE_NAME} (user_id, other_id, type, text) VALUES (?, ?, ?, ?)`;
+        return DB.query(c, [req.session.user.id, req.params.id, 1, text], (e,r) => { return res.redirect(l)});
+    }
 });
 
-INDEX_ROUTE.post("/comment/:id/delete/", onlyLogined, async (req, res) => {
+INDEX_ROUTE.post("/comment/:id/delete/:location/", onlyLogined, async (req, res) => {
     console.log("INDEX_ROUTE id: " + req.params.location + "\n-----------------------");
+    var l = "";
+    if(req.params.location == "post") l = "/";
+    else l = "/event/";
     const c = `DELETE FROM ${CONFIG.COMMENT_TABLE_NAME} WHERE id = ?`;
-    return DB.query(c, [req.params.id], (e,r) => { return res.redirect("/")});
+    return DB.query(c, [req.params.id], (e,r) => { return res.redirect(l)});
 });
 
 
