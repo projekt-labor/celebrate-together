@@ -126,14 +126,15 @@ INDEX_ROUTE.get("/", async (req, res) => {
                 async (error, user_recs) => {
                     if (error) console.log(errors);
                     return await DB.query(`SELECT u.id user_id, u.profile user_profile, u.name \`name\`, p.id post_id, p.message message, p.date date,
-                    c.name c_name, c.text c_text, c.date c_date, c.profile c_profile
+                    c.name c_name, c.text c_text, c.date c_date, c.profile c_profile, c.c_id c_id, c.location c_location
                     FROM comments c LEFT JOIN user u ON(u.id=c.user_id)
                                     LEFT JOIN post p ON(p.id=c.other_id)
                     WHERE p.is_public=1 AND u.id IN (${friendResults.map((r) => r.id).join(",")}, ?)
                     ORDER BY p.date DESC;`,
                     [req.session.user.id],
                     async (error, postWithComments) => {
-                        if (error) console.log(errors);
+                        if (error) 
+                            console.log(errors);
 
                         let queryPostWithoutComments = `
                         SELECT u.id user_id, u.profile user_profile, u.name \`name\`, p.id post_id, p.message message, p.date date
@@ -202,6 +203,12 @@ INDEX_ROUTE.post("/comment/:id/create", onlyLogined, async (req, res) => {
     const c = `INSERT INTO ${CONFIG.COMMENT_TABLE_NAME} (user_id, other_id, type, text) VALUES (?, ?, ?, ?)`;
     return DB.query(c, [req.session.user.id, req.params.id, 0, text], (e,r) => { return res.redirect("/")});
 
+});
+
+INDEX_ROUTE.post("/comment/:id/delete/", onlyLogined, async (req, res) => {
+    console.log("INDEX_ROUTE id: " + req.params.location + "\n-----------------------");
+    const c = `DELETE FROM ${CONFIG.COMMENT_TABLE_NAME} WHERE id = ?`;
+    return DB.query(c, [req.params.id], (e,r) => { return res.redirect("/")});
 });
 
 

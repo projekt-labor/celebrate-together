@@ -38,6 +38,7 @@
             if comments 
                 for post in comments
                     if post.c_text
+                        - opost = post;
                         include part_comment
                         - at_least_one = true;
             if !at_least_one

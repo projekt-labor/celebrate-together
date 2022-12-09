@@ -12,7 +12,8 @@ li.comment-body
                     .col-sm
                         p(style="font-size:14px")= formatDate(post.c_date, true)
                     .col-sm
-                        form(action="/comment/"+post.post_id+"/delete", method="POST")
+                        p= post.c_location
+                        form(action="/comment/"+post.c_id+"/delete/", method="POST")
                             input(type="submit" value="x").btn.btn-sm.btn-danger
             else
                 p(style="font-size:14px")= formatDate(post.c_date, true)

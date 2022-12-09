@@ -50,6 +50,12 @@ EVENT_ROUTE.post("/comment/:id/create", onlyLogined, async (req, res) => {
 
 });
 
+EVENT_ROUTE.post("/comment/:id/delete/", onlyLogined, async (req, res) => {
+    console.log("EVENT_ROUTE: id: \n" + req.params.id + "\n------------------");
+    const c = `DELETE FROM ${CONFIG.COMMENT_TABLE_NAME} WHERE id = ?`;
+    return DB.query(c, [req.params.id], (e,r) => { return res.redirect("/")});
+});
+
 EVENT_ROUTE.post("/:id/edit", onlyLogined, async (req, res) => {    
     req.checkBody("name", "")
         .isLength({ min: 1 });
@@ -320,6 +326,7 @@ EVENT_ROUTE.get("/:id/:name", onlyLogined, async (req, res) => {
     });
 });
 });
+
 
 EVENT_ROUTE.get("/:id", onlyLogined, (req, res) => {    
     return res.redirect("/event/" + req.params.id + "/s")

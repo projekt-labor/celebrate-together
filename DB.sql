@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2022. Dec 07. 12:34
+-- Létrehozás ideje: 2022. Dec 09. 09:07
 -- Kiszolgáló verziója: 10.4.18-MariaDB
 -- PHP verzió: 8.0.3
 
@@ -31,6 +31,7 @@ USE `celebrate_together`;
 
 DROP TABLE IF EXISTS `comment`;
 CREATE TABLE `comment` (
+  `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `other_id` int(11) NOT NULL,
   `type` tinyint(1) DEFAULT NULL COMMENT 'T/F',
@@ -42,18 +43,32 @@ CREATE TABLE `comment` (
 -- A tábla adatainak kiíratása `comment`
 --
 
-INSERT INTO `comment` (`user_id`, `other_id`, `type`, `text`, `date`) VALUES
-(21, 8, 0, 'Teszt komment1', '2022-12-05 18:03:45'),
-(21, 8, 0, 'Teszt komment2', '2022-12-05 18:03:45'),
-(21, 8, 0, 'Teszt komment3', '2022-12-05 18:03:45'),
-(21, 10, 1, 'Teszt szöveg eseményhez1', '2022-12-05 18:12:18'),
-(21, 10, 1, 'Teszt szöveg eseményhez2', '2022-12-05 18:12:18'),
-(21, 10, 1, 'Teszt szöveg eseményhez3', '2022-12-05 18:12:18'),
-(21, 8, 0, 'Teszt komment15', '2022-12-06 20:54:33'),
-(21, 9, 1, 'Komment a 9-es eseményhez', '2022-12-07 07:34:34'),
-(21, 8, 0, 'Teszt komment17', '2022-12-07 07:44:21'),
-(21, 10, 1, 'Teszt komment10', '2022-12-07 08:20:52'),
-(21, 6, 1, 'Teszt komment1111', '2022-12-07 11:28:56');
+INSERT INTO `comment` (`id`, `user_id`, `other_id`, `type`, `text`, `date`) VALUES
+(1, 21, 8, 0, 'Teszt komment1', '2022-12-05 18:03:45'),
+(4, 21, 10, 1, 'Teszt szöveg eseményhez1', '2022-12-05 18:12:18'),
+(5, 21, 10, 1, 'Teszt szöveg eseményhez2', '2022-12-05 18:12:18'),
+(6, 21, 10, 1, 'Teszt szöveg eseményhez3', '2022-12-05 18:12:18'),
+(8, 21, 9, 1, 'Komment a 9-es eseményhez', '2022-12-07 07:34:34'),
+(10, 21, 10, 1, 'Teszt komment10', '2022-12-07 08:20:52'),
+(11, 21, 6, 1, 'Teszt komment1111', '2022-12-07 11:28:56'),
+(12, 21, 10, 1, 'Teszt komment11', '2022-12-07 14:05:41'),
+(13, 21, 15, 0, 'Egy teszt poszt alatt egy teszt komment!', '2022-12-07 14:20:23'),
+(14, 21, 11, 0, 'Teszt komment120', '2022-12-07 14:23:32'),
+(15, 21, 14, 0, 'Teszt komment10', '2022-12-07 14:24:21'),
+(17, 21, 12, 0, 'Teszt komment10', '2022-12-07 14:25:12'),
+(18, 21, 13, 0, 'Teszt komment11', '2022-12-07 14:31:20'),
+(19, 21, 14, 0, 'Teszt komment11', '2022-12-07 14:33:13'),
+(20, 19, 7, 0, 'Teszt komment10', '2022-12-07 16:48:28'),
+(21, 21, 16, 0, 'Teszt komment10', '2022-12-07 16:50:53'),
+(22, 19, 16, 0, 'Teszt komment20', '2022-12-07 16:54:07'),
+(23, 19, 16, 0, 'Teszt komment15', '2022-12-07 16:54:21'),
+(25, 19, 16, 0, 'Teszt komment20', '2022-12-07 16:55:59'),
+(28, 3, 3, 0, 'Teszt komment11', '2022-12-08 22:14:20'),
+(29, 21, 8, 0, 'Teszt komment2', '2022-12-09 07:52:20'),
+(30, 21, 8, 0, 'Teszt komment3', '2022-12-09 07:52:34'),
+(31, 21, 10, 0, 'Teszt komment12', '2022-12-09 07:57:30'),
+(33, 21, 10, 0, 'Teszt komment12', '2022-12-09 07:59:49'),
+(34, 21, 10, 0, 'Teszt komment12', '2022-12-09 08:03:54');
 
 -- --------------------------------------------------------
 
@@ -65,11 +80,13 @@ DROP VIEW IF EXISTS `comments`;
 CREATE TABLE `comments` (
 `name` varchar(30)
 ,`profile` varchar(50)
-,`text` varchar(40)
-,`date` timestamp
+,`c_id` int(11)
 ,`user_id` int(11)
 ,`other_id` int(11)
 ,`location` varchar(5)
+,`text` varchar(40)
+,`date` timestamp
+,`L` int(11)
 );
 
 -- --------------------------------------------------------
@@ -123,12 +140,8 @@ INSERT INTO `friend` (`id`, `src_user_id`, `dest_user_id`, `is_approved`, `date`
 (2, 3, 4, 1, '2022-10-14 11:35:11'),
 (5, 4, 7, 1, '2022-10-14 11:27:04'),
 (6, 7, 3, 1, '2022-10-14 12:16:56'),
-(7, 4, 21, 0, '2022-11-25 13:29:13'),
-(8, 1, 21, 0, '2022-11-25 13:29:31'),
-(9, 21, 20, 1, '2022-12-06 22:35:08'),
-(10, 19, 21, 1, '2022-11-25 13:42:32'),
-(11, 20, 19, 1, '2022-11-25 14:03:29'),
-(12, 1, 19, 1, '2022-11-25 14:03:31');
+(13, 21, 19, 1, '2022-12-07 16:37:12'),
+(14, 21, 3, 1, '2022-12-08 22:14:08');
 
 -- --------------------------------------------------------
 
@@ -159,7 +172,9 @@ INSERT INTO `post` (`id`, `src_user_id`, `dest_user_id`, `date`, `message`, `is_
 (11, 19, 21, '2022-11-25 13:43:59', 'Nem is tudtam hogy használod ezt az oldalt', 0),
 (12, 19, 20, '2022-11-25 14:03:58', 'Szia! Gyere el: http://127.0.0.1:8080/event/7/altal%C3%A1nos-iskolai-oszt%C3%A1ly-tal%C3%A1lkoz%C3%B3', 0),
 (13, 19, 1, '2022-11-25 14:04:08', 'Szia! Gyere el: http://127.0.0.1:8080/event/7/altal%C3%A1nos-iskolai-oszt%C3%A1ly-tal%C3%A1lkoz%C3%B3', 0),
-(14, 20, NULL, '2022-11-25 14:05:28', 'Hívj csak kukoricának!', 1);
+(14, 20, NULL, '2022-11-25 14:05:28', 'Hívj csak kukoricának!', 1),
+(15, 21, NULL, '2022-12-07 14:19:45', 'Ez egy teszt poszt!!', 1),
+(16, 19, NULL, '2022-12-07 16:50:16', 'Ez itt Ödön posztja!!', 1);
 
 -- --------------------------------------------------------
 
@@ -263,11 +278,17 @@ INSERT INTO `user_event_switch` (`user_id`, `event_id`, `date`, `is_editor`) VAL
 DROP TABLE IF EXISTS `comments`;
 
 DROP VIEW IF EXISTS `comments`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `comments`  AS   (select `u`.`name` AS `name`,`u`.`profile` AS `profile`,`c`.`text` AS `text`,`c`.`date` AS `date`,`c`.`user_id` AS `user_id`,`c`.`other_id` AS `other_id`,if(`c`.`type` = 0,'post','event') AS `location` from (((`comment` `c` left join `post` `p` on(`c`.`other_id` = `p`.`id`)) left join `event` `e` on(`c`.`other_id` = `e`.`id`)) left join `user` `u` on(`c`.`user_id` = `u`.`id`)))  ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `comments`  AS SELECT `u`.`name` AS `name`, `u`.`profile` AS `profile`, `c`.`id` AS `c_id`, `c`.`user_id` AS `user_id`, `c`.`other_id` AS `other_id`, if(`c`.`type` = 0,'post','event') AS `location`, `c`.`text` AS `text`, `c`.`date` AS `date`, CASE WHEN `c`.`type` = 0 THEN `p`.`id` WHEN `c`.`type` <> 0 THEN `e`.`id` END AS `L` FROM (((`comment` `c` left join `post` `p` on(`c`.`other_id` = `p`.`id`)) left join `event` `e` on(`c`.`other_id` = `e`.`id`)) left join `user` `u` on(`c`.`user_id` = `u`.`id`)) ;
 
 --
 -- Indexek a kiírt táblákhoz
 --
+
+--
+-- A tábla indexei `comment`
+--
+ALTER TABLE `comment`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- A tábla indexei `event`
@@ -309,6 +330,12 @@ ALTER TABLE `user_event_switch`
 --
 
 --
+-- AUTO_INCREMENT a táblához `comment`
+--
+ALTER TABLE `comment`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+
+--
 -- AUTO_INCREMENT a táblához `event`
 --
 ALTER TABLE `event`
@@ -318,13 +345,13 @@ ALTER TABLE `event`
 -- AUTO_INCREMENT a táblához `friend`
 --
 ALTER TABLE `friend`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT a táblához `post`
 --
 ALTER TABLE `post`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT a táblához `user`
