@@ -218,7 +218,10 @@ INDEX_ROUTE.post("/comment/:id/delete/:location/", onlyLogined, async (req, res)
     if(req.params.location == "post") l = "/";
     else l = "/events/";
     const c = `DELETE FROM ${CONFIG.COMMENT_TABLE_NAME} WHERE id = ?`;
-    return DB.query(c, [req.params.id], (e,r) => { return res.redirect(l)});
+    return await DB.query(c, [req.params.id], async (e,r) => {
+        await req.flash('info', "A kommentet sikeresen töröltük!");
+        return res.redirect(l)
+    });
 });
 
 

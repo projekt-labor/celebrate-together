@@ -3,21 +3,25 @@ extends layout
 block content 
     - var event_id = 0;
     - var loc = "";
+
     section.section-white
         .row
             .col-sm
                 h1.fw-bold
                     i.fas.fa-calendar.me-2
                     span= result_event[0].event_name
+                    h3.fw-bold.mt-2.mb-3
+                        i.fas.fa-clock.me-2
+                        span.event-desc= niceDate(result_event[0].event_date)
             .col-sm-2
                 - console.log("EVENT: \n" + event.is_user_editor + "\n--\n" + event.is_user_attending)
-                if event.is_user_editor
+                if result_event[0].is_user_editor
                     a.btn.btn-primary(href="/event/"+result_event[0].event_id+"/edit")
                         i.fas.fa-edit.me-2
                         | Szerkesztés
-                else if event.is_user_attending
+                else if result_event[0].is_user_attending
                     a.btn.btn-outline-danger(href="/event/"+result_event[0].event_id+"/unattend") Részvétel törlése
-                else if !event.is_user_attending
+                else if !result_event[0].is_user_attending
                     //- console.log("EVENT: \n" + event.is_user_editor + "\n--------ATTEn: \n" + event.is_user_attending + "\n--------");
                     a.btn.btn-primary(href="/event/"+result_event[0].event_id+"/attend") Részvétel jelzése!
 
@@ -25,14 +29,6 @@ block content
 
         br
         p= result_event[0].event_text
-        br
-
-        h2.fw-bold.mt-2.mb-3
-            i.fas.fa-calendar.me-2
-            | Dátum
-        hr
-        br
-        p.event-desc= result_event[0].event_date
         br
 
         h2.fw-bold.mt-2.mb-3

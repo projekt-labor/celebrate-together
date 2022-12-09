@@ -1,4 +1,5 @@
-li.comment-body
+// background-color: rgb(230, 230, 230);
+li.comment-body(style="padding: 10px; border-radius: 10px; margin: 5px 5px 15px 5px; box-shadow: 0 0 5px rgb(100,100,100,0.2);")
     .row 
         .col-sm 
             //p= post.event_id
@@ -10,14 +11,14 @@ li.comment-body
             if post.user_id == user.id
                 .row
                     .col-sm
-                        p(style="font-size:14px")= formatDate(post.c_date, true)
-                    .col-sm
+                        p(style="font-size:14px")= niceDate(post.c_date)
+                    .col-sm-2
                         form(action="/comment/"+post.c_id+"/delete/" + post.c_location + "/", method="POST")
-                            input(type="submit" value="x").btn.btn-sm.btn-danger
+                            input(type="submit" value="x" title="Törlés" style="border-radius: 33% !important;").btn-sm.btn.btn-danger
             else
-                p(style="font-size:14px")= formatDate(post.c_date, true)
+                p(style="font-size:14px")= niceDate(post.c_date)
 
-        hr(style="width:825px; color: rgb(170,170,170);")
+        //hr(style="width:825px; color: rgb(170,170,170);")
         p(style="font-size:14px")= post.c_text
         //.col-sm-2
             - var d = new Date();

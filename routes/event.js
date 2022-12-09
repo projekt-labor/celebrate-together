@@ -224,6 +224,43 @@ EVENT_ROUTE.get("/:id/attend", onlyLogined, async (req, res) => {
         await req.flash('info', "Az eseményen való részvételi jelzést sikeresen mentettük!");
         return res.redirect("/event/" + req.params.id + "/s");
     });
+
+    return await DB.query("SELECT ue.user_id, ue.event_id FROM user_event_switch ue WHERE ue.event_id=? AND ue.user_id=?",
+    [req.params.id, req.session.user.id],
+    async (errors, isPresent) => {
+        if (isPresent) {
+            return await DB.query("DELETE FROM user_event_switch ue WHERE ue.event_id=? AND ue.user_id=?",
+                [req.params.id, req.session.user.id],
+                async (err, result) => {
+                    return await DB.query("INSERT INTO user_event_switch (user_id, event_id, date, is_editor) VALUES (?, ?, ?, ?)",
+                    [req.session.user.id, req.params.id, new Date(), 0],
+                    async (errors, result) => {
+                        if (errors) {
+                            console.log(errors);
+                            req.flash('info', CONFIG.ERROR_MSG);
+                            return res.redirect("/event/" + req.params.id + "/s");
+                        }
+                        
+                        await req.flash('info', "Az eseményen való részvételi jelzést sikeresen mentettük!");
+                        return res.redirect("/event/" + req.params.id + "/s");
+                    });
+            });
+        }
+        else {
+            return await DB.query("INSERT INTO user_event_switch (user_id, event_id, date, is_editor) VALUES (?, ?, ?, ?)",
+            [req.session.user.id, req.params.id, new Date(), 0],
+            async (errors, result) => {
+                if (errors) {
+                    console.log(errors);
+                    req.flash('info', CONFIG.ERROR_MSG);
+                    return res.redirect("/event/" + req.params.id + "/s");
+                }
+                
+                await req.flash('info', "Az eseményen való részvételi jelzést sikeresen mentettük!");
+                return res.redirect("/event/" + req.params.id + "/s");
+            });
+        }
+    });
 });
 
 EVENT_ROUTE.get("/:id/unattend", onlyLogined, async (req, res) => {
@@ -257,12 +294,8 @@ EVENT_ROUTE.get("/:id/:name", onlyLogined, async (req, res) => {
         }
     return await DB.query(`
     SELECT *,
-    (SELECT ue1.is_editor FROM event e1 LEFT JOIN user_event_switch ue1
-         ON(e1.id=ue1.event_id) WHERE e1.id=? AND ue1.user_id=?) is_user_editor,
-    (SELECT COUNT(*)
-     FROM event e1
-    LEFT JOIN user_event_switch ue1 ON(e1.id=ue1.event_id)
-    WHERE e1.id=? AND ue1.user_id=?) is_user_attending
+    (SELECT ue1.is_editor FROM event e1 LEFT JOIN user_event_switch ue1 ON(e1.id=ue1.event_id) WHERE e1.id=? AND ue1.user_id=? GROUP BY ue1.event_id) is_user_editor,
+    (SELECT COUNT(*) FROM event e1 LEFT JOIN user_event_switch ue1 ON(e1.id=ue1.event_id) WHERE e1.id=? AND ue1.user_id=? GROUP BY ue1.event_id) is_user_attending
     FROM event e
     LEFT JOIN user_event_switch ue ON(e.id=ue.event_id)
     WHERE e.id= ?
@@ -300,9 +333,13 @@ EVENT_ROUTE.get("/:id/:name", onlyLogined, async (req, res) => {
             [req.params.id, req.session.user.id],
             async (error, commentss) => {
                 if (error) console.log(errors);
-                return await DB.query(`SELECT event.id event_id, event.name event_name,
-                 event.text event_text, event.place event_place, event.event_date event_date FROM event WHERE event.id = ?`,
-                [req.params.id],
+                return await DB.query(`
+                    SELECT event.id event_id, event.name event_name,
+                    event.text event_text, event.place event_place, event.event_date event_date,
+                    (SELECT MAX(ue1.is_editor) FROM event e1 LEFT JOIN user_event_switch ue1 ON(e1.id=ue1.event_id) WHERE e1.id=? AND ue1.user_id=? GROUP BY ue1.event_id) is_user_editor
+                    FROM event WHERE event.id = ?;
+                `,
+                [req.params.id, req.session.user.id, req.params.id],
                 async (err, result_event) => {
                     if(err) console.log(err);
                     commentss.concat(result_event).concat(results);
@@ -320,10 +357,6 @@ EVENT_ROUTE.get("/:id/:name", onlyLogined, async (req, res) => {
                     });
                 });
             });
-            console.log("\nResult:\n" + results[0].event_date + "\n----------------------");
-            
-        
-
     });
 });
 });
