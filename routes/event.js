@@ -266,6 +266,7 @@ EVENT_ROUTE.get("/:id/:name", onlyLogined, async (req, res) => {
     FROM event e
     LEFT JOIN user_event_switch ue ON(e.id=ue.event_id)
     WHERE e.id= ?
+    LIMIT 1
     `,
     [req.params.id, req.session.user.id, req.params.id, req.session.user.id, req.params.id],
     async (errors, results) => {
@@ -304,7 +305,7 @@ EVENT_ROUTE.get("/:id/:name", onlyLogined, async (req, res) => {
                 [req.params.id],
                 async (err, result_event) => {
                     if(err) console.log(err);
-                    commentss.push(result_event);
+                    commentss.concat(result_event);
                     return res.render("event", {
                         title: CONFIG.BASE_TITLE + " - " + results[0].name,
                         messages: await req.consumeFlash('info'),

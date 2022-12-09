@@ -154,7 +154,7 @@ INDEX_ROUTE.get("/", async (req, res) => {
                                     title: CONFIG.BASE_TITLE,
                                     messages: await req.consumeFlash('info'),
                                     user: req.session.user,
-                                    posts: postWithComments.concat(postWithoutComments).concat(results).map((e) => {
+                                    posts: postWithComments.concat(results).map((e) => {
                                         if (!e.hasOwnProperty("c_name")) {
                                             e.is_post = true;
                                         }
@@ -194,7 +194,7 @@ INDEX_ROUTE.post("/comment/:id/create/:location/", onlyLogined, async (req, res)
         .isLength({ min: 1 });
     console.log("INDEX_ROUTE Location: \n" + req.params.location + "\n--------------------");
     var l = "";
-    if(req.params.location == "event") l="/event/";
+    if(req.params.location == "event") l="/events/";
     else l = "/";
     const errors = req.validationErrors();
     const text = req.body.text;
