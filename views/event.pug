@@ -14,7 +14,7 @@ block content
                         i.fas.fa-clock.me-2
                         span.event-desc= niceDate(result_event[0].event_date)
             .col-sm-2
-                - console.log("EVENT: \n" + event.is_user_editor + "\n--\n" + event.is_user_attending)
+                - console.log("EVENT: \n" + result_event[0].is_user_editor + "\n--\n" + result_event[0].is_user_attending)
                 if result_event[0].is_user_editor
                     a.btn.btn-primary(href="/event/"+result_event[0].event_id+"/edit")
                         i.fas.fa-edit.me-2

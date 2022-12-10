@@ -90,8 +90,8 @@ EVENT_ROUTE.post("/:id/edit", onlyLogined, async (req, res) => {
 });
 
 EVENT_ROUTE.post("/:id/delete", onlyLogined, async (req, res) => {    
-    return DB.query("SELECT * FROM event e LEFT JOIN user_event_switch ue ON(ue.event_id=e.id) WHERE ue.is_editor=1 AND ue.user_id=5",
-    [req.params.id],
+    return DB.query("SELECT * FROM event e LEFT JOIN user_event_switch ue ON(ue.event_id=e.id) WHERE ue.is_editor=1 AND ue.user_id=?",
+    [req.session.user.id],
     (errors, result) => {
         if (errors) {
             console.log(errors);
@@ -336,10 +336,11 @@ EVENT_ROUTE.get("/:id/:name", onlyLogined, async (req, res) => {
                 return await DB.query(`
                     SELECT event.id event_id, event.name event_name,
                     event.text event_text, event.place event_place, event.event_date event_date,
-                    (SELECT MAX(ue1.is_editor) FROM event e1 LEFT JOIN user_event_switch ue1 ON(e1.id=ue1.event_id) WHERE e1.id=? AND ue1.user_id=? GROUP BY ue1.event_id) is_user_editor
+                    (SELECT MAX(ue1.is_editor) FROM event e1 LEFT JOIN user_event_switch ue1 ON(e1.id=ue1.event_id) WHERE e1.id=? AND ue1.user_id=? GROUP BY ue1.event_id) is_user_editor,
+                    (SELECT COUNT(*) FROM event e1 LEFT JOIN user_event_switch ue1 ON(e1.id=ue1.event_id) WHERE e1.id=? AND ue1.user_id=? GROUP BY ue1.event_id) is_user_attending
                     FROM event WHERE event.id = ?;
                 `,
-                [req.params.id, req.session.user.id, req.params.id],
+                [req.params.id, req.session.user.id, req.params.id, req.session.user.id, req.params.id],
                 async (err, result_event) => {
                     if(err) console.log(err);
                     commentss.concat(result_event).concat(results);
