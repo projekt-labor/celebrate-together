@@ -47,7 +47,7 @@ block content
         - event_id = result_event[0].event_id;
         //- loc = event.c_location;
         hr
-        if result_event[0].is_user_editor == 1 || result_event[0].is_user_attending != 0
+        if result_event[0].is_user_editor || result_event[0].is_user_attending
             h2.fw-bold.mt-2.mb-3
                 i.fas.fa-comments.me-2
                 | Kommentek
