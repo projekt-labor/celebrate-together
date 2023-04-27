@@ -82,21 +82,21 @@ html(lang='hu')
         - }
 
         - function stripEventName(desc) {
-        -  return desc.substring(0, 15) + "...";  
+        -  return desc.substring(0, 20) + "...";  
         - }
 
         - function getMonth_HU(m) {
-        -    if (d==0) return "január";
-        -    if (d==1) return "február";
-        -    if (d==2) return "március";
-        -    if (d==3) return "április";
-        -    if (d==4) return "május";
-        -    if (d==5) return "június";
-        -    if (d==6) return "július";
-        -    if (d==7) return "augusztus";
-        -    if (d==8) return "szeptember";
-        -    if (d==9) return "október";
-        -    if (d==10) return "november";
+        -    if (m==0) return "január";
+        -    if (m==1) return "február";
+        -    if (m==2) return "március";
+        -    if (m==3) return "április";
+        -    if (m==4) return "május";
+        -    if (m==5) return "június";
+        -    if (m==6) return "július";
+        -    if (m==7) return "augusztus";
+        -    if (m==8) return "szeptember";
+        -    if (m==9) return "október";
+        -    if (m==10) return "november";
         -    return "december";
         - }
 
@@ -111,7 +111,7 @@ html(lang='hu')
         - function niceDate(d) {
         -   let dateObj = new Date(d);
         -   let month = getMonth_HU(dateObj.getMonth());
-        -   let day = dateObj.getDate()+1;
+        -   let day = dateObj.getDate();
         -   let year = dateObj.getFullYear();
         -   return new String(year) + " " + new String(month) + " " + new String(day) + ". - " + getClock(dateObj);
         - }
