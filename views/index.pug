@@ -4,7 +4,7 @@ block content
     .pe-5.ps-5.pt-2
         if user
             section
-                h2.text-center.p-3.text-white Üdvözöllek 
+                h2.text-center.p-3.text-white Üdvözöljük 
                     span.nice-text(style="text-shadow: 0 0 5px rgb(200, 200, 200, 0.1);")= user.name
                     span !
                 .container
@@ -18,7 +18,7 @@ block content
                                             | Posztolj!
                                         .container.pb-3.col-xl-11
                                             form(method="POST", action="/chat/" + user.id + "/public_post")
-                                                textarea(name="text", rows="4" placeholder="Ide azt írsz, amit szeretnél" required="true").form-control.lmfao.textareadetails.rounded
+                                                textarea#auto_size(name="text", rows="1" placeholder="Ide azt írsz, amit szeretnél" required="true").form-control.lmfao.textareadetails.rounded
                                                 .row
                                                     .col-sm
                                                         .row.me-1

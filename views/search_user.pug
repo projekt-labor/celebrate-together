@@ -7,12 +7,11 @@ block content
             | Felhasználók keresése
         hr
 
-        form(action="/search/user", method="POST" style="margin-left: 350px; margin-right: 350px;").form-outline.mb-4.pt-1.mb-5.pb-1.row
+        form(action="/search/user", method="POST" style="margin-left: 200px; margin-right: 200px;").form-outline.mb-4.pt-1.mb-5.pb-1.row.text-center
             .col-sm
                 input(type="text", name="q_user", placeholder="A keresett felhasználó neve").form-control
             .col-sm-3
-                .row
-                    input(type="submit", name="submit" value="Keresek!").btn.btn-primary
+                input(type="submit", name="submit" value="Keresek!").btn.btn-primary
 
 
     div(style="margin-bottom:500px;")

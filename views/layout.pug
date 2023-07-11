@@ -31,10 +31,13 @@ html(lang='hu')
         link(href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css', rel='stylesheet', type='text/css')
         link(href='/css/index.css?v=1', rel='stylesheet', type='text/css')
         link(href='/css/bg.css?v=1', rel='stylesheet', type='text/css')
+
+          
         block styles
     body.gradient-form.gradient-custom-1
         script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')
         
+
         - var hunTextFormat = function (name) {
         -   name = name.replace("á", "a");
         -   name = name.replace("é", "e");
@@ -86,17 +89,17 @@ html(lang='hu')
         - }
 
         - function getMonth_HU(m) {
-        -    if (d==0) return "január";
-        -    if (d==1) return "február";
-        -    if (d==2) return "március";
-        -    if (d==3) return "április";
-        -    if (d==4) return "május";
-        -    if (d==5) return "június";
-        -    if (d==6) return "július";
-        -    if (d==7) return "augusztus";
-        -    if (d==8) return "szeptember";
-        -    if (d==9) return "október";
-        -    if (d==10) return "november";
+        -    if (m==0) return "január";
+        -    if (m==1) return "február";
+        -    if (m==2) return "március";
+        -    if (m==3) return "április";
+        -    if (m==4) return "május";
+        -    if (m==5) return "június";
+        -    if (m==6) return "július";
+        -    if (m==7) return "augusztus";
+        -    if (m==8) return "szeptember";
+        -    if (m==9) return "október";
+        -    if (m==10) return "november";
         -    return "december";
         - }
 
@@ -107,11 +110,12 @@ html(lang='hu')
         -   if (minute.length==1) minute = "0" + minute;
         -   return hour + ":" + minute;
         - }
+
         
         - function niceDate(d) {
         -   let dateObj = new Date(d);
         -   let month = getMonth_HU(dateObj.getMonth());
-        -   let day = dateObj.getDate()+1;
+        -   let day = dateObj.getDate();
         -   let year = dateObj.getFullYear();
         -   return new String(year) + " " + new String(month) + " " + new String(day) + ". - " + getClock(dateObj);
         - }
@@ -232,7 +236,9 @@ html(lang='hu')
                 li
                     a(href="/contact").nav-link Rólunk
             p.text-white Copyright &copy; 2022 Celebrate Together
-
+            
+        script(src="https://rawgit.com/jackmoore/autosize/master/dist/autosize.min.js")
+        script(src='https://cdnjs.cloudflare.com/ajax/libs/autosize.js/6.0.1/autosize.js')
         script(src='https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js')
         script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js')
         script(defer='', src='https://use.fontawesome.com/releases/v5.0.8/js/all.js')
@@ -242,6 +248,13 @@ html(lang='hu')
             script(src="/js/notif.js?v=1", type="text/javascript")
         script(src="/js/bg.js?v=1", type="text/javascript")
         block scripts
+
+        script.
+            $('#auto_size').on('input', function () {
+                this.style.height = 'auto';
+    
+                this.style.height = (this.scrollHeight) + 'px';
+            });
 
         script.
             var c = "var(--icon-color)";

@@ -44,33 +44,33 @@ CREATE TABLE `comment` (
 --
 
 INSERT INTO `comment` (`id`, `user_id`, `other_id`, `type`, `text`, `date`) VALUES
-(8, 21, 9, 1, 'Komment a 9-es eseményhez', '2022-12-07 07:34:34'),
-(14, 21, 11, 0, 'Teszt komment120', '2022-12-07 14:23:32'),
-(15, 21, 14, 0, 'Teszt komment10', '2022-12-07 14:24:21'),
-(17, 21, 12, 0, 'Teszt komment10', '2022-12-07 14:25:12'),
-(18, 21, 13, 0, 'Teszt komment11', '2022-12-07 14:31:20'),
-(19, 21, 14, 0, 'Teszt komment11', '2022-12-07 14:33:13'),
-(20, 19, 7, 0, 'Teszt komment10', '2022-12-07 16:48:28'),
-(21, 21, 16, 0, 'Teszt komment10', '2022-12-07 16:50:53'),
-(22, 19, 16, 0, 'Teszt komment20', '2022-12-07 16:54:07'),
-(23, 19, 16, 0, 'Teszt komment15', '2022-12-07 16:54:21'),
-(25, 19, 16, 0, 'Teszt komment20', '2022-12-07 16:55:59'),
-(28, 3, 3, 0, 'Teszt komment11', '2022-12-08 22:14:20'),
-(29, 21, 8, 0, 'Teszt komment2', '2022-12-09 07:52:20'),
-(35, 21, 17, 0, 'Teszt komment11', '2022-12-09 08:28:17'),
-(53, 21, 8, 0, 'Teszt komment3', '2022-12-09 10:02:54'),
-(58, 21, 6, 1, 'Teszt komment10', '2022-12-09 13:20:29'),
-(59, 21, 0, 0, 'Teszt komment10', '2022-12-09 13:21:16'),
-(60, 21, 1, 0, 'Teszt komment10', '2022-12-09 13:23:06'),
-(61, 21, 1, 0, 'Teszt komment10', '2022-12-09 13:24:20'),
-(66, 21, 16, 0, 'Teszt komment15', '2022-12-09 13:34:02'),
-(67, 21, 0, 1, 'Teszt komment10', '2022-12-09 14:00:34'),
-(74, 21, 16, 0, 'Teszt komment154', '2022-12-09 14:13:22'),
-(75, 21, 1, 1, 'Teszt komment11', '2022-12-09 14:13:40'),
-(76, 21, 6, 1, 'Teszt komment1500', '2022-12-09 14:15:19'),
-(77, 21, 7, 1, 'Teszt komment15', '2022-12-09 14:20:34'),
-(82, 21, 18, 0, 'Teszt komment20', '2022-12-10 06:25:56'),
-(83, 21, 18, 0, 'Teszt komment202', '2022-12-10 06:26:01');
+(8, 21, 9, 1, 'Komment a 9-es eseményhez', '2023-04-07 07:34:34'),
+(14, 21, 11, 0, 'Teszt komment120', '2023-04-07 14:23:32'),
+(15, 21, 14, 0, 'Teszt komment10', '2023-04-07 14:24:21'),
+(17, 21, 12, 0, 'Teszt komment10', '2023-04-07 14:25:12'),
+(18, 21, 13, 0, 'Teszt komment11', '2023-04-07 14:31:20'),
+(19, 21, 14, 0, 'Teszt komment11', '2023-04-07 14:33:13'),
+(20, 19, 7, 0, 'Teszt komment10', '2023-04-07 16:48:28'),
+(21, 21, 16, 0, 'Teszt komment10', '2023-04-07 16:50:53'),
+(22, 19, 16, 0, 'Teszt komment20', '2023-04-07 16:54:07'),
+(23, 19, 16, 0, 'Teszt komment15', '2023-04-07 16:54:21'),
+(25, 19, 16, 0, 'Teszt komment20', '2023-04-07 16:55:59'),
+(28, 3, 3, 0, 'Teszt komment11', '2023-04-08 22:14:20'),
+(29, 21, 8, 0, 'Teszt komment2', '2023-04-09 07:52:20'),
+(35, 21, 17, 0, 'Teszt komment11', '2023-04-09 08:28:17'),
+(53, 21, 8, 0, 'Teszt komment3', '2023-04-09 10:02:54'),
+(58, 21, 6, 1, 'Teszt komment10', '2023-04-09 13:20:29'),
+(59, 21, 0, 0, 'Teszt komment10', '2023-04-09 13:21:16'),
+(60, 21, 1, 0, 'Teszt komment10', '2023-04-09 13:23:06'),
+(61, 21, 1, 0, 'Teszt komment10', '2023-04-09 13:24:20'),
+(66, 21, 16, 0, 'Teszt komment15', '2023-04-09 13:34:02'),
+(67, 21, 0, 1, 'Teszt komment10', '2023-04-09 14:00:34'),
+(74, 21, 16, 0, 'Teszt komment154', '2023-04-09 14:13:22'),
+(75, 21, 1, 1, 'Teszt komment11', '2023-04-09 14:13:40'),
+(76, 21, 6, 1, 'Teszt komment1500', '2023-04-09 14:15:19'),
+(77, 21, 7, 1, 'Teszt komment15', '2023-04-09 14:20:34'),
+(82, 21, 18, 0, 'Teszt komment20', '2023-04-10 06:25:56'),
+(83, 21, 18, 0, 'Teszt komment202', '2023-04-10 06:26:01');
 
 -- --------------------------------------------------------
 
@@ -111,11 +111,11 @@ CREATE TABLE `event` (
 --
 
 INSERT INTO `event` (`id`, `name`, `text`, `place`, `event_date`) VALUES
-(1, 'Elek Szülinapi party', 'Mindenkit meghívok egy sörre!', 'Nagykanizsa', '2022-11-15'),
-(6, 'Teszt Felhasználó saját eseménye!', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\r\n\r\n\r\nSed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?', 'Nagykanizsa', '2022-12-12'),
-(7, 'Általános iskolai osztály találkozó', 'Bárki jöhet az évfolyamból!', 'Székesfehérvár', '2022-12-20'),
-(8, 'Teszt 2', 'Teszt2', 'Teszt helyszín', '2022-12-25'),
-(9, 'Teszt 3', 'Teszt szöveg', 'Teszt helyszín', '2022-12-20');
+(1, 'Elek Szülinapi party', 'Mindenkit meghívok egy sörre!', 'Nagykanizsa', '2023-05-15'),
+(6, 'Teszt Felhasználó saját eseménye!', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\r\n\r\n\r\nSed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?', 'Nagykanizsa', '2023-05-31'),
+(7, 'Általános iskolai osztály találkozó', 'Bárki jöhet az évfolyamból!', 'Székesfehérvár', '2023-05-20'),
+(8, 'Teszt 2', 'Teszt2', 'Teszt helyszín', '2023-04-30'),
+(9, 'Teszt 3', 'Teszt szöveg', 'Teszt helyszín', '2023-05-10');
 
 --
 -- Eseményindítók `event`
@@ -177,16 +177,16 @@ CREATE TABLE `post` (
 --
 
 INSERT INTO `post` (`id`, `src_user_id`, `dest_user_id`, `date`, `message`, `is_public`) VALUES
-(3, 3, NULL, '2022-11-25 13:32:35', 'Kasza Blanka saját posztja! Figyelem, ez hosszú lesz:\n\"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\"', 1),
-(7, 21, NULL, '2022-11-25 13:30:59', 'Ez egy saját poszt!', 1),
-(8, 21, NULL, '2022-11-25 13:31:09', 'Töröld ezt a posztot', 1),
-(9, 21, 19, '2022-11-25 13:30:18', 'Szia Teszt Felhasználó! ', 0),
-(10, 19, 21, '2022-11-25 13:43:56', 'Szia Ödön :D', 0),
-(11, 19, 21, '2022-11-25 13:43:59', 'Nem is tudtam hogy használod ezt az oldalt', 0),
-(12, 19, 20, '2022-11-25 14:03:58', 'Szia! Gyere el: http://127.0.0.1:8080/event/7/altal%C3%A1nos-iskolai-oszt%C3%A1ly-tal%C3%A1lkoz%C3%B3', 0),
-(13, 19, 1, '2022-11-25 14:04:08', 'Szia! Gyere el: http://127.0.0.1:8080/event/7/altal%C3%A1nos-iskolai-oszt%C3%A1ly-tal%C3%A1lkoz%C3%B3', 0),
-(14, 20, NULL, '2022-11-25 14:05:28', 'Hívj csak kukoricának!', 1),
-(16, 19, NULL, '2022-12-07 16:50:16', 'Ez itt Ödön posztja!!', 1);
+(3, 3, NULL, '2023-03-25 13:32:35', 'Kasza Blanka saját posztja! Figyelem, ez hosszú lesz:\n\"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\"', 1),
+(7, 21, NULL, '2023-03-25 13:30:59', 'Ez egy saját poszt!', 1),
+(8, 21, NULL, '2023-03-25 13:31:09', 'Töröld ezt a posztot', 1),
+(9, 21, 19, '2023-03-25 13:30:18', 'Szia Teszt Felhasználó! ', 0),
+(10, 19, 21, '2023-04-25 13:43:56', 'Szia Ödön :D', 0),
+(11, 19, 21, '2023-04-25 13:43:59', 'Nem is tudtam hogy használod ezt az oldalt', 0),
+(12, 19, 20, '2023-04-25 14:03:58', 'Szia! Gyere el: http://127.0.0.1:8080/event/7/altal%C3%A1nos-iskolai-oszt%C3%A1ly-tal%C3%A1lkoz%C3%B3', 0),
+(13, 19, 1, '2023-03-25 14:04:08', 'Szia! Gyere el: http://127.0.0.1:8080/event/7/altal%C3%A1nos-iskolai-oszt%C3%A1ly-tal%C3%A1lkoz%C3%B3', 0),
+(14, 20, NULL, '2023-03-25 14:05:28', 'Hívj csak kukoricának!', 1),
+(16, 19, NULL, '2023-03-07 16:50:16', 'Ez itt Ödön posztja!!', 1);
 
 --
 -- Eseményindítók `post`
@@ -282,17 +282,17 @@ CREATE TABLE `user_event_switch` (
 --
 
 INSERT INTO `user_event_switch` (`user_id`, `event_id`, `date`, `is_editor`) VALUES
-(3, 1, '2022-10-05 15:05:55', 1),
-(3, 3, '2022-10-05 15:05:55', 1),
-(21, 6, '2022-11-25 13:35:08', 1),
-(19, 7, '2022-11-25 13:54:24', 1),
-(1, 7, '2022-11-25 14:04:27', 0),
-(20, 7, '2022-11-25 14:04:57', 0),
-(21, 8, '2022-12-05 15:50:54', 1),
-(21, 9, '2022-12-05 17:02:00', 1),
-(21, 1, '2022-12-09 11:20:16', 0),
-(21, 7, '2022-12-10 06:21:19', 0),
-(3, 7, '2022-12-10 06:46:51', 0);
+(3, 1, '2023-04-05 15:05:55', 1),
+(3, 3, '2023-04-05 15:05:55', 1),
+(21, 6, '2023-03-25 13:35:08', 1),
+(19, 7, '2023-03-25 13:54:24', 1),
+(1, 7, '2023-03-25 14:04:27', 0),
+(20, 7, '2023-02-25 14:04:57', 0),
+(21, 8, '2023-02-05 15:50:54', 1),
+(21, 9, '2023-04-05 17:02:00', 1),
+(21, 1, '2023-03-09 11:20:16', 0),
+(21, 7, '2023-01-10 06:21:19', 0),
+(3, 7, '2023-02-10 06:46:51', 0);
 
 -- --------------------------------------------------------
 

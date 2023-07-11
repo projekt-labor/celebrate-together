@@ -12,7 +12,8 @@ block content
                     span= result_event[0].event_name
                     h3.fw-bold.mt-2.mb-3
                         i.fas.fa-clock.me-2
-                        span.event-desc= niceDate(result_event[0].event_date)
+                        span.event-desc= result_event[0].event_date /*niceDate(result_event[0].event_date)*/
+                        
             .col-sm-2
                 - console.log("EVENT: \n" + result_event[0].is_user_editor + "\n--\n" + result_event[0].is_user_attending)
                 if result_event[0].is_user_editor
