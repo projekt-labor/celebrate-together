@@ -249,7 +249,12 @@ html(lang='hu')
         script(src="/js/bg.js?v=1", type="text/javascript")
         block scripts
 
-        
+        script.
+            $('#auto_size').on('input', function () {
+                this.style.height = 'auto';
+    
+                this.style.height = (this.scrollHeight) + 'px';
+            });
 
         script.
             var c = "var(--icon-color)";

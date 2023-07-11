@@ -7,11 +7,12 @@ block content
             | Események keresése
         hr
 
-        form(action="/search/event", method="POST" style="margin-left: 200px; margin-right: 200px;").form-outline.mb-4.pt-1.mb-5.pb-1.row
+        form(action="/search/event", method="POST" style="margin-left: 350px; margin-right: 350px;").form-outline.mb-4.pt-1.mb-5.pb-1.row
             .col-sm
                 input(type="text", name="q_event", placeholder="A keresett esemény neve").form-control
             .col-sm-3
-                input(type="submit", name="submit" value="Keresek!").btn.btn-primary
+                .row
+                    input(type="submit", name="submit" value="Keresek!").btn.btn-primary
 
 
     div(style="margin-bottom:500px;")
