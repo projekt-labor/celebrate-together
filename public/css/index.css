@@ -149,6 +149,9 @@ textarea {
 a {
     color: var(--link-color);
 }
+.gomb {
+    border-collapse: separate;
+}
 
 a,
 .btn-link,

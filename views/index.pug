@@ -1,6 +1,7 @@
 extend layout
 
 block content
+
     .pe-5.ps-5.pt-2
         if user
             section
@@ -21,8 +22,8 @@ block content
                                                 textarea#auto_size(name="text", rows="1" placeholder="Ide azt írsz, amit szeretnél" required="true").form-control.lmfao.textareadetails.rounded
                                                 .row
                                                     .col-sm
-                                                        .row.me-1
-                                                            button(type="submit", name="submitpost").btn.btn-primary.btn-lg.m-2
+                                                        .me-1
+                                                            button(type="submit", name="submitpost" style="border-radius: 10px !important;").btn.btn-primary.btn-lg.mt-2.gomb
                                                                 i.fas.fa-pencil-alt.me-2
                                                                 | Posztolás
                                                     //.col-sm
