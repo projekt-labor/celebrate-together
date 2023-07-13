@@ -136,13 +136,11 @@ a, input, button, .btn-link, .btn, textarea {
     border-color: transparent !important;
 }
 
-input,
-textarea {
+input, textarea {
     border-radius: 0px !important;
     box-shadow: 0px 0px 15px rgb(72, 72, 72, 0.2) !important;
     background-color: white;
     resize: none;
-    overflow: hidden;
     height: auto;
 }
 

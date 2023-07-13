@@ -1,3 +1,4 @@
+
 .post-card.container.hatter.rounded-3.mb-5
     .container.border-bottom.divfont.p-1
         .row 
@@ -42,11 +43,11 @@
                         - at_least_one = true;
             if !at_least_one
                 i.text-muted.pb-2.pt-2.ps-2.pe-2.small Légy te az első aki kommentel!
-
+                
         form(method="POST", action="/comment/"+opost.post_id+"/create/post/")
             .row.small.mt-1.ps-5.pe-5
                 .col-sm-10
-                    input(type="text", name="text", placeholder="Ide írhatod a kommentedet").form-control
+                    textarea(oninput="auto_size(this)" rows='1' type="text", name="text", placeholder="Ide írhatod a kommentedet").form-control.rounded
                 .col-sm-2 
                     input(type="submit", value="Kommentelés!").btn.btn-primary
         

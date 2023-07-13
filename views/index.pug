@@ -19,7 +19,7 @@ block content
                                             | Posztolj!
                                         .container.pb-3.col-xl-11
                                             form(method="POST", action="/chat/" + user.id + "/public_post")
-                                                textarea#auto_size(name="text", rows="1" placeholder="Ide azt írsz, amit szeretnél" required="true").form-control.lmfao.textareadetails.rounded
+                                                textarea(oninput="auto_size(this)" name="text", rows="1" placeholder="Ide azt írsz, amit szeretnél" required="true").form-control.lmfao.textareadetails.rounded
                                                 .row
                                                     .col-sm
                                                         .me-1
