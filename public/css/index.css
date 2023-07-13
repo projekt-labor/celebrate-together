@@ -149,6 +149,7 @@ a {
 }
 .gomb {
     border-collapse: separate;
+    border-radius: 10px !important;
 }
 
 a,
