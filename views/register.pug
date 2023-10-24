@@ -47,12 +47,13 @@ block content
                                             i.fa.fa-calendar.me-2
                                             | Születési dátum
                                         input(type="date", name="birthday", placeholder="Születésnap", required="ture").form-control.rounded.mb-3
+
+                                        input(type="submit", name="submit" value="Regisztrálok").btn.btn-primary.gradient-custom-2.gomb
                                         br
-                                        a(href="/login").small Már van fiókod?
                                         br
+                                        a(href="/login").small Bejelentkezés
                                         br
-                                        .row
-                                            input(type="submit", name="submit" value="Regisztrálok").btn.btn-primary.gradient-custom-2
+                                        a(href="/register").small Még nincs fiókod?
                                         
                                         // <a class="text-muted" href="#!">Forgot password?</a>
 

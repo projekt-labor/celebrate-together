@@ -181,6 +181,7 @@ INDEX_ROUTE.get("/register", onlyNotLogined, async (req, res) => {
     });
 });
 
+
 INDEX_ROUTE.post("/settings", onlyLogined, (req, res) => {
     return res.redirect("/user/settings");
 });
@@ -509,4 +510,82 @@ INDEX_ROUTE.get("/messages", onlyLogined, async (req, res) => {
     });
 });
 
+//újabb dolgok
+
+//jelszó helyreállítás
+INDEX_ROUTE.get("/new_password_request", onlyNotLogined, async (req, res) => {
+    return res.render("new_password_request", {
+        title: CONFIG.BASE_TITLE,
+        messages: await req.consumeFlash('info'),
+        user: req.session.user
+    });
+});
+//---post rész kell
+
+INDEX_ROUTE.get("/new_password_code", onlyNotLogined, async (req, res) => {
+    return res.render("new_password_code", {
+        title: CONFIG.BASE_TITLE,
+        messages: await req.consumeFlash('info'),
+        user: req.session.user
+    });
+});
+//---post rész kell
+
+INDEX_ROUTE.get("/new_password", onlyNotLogined, async (req, res) => {
+    return res.render("new_password", {
+        title: CONFIG.BASE_TITLE,
+        messages: await req.consumeFlash('info'),
+        user: req.session.user
+    });
+});
+//---post rész kell
+
+
+
+//email megerősítés
+INDEX_ROUTE.get("/email_confirm", onlyNotLogined, async (req, res) => {
+    return res.render("email_confirm", {
+        title: CONFIG.BASE_TITLE,
+        messages: await req.consumeFlash('info'),
+        user: req.session.user
+    });
+});
+//---post rész kell
+
+
+
+INDEX_ROUTE.get("/email_confirm", onlyNotLogined, async (req, res) => {
+    return res.render("email_confirm", {
+        title: CONFIG.BASE_TITLE,
+        messages: await req.consumeFlash('info'),
+        user: req.session.user
+    });
+});
+
+//admin oldal
+INDEX_ROUTE.get("/admin", onlyLogined, async (req, res) => {
+
+    return await DB.query("SELECT u.id, u.name name, u.profile `profile` FROM user u WHERE u.id<>?",[req.session.user.id],
+    async (errors, results) => {
+        if (errors) {
+            console.log(errors);
+            req.flash('info', CONFIG.ERROR_MSG);
+            return res.redirect("/");
+        }
+
+        if (results.length == 0) {
+            results = false;
+        }
+
+
+        return res.render("admin", {
+            title: CONFIG.BASE_TITLE,
+            messages: await req.consumeFlash('info'),
+            user: req.session.user,
+            users:results
+        });
+    });
+});
+
+//a regisztrációs és belépős részt ki kell majd bővíteni
 module.exports = INDEX_ROUTE;

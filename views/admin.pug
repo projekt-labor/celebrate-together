@@ -1,0 +1,19 @@
+extends layout 
+
+block content
+    section.section-white
+        h1.fw-bold
+            i.fas.fa-thumbs-up.me-2
+            | Admin oldal
+        hr
+
+        if users
+            for friend in users
+                img(src='/images/profiles/' + friend.profile, alt='logo').pb-4.me-2.avatarkep
+                a(href=makeUserUrl(friend) style="font-size: 20px;")= friend.name
+                br
+
+        else 
+            p(style="font-style: italic;").text-muted A barátaid litáját itt találod majd, miután visszajelöl egy pár ember! ;)
+
+    div(style="margin-bottom:500px;")

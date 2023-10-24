@@ -146,6 +146,12 @@ html(lang='hu')
                                     | Beállítások
                             li
                                 hr.dropdown-divider
+                            
+                            if user.admin
+                                li
+                                    a.dropdown-item(href='/admin')
+                                        i.fas.fa-thumbs-up.me-1
+                                        | Admin
                             li
                                 a.dropdown-item(href='/messages')
                                     i.fas.fa-comments.me-1

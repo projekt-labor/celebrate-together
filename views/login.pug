@@ -28,13 +28,13 @@ block content
                                             i.fa.fa-lock.me-2
                                             | Jelszó
                                         input(type="password", name="password", placeholder="*******", required="ture" value="asdasd").form-control.rounded.mb-3
-                                        a(href="/new_password_request").small Elfelejtetted a jelszavad?
+
+                                        input(type="submit", name="submit" value="Bejelentkezés").btn.btn-primary.gradient-custom-2.gomb
+                                        br
+                                        br
+                                        a(href="/login").small Bejelentkezés
                                         br
                                         a(href="/register").small Még nincs fiókod?
-                                        br
-                                        br
-                                        .row
-                                            input(type="submit", name="submit" value="Bejelentkezés").btn.btn-primary.gradient-custom-2
 
                             .col-lg-6.d-flex.align-items-center
                                 img.loginpic(src='images/kep.png')

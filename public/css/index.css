@@ -151,6 +151,12 @@ a {
     border-collapse: separate;
     border-radius: 10px !important;
 }
+.szelessegemail{
+    width: 35%;
+}
+.szelesseginputgomb{
+    width: 35%;
+}
 
 a,
 .btn-link,
