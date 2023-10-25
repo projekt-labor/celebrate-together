@@ -207,7 +207,7 @@ DELIMITER ;
 
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(30) COLLATE utf8_hungarian_ci NOT NULL,
   `email` varchar(128) COLLATE utf8_hungarian_ci NOT NULL,
   `password` varchar(128) COLLATE utf8_hungarian_ci NOT NULL,
@@ -219,7 +219,8 @@ CREATE TABLE `user` (
   `admin` TINYINT(1) NOT NULL , 
   `emailmegerosites` TINYINT(1) NOT NULL , 
   `emailkod` INT(6) NULL , 
-  `jelszokod` INT(6) NULL DEFAULT NULL
+  `jelszokod` INT(6) NULL DEFAULT NULL,
+  PRIMARY KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
 
