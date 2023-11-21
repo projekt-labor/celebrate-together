@@ -1,0 +1,53 @@
+
+.post-card.container.hatter.rounded-3.mb-5
+    .container.border-bottom.divfont.p-1
+        .row 
+            .col-sm-10
+                a(href="/user/" + post.user_id + "/s")
+                    img(src='/images/profiles/' + post.user_profile, alt='logo').avatarkep
+                    p.text-dark.fw-bold.inlineblock.ps-1= post.name
+    
+            .col-sm-2
+                if post.user_id == user.id || user.admin
+                    .dropdown
+                        button.btn.btn-outline-primary.btn-sm.dropdown-toggle(id="postdd-"+post.post_id href="#" type="button" data-bs-toggle="dropdown" aria-expanded="false")
+                            i.fas.fa-edit.me-2
+
+                        ul.dropdown-menu(aria-labelledby="postdd-"+post.post_id)
+                            li
+                                a(href="/chat/"+post.post_id+"/delete2").post-del-btn.dropdown-item
+                                    i.fas.fa-trash.me-2
+                                    | Törlés
+                                //form(method="POST" action="/chat/"+post.post_id+"/delete")
+                                    input(type="submit" value="Törlés").post-del-btn.dropdown-item
+
+    .container.divfont.pt-1.ps-3.mt-2
+        p= post.message
+        //.text-right.small
+            a(href="/post/"+post.post_id+"/comments") 
+                i.fas.fa-comments.me-2
+                | Kommentek
+        - var opost = post;
+
+        hr
+        h5.fw-bold.mt-2.mb-3 
+            i.fas.fa-comments.me-2
+            | Kommentek
+
+        - var at_least_one = false;
+        ul(style="list-style: none;")
+            if comments 
+                for post in comments
+                    if post.c_text
+                        include part_comment
+                        - at_least_one = true;
+            if !at_least_one
+                i.text-muted.pb-2.pt-2.ps-2.pe-2.small Légy te az első aki kommentel!
+                
+        form(method="POST", action="/comment/"+opost.post_id+"/create/post/")
+            .row.small.mt-1.ps-5.pe-5
+                .col-sm-10
+                    textarea(oninput="auto_size(this)" rows='1' type="text", name="text", placeholder="Ide írhatod a kommentedet").form-control.rounded
+                .col-sm-2 
+                    input(type="submit", value="Kommentelés!" ).btn.btn-secondary.gomb
+        

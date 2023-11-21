@@ -7,6 +7,24 @@ const User = require("../models/user");
 const CONFIG = require("../config");
 const { onlyLogined, onlyNotLogined } = require("../src/utils");
 
+function nameconverter (name){
+    var result = name.replace(/[^0-9a-zA-ZöüóőúáűéíÖÜÓŐÚŰÁÉÍ]/gmi, "-");
+    return result;
+}
+
+function hunTextFormat (name){
+    name = name.replace("á", "a");
+    name = name.replace("é", "e");
+    name = name.replace("í", "i");
+    name = name.replace("ó", "o");
+    name = name.replace("ö", "o");
+    name = name.replace("ő", "o");
+    name = name.replace("ü", "u");
+    name = name.replace("ú", "u");
+    name = name.replace("ű", "u");
+    return name;
+}
+
 
 let LAST_CHAT_UPDATE = 0;
 
@@ -168,8 +186,6 @@ CHAT_ROUTE.get("/:postid/delete", onlyLogined, async (req, res) => {
         `SELECT * FROM post WHERE (id=?);`,
         [req.params.postid],
         async (err, results) => {
-            console.log("törlés");
-            console.log(results[0]);
             if (err || !results) {
                 await req.flash('info', CONFIG.ERROR_MSG+" 1");
                 console.log(err);
@@ -216,6 +232,106 @@ CHAT_ROUTE.get("/:postid/delete", onlyLogined, async (req, res) => {
                     return res.redirect("/");
                 }
             )
+        }
+    )
+});
+
+CHAT_ROUTE.get("/:postid/delete2", onlyLogined, async (req, res) => {
+    return await DB.query(
+        `SELECT * FROM post WHERE (id=?);`,
+        [req.params.postid],
+        async (err, results) => {
+            if (err || !results) {
+                await req.flash('info', CONFIG.ERROR_MSG+" 1");
+                console.log(err);
+                return res.redirect("/");
+            }
+
+            if (results[0].src_user_id != req.session.user.id) {
+
+                if(req.session.user.admin){
+
+                    return await DB.query(
+                        `SELECT u.id, u.name FROM user u INNER JOIN post p ON u.id = p.src_user_id WHERE p.id=?`,
+                        [req.params.postid],
+                        async (err, results2) => {
+                            if (err || !results2) {
+                                await req.flash('info', CONFIG.ERROR_MSG+" 1");
+                                console.log(err);
+                                return res.redirect("/");
+                            }
+        
+                            console.log(results2[0].id + ", " + results2[0].name);
+                            var name = nameconverter(results2[0].name);
+                            name = name.toLowerCase();
+                            name = hunTextFormat(name);
+                            
+
+                        return await DB.query(
+                            `DELETE FROM post WHERE (id=?)`,
+                            [req.params.postid],
+                            async (err, results3) => {
+                                if (err || !results3) {
+                                    console.log(err);
+                                    await req.flash('info', CONFIG.ERROR_MSG + " 3");
+                                    return res.redirect("/");
+                                }
+                                await req.flash('info', "Poszt törölve admin jogosultsággal! 2");
+                                console.log("admin");
+                                //át kell írni
+                                return res.redirect("/user/" + results2[0].id + "/" + name);
+                            }
+                        )
+                    }
+                )   
+                    
+                }
+                
+                else{
+                    await req.flash('info', "Nincs jogosultságod!");
+                    console.log("not maching users");
+                    return res.redirect("/");
+                }
+            }
+            
+            
+
+
+            return await DB.query(
+                `SELECT u.id, u.name FROM user u INNER JOIN post p ON u.id = p.src_user_id WHERE p.id=?`,
+                [req.params.postid],
+                async (err, results2) => {
+                    if (err || !results2) {
+                        await req.flash('info', CONFIG.ERROR_MSG+" 1");
+                        console.log(err);
+                        return res.redirect("/");
+                    }
+
+                    console.log(results2[0].id + ", " + results2[0].name);
+                    var name = nameconverter(results2[0].name);
+                    name = name.toLowerCase();
+                    name = hunTextFormat(name);
+                    
+                    return await DB.query(
+                        `DELETE FROM post WHERE (src_user_id=? AND id=?)`,
+                        [req.session.user.id, req.params.postid],
+                        async (err, results3) => {
+                            if (err || !results3) {
+                                console.log(err);
+                                await req.flash('info', CONFIG.ERROR_MSG + " 3");
+                                return res.redirect("/");
+                                    
+                            }
+
+                            
+                            await req.flash('info', "A poszt sikeresen törlésre került. 2");
+                            //át kell írni
+                            return res.redirect("/user/" + results2[0].id + "/" + name);
+                        }
+                    )
+                            
+                }
+            )      
         }
     )
 });
