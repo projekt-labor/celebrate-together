@@ -165,18 +165,43 @@ CHAT_ROUTE.post("/:userid/public_post", onlyLogined, async (req, res) => {
 
 CHAT_ROUTE.get("/:postid/delete", onlyLogined, async (req, res) => {
     return await DB.query(
-        `SELECT * FROM post WHERE (src_user_id=? AND id=?);`,
-        [req.session.user.id, req.params.postid],
+        `SELECT * FROM post WHERE (id=?);`,
+        [req.params.postid],
         async (err, results) => {
+            console.log("törlés");
+            console.log(results[0]);
             if (err || !results) {
                 await req.flash('info', CONFIG.ERROR_MSG+" 1");
                 console.log(err);
                 return res.redirect("/");
             }
+
             if (results[0].src_user_id != req.session.user.id) {
-                await req.flash('info', CONFIG.ERROR_MSG+" 2");
-                console.log("not maching users");
-                return res.redirect("/");
+
+                if(req.session.user.admin){
+                    return await DB.query(
+                        `DELETE FROM post WHERE (id=?)`,
+                        [req.params.postid],
+                        async (err, results) => {
+                            if (err || !results) {
+                                console.log(err);
+                                await req.flash('info', CONFIG.ERROR_MSG + " 3");
+                                return res.redirect("/");
+                            }
+                            await req.flash('info', "Poszt törölve admin jogosultsággal!");
+                            console.log("admin");
+                            return res.redirect("/");
+                        }
+                    )
+
+                    
+                }
+                
+                else{
+                    await req.flash('info', "Nincs jogosultságod!");
+                    console.log("not maching users");
+                    return res.redirect("/");
+                }
             }
             return await DB.query(
                 `DELETE FROM post WHERE (src_user_id=? AND id=?)`,

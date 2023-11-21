@@ -8,7 +8,7 @@
                     p.text-dark.fw-bold.inlineblock.ps-1= post.name
     
             .col-sm-2
-                if post.user_id == user.id
+                if post.user_id == user.id || user.admin
                     .dropdown
                         button.btn.btn-outline-primary.btn-sm.dropdown-toggle(id="postdd-"+post.post_id href="#" type="button" data-bs-toggle="dropdown" aria-expanded="false")
                             i.fas.fa-edit.me-2
