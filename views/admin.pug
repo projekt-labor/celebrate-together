@@ -8,12 +8,12 @@ block content
         hr
 
         if users
-            for friend in users
-                img(src='/images/profiles/' + friend.profile, alt='logo').pb-4.me-2.avatarkep
-                a(href=makeUserUrl(friend) style="font-size: 20px;")= friend.name
+            for user in users
+                img(src='/images/profiles/' + user.profile, alt='logo').pb-4.me-2.avatarkep
+                a(href=makeUserUrl(user) style="font-size: 20px;")= user.name
                 br
 
         else 
-            p(style="font-style: italic;").text-muted A barátaid litáját itt találod majd, miután visszajelöl egy pár ember! ;)
+            p(style="font-style: italic;").text-muted Nincsenek felhasználók!
 
     div(style="margin-bottom:500px;")
