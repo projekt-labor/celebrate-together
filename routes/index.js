@@ -493,9 +493,9 @@ INDEX_ROUTE.get("/events", onlyLogined, async (req, res) => {
             })();
 
             return await DB.query(`
-            SELECT DISTINCT e.id id, e.name name, e.text text, e.place place, ue.user_id user_id
+            SELECT DISTINCT e.id id, e.name name, e.text text, e.place place, e.event_date event_date, ue.user_id user_id
             FROM event e LEFT JOIN user_event_switch ue ON(ue.event_id=e.id)
-            WHERE user_id IN (${fstr})
+            WHERE user_id IN (${fstr}) AND event_date > CURDATE()
             GROUP BY id;
             `,
             [req.session.user.id, req.session.user.id],
