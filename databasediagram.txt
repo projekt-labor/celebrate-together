@@ -1,0 +1,39 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+Table user_event_switch {
+  user_id integer
+  event_id integer
+  date timestamp
+  is_editor tinyint 
+}
+
+Table user {
+  id integer [primary key]
+  name varchar
+  email varchar
+  password varchar
+  phone varchar
+  profile varchar
+  birth_day date
+  birth_place varchar
+  residence varchar
+  admin tinyint
+  email_conf tinyint
+  email_code integer
+  pass_code integer
+}
+
+Table post {
+  id integer [primary key]
+  src_user_id integer
+  dest_user_id integer
+  date timestamp
+  message text
+  is_public tinyint
+}
+
+Ref: user.id > post.src_user_id // many-to-one
+Ref: user.id > post.dest_user_id
+Ref: user.id > user_event_switch.user_id
+

@@ -225,6 +225,24 @@ INDEX_ROUTE.post("/comment/:id/delete/:location/", onlyLogined, async (req, res)
     });
 });
 
+INDEX_ROUTE.post("/admin/:id/delete", onlyLogined, async (req, res) => {
+    /**
+     * TRIGGER NEEDED
+     */
+    return DB.query("DELETE FROM user WHERE id=?",
+    [req.params.id],
+    (errors, results) => {
+        if (errors) {
+            console.log(errors);
+            req.flash('info', CONFIG.ERROR_MSG);
+            return res.redirect("/admin");
+        }
+
+        req.flash('info', "A fiókot sikeresen töröltük!");
+        return res.redirect("/admin");
+    });
+});
+
 
 INDEX_ROUTE.post("/logout", onlyLogined, async (req, res) => {
     req.session.user = null;
