@@ -217,9 +217,9 @@ CREATE TABLE `user` (
   `birth_place` varchar(40) COLLATE utf8_hungarian_ci DEFAULT NULL,
   `residence` varchar(40) COLLATE utf8_hungarian_ci DEFAULT NULL,
   `admin` TINYINT(1) NOT NULL , 
-  `emailmegerosites` TINYINT(1) NOT NULL , 
-  `emailkod` INT(6) NULL , 
-  `jelszokod` INT(6) NULL DEFAULT NULL
+  `email_conf` TINYINT(1) NOT NULL , 
+  `email_code` INT(6) NULL , 
+  `pass_code` INT(6) NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
 
@@ -228,7 +228,7 @@ CREATE TABLE `user` (
 -- A tábla adatainak kiíratása `user`
 --
 
-INSERT INTO `user` (`id`, `name`, `email`, `password`, `phone`, `profile`, `birth_day`, `birth_place`, `residence`, `admin`, `emailmegerosites`, `emailkod`, `jelszokod`) VALUES
+INSERT INTO `user` (`id`, `name`, `email`, `password`, `phone`, `profile`, `birth_day`, `birth_place`, `residence`, `admin`, `email_conf`, `email_code`, `pass_code`) VALUES
 (1, 'Remek Elek', 'remeke@gmail.com', '$2b$10$ZKE.QYBBo1ekICbR2RvJs.OWXs/wsUUxfFP2S0jZ2.JZCw5UZ29C6', '06308218311', 'avatar1.png', '2004-12-04', 'Budapest', 'Budapest', 0, 1, NULL, NULL),
 (3, 'Kasza Blanka', 'kaszab@gmail.com', '$2b$10$ZKE.QYBBo1ekICbR2RvJs.OWXs/wsUUxfFP2S0jZ2.JZCw5UZ29C6', '06301578984', 'avatar2.png', '2004-12-10', 'Debrecen', 'Debrecen', 0, 1, NULL, NULL),
 (4, 'Kér Ede', 'kere@gmail.com', '$2b$10$ZKE.QYBBo1ekICbR2RvJs.OWXs/wsUUxfFP2S0jZ2.JZCw5UZ29C6', '06301478526', 'avatar3.png', '2005-12-06', 'Zalaegerszeg', 'Körmend', 0, 1, NULL, NULL),

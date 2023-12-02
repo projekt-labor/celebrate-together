@@ -215,21 +215,27 @@ CREATE TABLE `user` (
   `profile` varchar(50) COLLATE utf8_hungarian_ci DEFAULT 'avatar1.png',
   `birth_day` date DEFAULT NULL,
   `birth_place` varchar(40) COLLATE utf8_hungarian_ci DEFAULT NULL,
-  `residence` varchar(40) COLLATE utf8_hungarian_ci DEFAULT NULL
+  `residence` varchar(40) COLLATE utf8_hungarian_ci DEFAULT NULL,
+  `admin` TINYINT(1) NOT NULL , 
+  `email_conf` TINYINT(1) NOT NULL , 
+  `email_code` INT(6) NULL , 
+  `pass_code` INT(6) NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
+
+-- CREATE TABLE `test`.`asd` (`admin` BIT(1) NOT NULL , `emailmegerosites` BIT(1) NOT NULL , `emailkod` INT(6) NOT NULL , `jelszokod` INT(6) NULL DEFAULT NULL 
 --
 -- A tábla adatainak kiíratása `user`
 --
 
-INSERT INTO `user` (`id`, `name`, `email`, `password`, `phone`, `profile`, `birth_day`, `birth_place`, `residence`) VALUES
-(1, 'Remek Elek', 'remeke@gmail.com', '$2b$10$ZKE.QYBBo1ekICbR2RvJs.OWXs/wsUUxfFP2S0jZ2.JZCw5UZ29C6', '06308218311', 'avatar1.png', '2004-12-04', 'Budapest', 'Budapest'),
-(3, 'Kasza Blanka', 'kaszab@gmail.com', '$2b$10$ZKE.QYBBo1ekICbR2RvJs.OWXs/wsUUxfFP2S0jZ2.JZCw5UZ29C6', '06301578984', 'avatar2.png', '2004-12-10', 'Debrecen', 'Debrecen'),
-(4, 'Kér Ede', 'kere@gmail.com', '$2b$10$ZKE.QYBBo1ekICbR2RvJs.OWXs/wsUUxfFP2S0jZ2.JZCw5UZ29C6', '06301478526', 'avatar3.png', '2005-12-06', 'Zalaegerszeg', 'Körmend'),
-(19, 'Zsíros B. Ödön', 'zsirosb@gmail.com', '$2b$10$ZKE.QYBBo1ekICbR2RvJs.OWXs/wsUUxfFP2S0jZ2.JZCw5UZ29C6', NULL, 'avatar4.png', '2000-12-03', NULL, NULL),
-(20, 'Kukor Ica', 'kukori@gmail.com', '$2b$10$ZKE.QYBBo1ekICbR2RvJs.OWXs/wsUUxfFP2S0jZ2.JZCw5UZ29C6', NULL, 'avatar5.png', '2002-12-11', NULL, NULL),
-(21, 'Teszt Felhasználó', 'teszt@teszt.teszt', '$2b$10$ZKE.QYBBo1ekICbR2RvJs.OWXs/wsUUxfFP2S0jZ2.JZCw5UZ29C6', NULL, 'avatar6.png', '1999-11-30', NULL, NULL),
-(22, 'Példa Péter', 'peldap@gmail.com', '$2b$10$oBP.xqTsSBIUORlE8GkLD.hQWGJ7uHcXVoOXikUm1ZA06g7to.Ox2', NULL, 'avatar1.png', '2000-12-05', NULL, NULL);
+INSERT INTO `user` (`id`, `name`, `email`, `password`, `phone`, `profile`, `birth_day`, `birth_place`, `residence`, `admin`, `email_conf`, `email_code`, `pass_code`) VALUES
+(1, 'Remek Elek', 'remeke@gmail.com', '$2b$10$ZKE.QYBBo1ekICbR2RvJs.OWXs/wsUUxfFP2S0jZ2.JZCw5UZ29C6', '06308218311', 'avatar1.png', '2004-12-04', 'Budapest', 'Budapest', 0, 1, NULL, NULL),
+(3, 'Kasza Blanka', 'kaszab@gmail.com', '$2b$10$ZKE.QYBBo1ekICbR2RvJs.OWXs/wsUUxfFP2S0jZ2.JZCw5UZ29C6', '06301578984', 'avatar2.png', '2004-12-10', 'Debrecen', 'Debrecen', 0, 1, NULL, NULL),
+(4, 'Kér Ede', 'kere@gmail.com', '$2b$10$ZKE.QYBBo1ekICbR2RvJs.OWXs/wsUUxfFP2S0jZ2.JZCw5UZ29C6', '06301478526', 'avatar3.png', '2005-12-06', 'Zalaegerszeg', 'Körmend', 0, 1, NULL, NULL),
+(19, 'Zsíros B. Ödön', 'zsirosb@gmail.com', '$2b$10$ZKE.QYBBo1ekICbR2RvJs.OWXs/wsUUxfFP2S0jZ2.JZCw5UZ29C6', NULL, 'avatar4.png', '2000-12-03', NULL, NULL, 0, 1, NULL, NULL),
+(20, 'Kukor Ica', 'kukori@gmail.com', '$2b$10$ZKE.QYBBo1ekICbR2RvJs.OWXs/wsUUxfFP2S0jZ2.JZCw5UZ29C6', NULL, 'avatar5.png', '2002-12-11', NULL, NULL, 0, 1, NULL, NULL),
+(21, 'Teszt Felhasználó', 'teszt@teszt.teszt', '$2b$10$ZKE.QYBBo1ekICbR2RvJs.OWXs/wsUUxfFP2S0jZ2.JZCw5UZ29C6', NULL, 'avatar6.png', '1999-11-30', NULL, NULL, 1, 1, NULL, NULL),
+(22, 'Példa Péter', 'peldap@gmail.com', '$2b$10$oBP.xqTsSBIUORlE8GkLD.hQWGJ7uHcXVoOXikUm1ZA06g7to.Ox2', NULL, 'avatar1.png', '2000-12-05', NULL, NULL, 0, 1, NULL, NULL);
 
 --
 -- Eseményindítók `user`

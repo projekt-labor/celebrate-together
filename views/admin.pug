@@ -13,7 +13,8 @@ block content
                     form#delete-form(action="/admin/" + user.id + "/delete", method="POST").col-sm
                         img(src='/images/profiles/' + user.profile, alt='logo').pb-4.me-2.avatarkep
                         a(href=makeUserUrl(user) style="font-size: 20px; margin-right: 10px;")= user.name
-                        input(id="delete-btn" type="submit" value="x" title="Törlés").btn-sm.btn.btn-danger.gomb
+                        if !user.admin
+                            input(id="delete-btn" type="submit" value="x" title="Törlés").btn-sm.btn.btn-danger.gomb
                         br
 
         else 

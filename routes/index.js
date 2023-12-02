@@ -303,7 +303,7 @@ INDEX_ROUTE.post("/register", onlyNotLogined, async (req, res) => {
         const emailkod = (Math.floor(Math.random() * (1000000 - 100000)) + 100000).toString();
                     
 
-            DB.query("UPDATE user SET emailkod=? WHERE email=?", [emailkod, email], (errors, result) => {
+            DB.query("UPDATE user SET email_code=? WHERE email=?", [emailkod, email], (errors, result) => {
                 if (errors) throw errors;
             });
 
@@ -311,13 +311,13 @@ INDEX_ROUTE.post("/register", onlyNotLogined, async (req, res) => {
             var transporter = nodemailer.createTransport({
                 service: 'gmail',
                 auth: {
-                    user: 'fogaddmarelazemailcimet@gmail.com',
-                    pass: 'vfqg rzbm ayva imqx'
+                    user: 'info.celebratetogether@gmail.com',
+                    pass: 'dmdo tkll xhrn qmxt'
                 }
             });
 
             var mailOptions = {
-                from: 'fogaddmarelazemailcimet@gmail.com',
+                from: 'info.celebratetogether@gmail.com',
                 to: email,
                 subject: 'Email megerősítő kód',
                 text: 'Email megerősítéséhez szükséges kód: ' + emailkod
@@ -338,7 +338,7 @@ INDEX_ROUTE.post("/register", onlyNotLogined, async (req, res) => {
     const createAndSaveUser = (callback) => {
         return bcrypt.genSalt(10, (err, salt) => {
             return bcrypt.hash(password, salt, function(err, hash) {
-                const q = `INSERT INTO ${CONFIG.USER_TABLE_NAME} (name, email, password, birth_day, \`profile\`, admin, emailmegerosites) VALUES (?, ?, ?, ?, ?, ?, ?)`;
+                const q = `INSERT INTO ${CONFIG.USER_TABLE_NAME} (name, email, password, birth_day, \`profile\`, admin, email_conf) VALUES (?, ?, ?, ?, ?, ?, ?)`;
                 return DB.query(q, [name, email, hash, birthday, profile, 0, 0], callback);
             });
         });
@@ -415,7 +415,7 @@ INDEX_ROUTE.post("/login", onlyNotLogined, (req, res) => {
                 }
 
                 //ha nincs megerősítve az email
-                if (!databaseResults[0].emailmegerosites) {
+                if (!databaseResults[0].email_conf) {
 
                     req.session.megerositeshez_email = email;
                     req.flash('info', "Erősítsd meg az email címedet");
@@ -423,7 +423,7 @@ INDEX_ROUTE.post("/login", onlyNotLogined, (req, res) => {
         const emailkod = (Math.floor(Math.random() * (1000000 - 100000)) + 100000).toString();
                     
 
-            DB.query("UPDATE user SET emailkod=? WHERE email=?", [emailkod, email], (errors, result) => {
+            DB.query("UPDATE user SET email_code=? WHERE email=?", [emailkod, email], (errors, result) => {
                 if (errors) throw errors;
             });
 
@@ -431,13 +431,13 @@ INDEX_ROUTE.post("/login", onlyNotLogined, (req, res) => {
             var transporter = nodemailer.createTransport({
                 service: 'gmail',
                 auth: {
-                    user: 'fogaddmarelazemailcimet@gmail.com',
-                    pass: 'vfqg rzbm ayva imqx'
+                    user: 'info.celebratetogether@gmail.com',
+                    pass: 'dmdo tkll xhrn qmxt'
                 }
             });
 
             var mailOptions = {
-                from: 'fogaddmarelazemailcimet@gmail.com',
+                from: 'info.celebratetogether@gmail.com',
                 to: email,
                 subject: 'Email megerősítő kód',
                 text: 'Email megerősítéséhez szükséges kód: ' + emailkod
@@ -458,7 +458,7 @@ INDEX_ROUTE.post("/login", onlyNotLogined, (req, res) => {
                 // SIKERES BEJELENTKEZÉS
 
                 //nullázza a jelszókódot ha időközben rájöttünk a jelszóra
-                DB.query("UPDATE user SET jelszokod=NULL WHERE email=?", [email], (errors, result) => {
+                DB.query("UPDATE user SET pass_code=NULL WHERE email=?", [email], (errors, result) => {
                     if (errors) throw errors;
                     console.log("Jelszó visszaállítás törölve");
                 });
@@ -647,7 +647,7 @@ INDEX_ROUTE.post("/new_password_request", onlyNotLogined, async (req, res) => {
         }
 
         else {
-            DB.query("UPDATE user SET jelszokod=? WHERE email=?", [kod, email], (errors, result) => {
+            DB.query("UPDATE user SET pass_code=? WHERE email=?", [kod, email], (errors, result) => {
                 if (errors) throw errors;
             });
 
@@ -656,13 +656,13 @@ INDEX_ROUTE.post("/new_password_request", onlyNotLogined, async (req, res) => {
             var transporter = nodemailer.createTransport({
                 service: 'gmail',
                 auth: {
-                    user: 'fogaddmarelazemailcimet@gmail.com',
-                    pass: 'vfqg rzbm ayva imqx'
+                    user: 'info.celebratetogether@gmail.com',
+                    pass: 'dmdo tkll xhrn qmxt'
                 }
             });
 
             var mailOptions = {
-                from: 'fogaddmarelazemailcimet@gmail.com',
+                from: 'info.celebratetogether@gmail.com',
                 to: email,
                 subject: 'Jelszó helyreállítási kód',
                 text: 'Jelszó helyreállításához szükséges kód: ' + kod
@@ -696,7 +696,7 @@ INDEX_ROUTE.post("/new_password_code", onlyNotLogined, async (req, res) => {
     const email = req.session.jelszo_helyreallitas_email;
     var jelszokod = req.body.jelszokod;
 
-    DB.query(`SELECT * FROM user u WHERE u.email=? AND u.jelszokod=?`, [email, jelszokod], function (err, result) {
+    DB.query(`SELECT * FROM user u WHERE u.email=? AND u.pass_code=?`, [email, jelszokod], function (err, result) {
         if (err){
             req.flash('info', "valami nem jó");
             return res.redirect("/new_password_code");
@@ -760,7 +760,7 @@ INDEX_ROUTE.post("/new_password", onlyNotLogined, async (req, res) => {
         });
     });
 
-    DB.query("UPDATE user SET jelszokod=NULL WHERE email=?", [email], (errors, result) => {
+    DB.query("UPDATE user SET pass_code=NULL WHERE email=?", [email], (errors, result) => {
         if (errors) throw errors;
     });
 
@@ -792,18 +792,18 @@ INDEX_ROUTE.post("/email_confirm", onlyNotLogined, async (req, res) => {
         .isLength({ min: 6 });
     var emailkod = req.body.emailkod;
 
-    DB.query(`SELECT * FROM user u WHERE u.email=? AND u.emailkod=?`, [email, emailkod], function (err, result) {
+    DB.query(`SELECT * FROM user u WHERE u.email=? AND u.email_code=?`, [email, emailkod], function (err, result) {
         if (err){
             req.flash('info', "valami nem jó");
             return res.redirect("/email_confirm");
         }      
 
         if (result.length == 1){
-            DB.query("UPDATE user SET emailmegerosites=? WHERE emailkod=?", [1, emailkod], (errors, result) => {
+            DB.query("UPDATE user SET email_conf=? WHERE email_code=?", [1, emailkod], (errors, result) => {
                 if (errors) throw errors;
             });
 
-            DB.query("UPDATE user SET emailkod=NULL WHERE email=?", [email], (errors, result) => {
+            DB.query("UPDATE user SET email_code=NULL WHERE email=?", [email], (errors, result) => {
                 if (errors) throw errors;
             });
 

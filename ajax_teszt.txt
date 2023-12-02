@@ -1,0 +1,23 @@
+index.js
+
+$("#torles").on("click", function (e) {
+        e.preventDefault();
+        let url = "http://" + hostname + "/chat/40/delete";
+
+        $.ajax({
+            method: 'GET',
+            url: url,
+            data: {}
+        }).done((data) => {
+            getIndex();
+        });
+    });
+
+    function getIndex() {
+        let url = "http://" + hostname + "/";
+        $.ajax({
+            method: 'GET',
+            url: url,
+            data: {}
+        });
+    }
