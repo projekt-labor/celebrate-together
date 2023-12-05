@@ -8,7 +8,7 @@ li.comment-body(style="padding: 10px; border-radius: 10px; margin: 5px 5px 15px 
                     img(src='/images/profiles/' + post.c_profile, alt='logo').avatarkep
                     p(style="font-size:14px").text-dark.fw-bold.inlineblock.ps-1= post.c_name
         .col-sm-4
-            if post.user_id == user.id
+            if post.user_id == user.id || user.admin || mine
                 .row
                     .col-sm
                         p(style="font-size:14px")= niceDate(post.c_date)

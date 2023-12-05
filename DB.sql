@@ -180,8 +180,8 @@ INSERT INTO `post` (`id`, `src_user_id`, `dest_user_id`, `date`, `message`, `is_
 (3, 3, NULL, '2022-11-25 13:32:35', 'Kasza Blanka saját posztja! Figyelem, ez hosszú lesz:\n\"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\"', 1),
 (7, 21, NULL, '2022-11-25 13:30:59', 'Ez egy saját poszt!', 1),
 (8, 21, NULL, '2022-11-25 13:31:09', 'Töröld ezt a posztot', 1),
-(9, 21, 19, '2022-11-25 13:30:18', 'Szia Teszt Felhasználó! ', 0),
-(10, 19, 21, '2022-11-25 13:43:56', 'Szia Ödön :D', 0),
+(9, 21, 19, '2022-11-25 13:30:18', 'Szia Ödön :D' , 0),
+(10, 19, 21, '2022-11-25 13:43:56', 'Szia Teszt Felhasználó! ', 0),
 (11, 19, 21, '2022-11-25 13:43:59', 'Nem is tudtam hogy használod ezt az oldalt', 0),
 (12, 19, 20, '2022-11-25 14:03:58', 'Szia! Gyere el: http://127.0.0.1:8080/event/7/altal%C3%A1nos-iskolai-oszt%C3%A1ly-tal%C3%A1lkoz%C3%B3', 0),
 (13, 19, 1, '2022-11-25 14:04:08', 'Szia! Gyere el: http://127.0.0.1:8080/event/7/altal%C3%A1nos-iskolai-oszt%C3%A1ly-tal%C3%A1lkoz%C3%B3', 0),
@@ -250,6 +250,7 @@ CREATE TRIGGER `delete_users` BEFORE DELETE ON `user` FOR EACH ROW BEGIN
 END
 $$
 DELIMITER ;
+
 DROP TRIGGER IF EXISTS `insert_user`;
 DELIMITER $$
 CREATE TRIGGER `insert_user` BEFORE INSERT ON `user` FOR EACH ROW BEGIN
@@ -258,12 +259,18 @@ CREATE TRIGGER `insert_user` BEFORE INSERT ON `user` FOR EACH ROW BEGIN
     Set fs1 = (SELECT SUBSTRING_INDEX(SUBSTRING_INDEX(NEW.name, ' ', 2), ' ', -1));
     Set fs2 = (SELECT SUBSTRING_INDEX(SUBSTRING_INDEX(NEW.name, ' ', 3), ' ', -1));
     IF(fs1 = fs2) THEN
-       SET NEW.name = (SELECT CONCAT(CONCAT(UCASE(LEFT(NEW.name, 1)), LCASE(SUBSTRING(NEW.name, 2, LOCATE(" ", NEW.name)-1))),
-	               CONCAT(UCASE(SUBSTRING(NEW.name, LOCATE(" ", NEW.name)+1,1)), LCASE(SUBSTRING(NEW.name, (LOCATE(" ", NEW.name)+2))))));
+       SET NEW.name = (SELECT CONCAT(CONCAT(UCASE(LEFT(NEW.name, 1)), 
+       LCASE(SUBSTRING(NEW.name, 2, LOCATE(" ", NEW.name)-1))),
+	               CONCAT(UCASE(SUBSTRING(NEW.name, LOCATE(" ", NEW.name)+1,1)), 
+                 LCASE(SUBSTRING(NEW.name, (LOCATE(" ", NEW.name)+2))))));
     ELSE
-        SET NEW.name = (SELECT CONCAT(CONCAT(UCASE(LEFT(NEW.name, 1)), LCASE(SUBSTRING(NEW.name, 2, LOCATE(" ", NEW.name)-1))),
-	                                  CONCAT(UCASE(SUBSTRING(NEW.name, LOCATE(" ", NEW.name)+1,1)), LCASE(SUBSTRING(NEW.name, (LOCATE(" ", NEW.name)+2), (LOCATE(" ", SUBSTRING_INDEX(SUBSTRING_INDEX(NEW.name, ' ', 3), ' ', -2))-1))),
-                                      CONCAT(UCASE(LEFT(SUBSTRING_INDEX(SUBSTRING_INDEX(NEW.name, ' ', 3), ' ', -1),1)), LCASE(SUBSTRING(SUBSTRING_INDEX(SUBSTRING_INDEX(NEW.name, ' ', 3), ' ', -1),2))))));
+        SET NEW.name = (SELECT CONCAT(CONCAT(UCASE(LEFT(NEW.name, 1)), 
+        LCASE(SUBSTRING(NEW.name, 2, LOCATE(" ", NEW.name)-1))),
+	                                  CONCAT(UCASE(SUBSTRING(NEW.name, LOCATE(" ", NEW.name)+1,1)), 
+                                    LCASE(SUBSTRING(NEW.name, (LOCATE(" ", NEW.name)+2), 
+                                    (LOCATE(" ", SUBSTRING_INDEX(SUBSTRING_INDEX(NEW.name, ' ', 3), ' ', -2))-1))),
+                                      CONCAT(UCASE(LEFT(SUBSTRING_INDEX(SUBSTRING_INDEX(NEW.name, ' ', 3), ' ', -1),1)), 
+                                      LCASE(SUBSTRING(SUBSTRING_INDEX(SUBSTRING_INDEX(NEW.name, ' ', 3), ' ', -1),2))))));
     END IF;
 END
 $$

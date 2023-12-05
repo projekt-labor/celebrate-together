@@ -1,12 +1,7 @@
 (($) => {
     "use strict";
 
-    var hostname = window.location.hostname;
-    if (window.location.port) {
-        hostname += ":" + window.location.port;
-    }
-
-    function getNofif(n) {
+    function getNotif(n) {
         return `<li class="dropdown-item">
             <a href="${n.url}" style="color: black;">
                 ${n.text}
@@ -26,15 +21,20 @@
         </li>`;
     }
 
+    var hostname = window.location.hostname;
+    if (window.location.port) {
+        hostname += ":" + window.location.port;
+    }
+
     $.ajax({
         method: 'GET',
         url: "http://" + hostname + "/user/notif",
         data: {}
     }).done((data) => {
-        if (data.status !== 1) return false;
+        if (data.status != 1) return false;
         
         for (let n of data.notifications) {
-            $("#notification-list").html($("#notification-list").html() + getNofif(n));
+            $("#notification-list").html($("#notification-list").html() + getNotif(n));
         }
 
         if (data.notifications.length == 0) {

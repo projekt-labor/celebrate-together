@@ -29,7 +29,7 @@ block content
 
             .row
                 form(action="/event/" + event.id + "/delete", method="POST", class="col-4")
-                    input(type="submit", name="submit" value="Esemény törlése").btn.btn-outline-danger
+                    input#delete-btn-event(type="submit", name="submit" value="Esemény törlése").btn.btn-outline-danger
                     br
                     span.small.text-muted Figyelem! A művelet nem vonható vissza!
     

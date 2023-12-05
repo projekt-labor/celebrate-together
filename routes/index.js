@@ -226,9 +226,7 @@ INDEX_ROUTE.post("/comment/:id/delete/:location/", onlyLogined, async (req, res)
 });
 
 INDEX_ROUTE.post("/admin/:id/delete", onlyLogined, async (req, res) => {
-    /**
-     * TRIGGER NEEDED
-     */
+
     return DB.query("DELETE FROM user WHERE id=?",
     [req.params.id],
     (errors, results) => {
@@ -458,10 +456,12 @@ INDEX_ROUTE.post("/login", onlyNotLogined, (req, res) => {
                 // SIKERES BEJELENTKEZÉS
 
                 //nullázza a jelszókódot ha időközben rájöttünk a jelszóra
-                DB.query("UPDATE user SET pass_code=NULL WHERE email=?", [email], (errors, result) => {
-                    if (errors) throw errors;
-                    console.log("Jelszó visszaállítás törölve");
-                });
+                if (databaseResults[0].pass_code != null) {
+                    DB.query("UPDATE user SET pass_code=NULL WHERE email=?", [email], (errors, result) => {
+                        if (errors) throw errors;
+                        console.log("Jelszó visszaállítás törölve");
+                    });
+                }
 
                 let dbu = databaseResults[0];
                 req.session.user = new User().fromDB(dbu);
@@ -536,10 +536,7 @@ INDEX_ROUTE.get("/events", onlyLogined, async (req, res) => {
 
 INDEX_ROUTE.get("/birthdays", onlyLogined, async (req, res) => {
     let dates = [
-        new Date().addDays(-4),
-        new Date().addDays(-3),
-        new Date().addDays(-2),
-        new Date().addDays(-1),
+
         new Date(),
         new Date().addDays(1),
         new Date().addDays(2),
@@ -554,10 +551,7 @@ INDEX_ROUTE.get("/birthdays", onlyLogined, async (req, res) => {
     OR (MONTH(u.birth_day)=? AND DAY(u.birth_day)=?) 
     OR (MONTH(u.birth_day)=? AND DAY(u.birth_day)=?) 
     OR (MONTH(u.birth_day)=? AND DAY(u.birth_day)=?)
-    OR (MONTH(u.birth_day)=? AND DAY(u.birth_day)=?)
-    OR (MONTH(u.birth_day)=? AND DAY(u.birth_day)=?)
-    OR (MONTH(u.birth_day)=? AND DAY(u.birth_day)=?)
-    OR (MONTH(u.birth_day)=? AND DAY(u.birth_day)=?) 
+     
         `,
     [
         dates[0].getMonth()+1, dates[0].getDate(),
@@ -565,10 +559,7 @@ INDEX_ROUTE.get("/birthdays", onlyLogined, async (req, res) => {
         dates[2].getMonth()+1, dates[2].getDate(),
         dates[3].getMonth()+1, dates[3].getDate(),
         dates[4].getMonth()+1, dates[4].getDate(),
-        dates[5].getMonth()+1, dates[5].getDate(),
-        dates[6].getMonth()+1, dates[6].getDate(),
-        dates[7].getMonth()+1, dates[7].getDate(),
-        dates[8].getMonth()+1, dates[8].getDate(),
+        
     ],
     async (error, result) => {
         if (error) {
@@ -664,8 +655,8 @@ INDEX_ROUTE.post("/new_password_request", onlyNotLogined, async (req, res) => {
             var mailOptions = {
                 from: 'info.celebratetogether@gmail.com',
                 to: email,
-                subject: 'Jelszó helyreállítási kód',
-                text: 'Jelszó helyreállításához szükséges kód: ' + kod
+                subject: 'Jelszó-helyreállítási kód',
+                text: 'Jelszó-helyreállításhoz szükséges kód: ' + kod
             };
 
             transporter.sendMail(mailOptions, function(error, info){
